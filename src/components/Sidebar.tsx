@@ -10,8 +10,8 @@ type SidebarProps = {
 };
 
 const navItems: NavItem[] = [
-  { key: "panel", label: "Panel", icon: "dashboard" },
   { key: "chat", label: "Chat IA", icon: "smart_toy" },
+  { key: "panel", label: "Panel", icon: "dashboard" },
   { key: "analytics", label: "Analíticas", icon: "analytics" },
 ];
 
