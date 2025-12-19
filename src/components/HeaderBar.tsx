@@ -16,13 +16,13 @@ function HeaderBar({
   showRegenerate = false,
 }: HeaderBarProps) {
   return (
-    <header className="flex items-center justify-between border-b border-[#28392f] bg-[#111814]/80 backdrop-blur-md px-8 py-5 sticky top-0 z-10">
+    <header className="flex items-center justify-between border-b border-border bg-surface-900/80 backdrop-blur-md px-8 py-5 sticky top-0 z-10">
       <div className="flex flex-col gap-1">
         {(weekLabel || phaseLabel) && (
-          <div className="flex items-center gap-3 text-[#9db9a8] text-sm font-medium">
+          <div className="flex items-center gap-3 text-muted text-sm font-medium">
             {weekLabel ? <span>{weekLabel}</span> : null}
             {weekLabel && phaseLabel ? (
-              <span className="size-1 rounded-full bg-[#28392f]" />
+              <span className="size-1 rounded-full bg-border" />
             ) : null}
             {phaseLabel ? <span>{phaseLabel}</span> : null}
           </div>
@@ -42,17 +42,17 @@ function HeaderBar({
       {(showLayoutSwitch || showRegenerate) && (
         <div className="flex items-center gap-4">
           {showLayoutSwitch ? (
-            <div className="flex bg-[#1c2720] rounded-full p-1 border border-[#28392f]">
-              <button className="px-4 py-1.5 rounded-full bg-[#28392f] text-white text-sm font-medium shadow-sm">
+            <div className="flex bg-surface-800 rounded-full p-1 border border-border">
+              <button className="px-4 py-1.5 rounded-full bg-border text-white text-sm font-medium shadow-sm">
                 Lista
               </button>
-              <button className="px-4 py-1.5 rounded-full text-[#9db9a8] hover:text-white text-sm font-medium transition-colors">
+              <button className="px-4 py-1.5 rounded-full text-muted hover:text-white text-sm font-medium transition-colors">
                 Calendario
               </button>
             </div>
           ) : null}
           {showRegenerate ? (
-            <button className="flex items-center justify-center gap-2 h-10 px-5 rounded-full bg-primary text-[#111814] text-sm font-bold hover:bg-white transition-colors shadow-[0_0_15px_rgba(43,238,121,0.4)]">
+            <button className="flex items-center justify-center gap-2 h-10 px-5 rounded-full bg-primary text-contrast text-sm font-bold hover:bg-white transition-colors shadow-[var(--shadow-primary-15-strong)]">
               <span className="material-symbols-outlined text-[20px]">
                 autorenew
               </span>

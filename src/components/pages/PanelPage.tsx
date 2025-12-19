@@ -26,7 +26,7 @@ function PanelPage() {
       </div>
 
       <button
-        className="absolute bottom-8 right-8 size-14 rounded-full bg-primary text-[#111814] shadow-[0_0_20px_rgba(43,238,121,0.4)] flex items-center justify-center hover:scale-110 transition-transform z-30"
+        className="absolute bottom-8 right-8 size-14 rounded-full bg-primary text-contrast shadow-[var(--shadow-primary-20-strong)] flex items-center justify-center hover:scale-110 transition-transform z-30"
         aria-label="Añadir rutina"
         type="button"
       >

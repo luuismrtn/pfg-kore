@@ -17,10 +17,10 @@ const navItems: NavItem[] = [
 
 function Sidebar({ activeKey, onSelect }: SidebarProps) {
   return (
-    <aside className="hidden md:flex flex-col w-72 bg-[#111814] border-r border-[#28392f] h-full shrink-0 z-20">
+    <aside className="hidden md:flex flex-col w-72 bg-surface-900 border-r border-border h-full shrink-0 z-20">
       <div className="p-6 flex items-center gap-3 mb-6">
         <div
-          className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-[#28392f]"
+          className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-border"
           aria-label="Logotipo geométrico abstracto verde"
           style={{
             backgroundImage:
@@ -31,7 +31,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           <h1 className="text-white text-xl font-bold leading-tight tracking-tight">
             Kore
           </h1>
-          <p className="text-[#9db9a8] text-xs font-medium tracking-wide uppercase">
+          <p className="text-muted text-xs font-medium tracking-wide uppercase">
             Kore IA V0.0
           </p>
         </div>
@@ -46,8 +46,8 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
               onClick={() => onSelect(item.key)}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-left cursor-pointer border ${
                 isActive
-                  ? "bg-primary/10 text-primary border-primary/20 shadow-[0_0_15px_rgba(43,238,121,0.1)]"
-                  : "text-[#9db9a8] hover:bg-[#1c2720] hover:text-white border-transparent"
+                  ? "bg-primary/10 text-primary border-primary/20 shadow-[var(--shadow-primary-15-weak)]"
+                  : "text-muted hover:bg-surface-800 hover:text-white border-transparent"
               }`}
               type="button"
             >
@@ -74,9 +74,9 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
 
       <div className="p-4 mt-auto">
         <button
-          className={`flex items-center gap-4 px-4 py-3 cursor-pointer rounded-xl w-full text-[#9db9a8] hover:bg-[#1c2720] hover:text-white transition-colors ${
+          className={`flex items-center gap-4 px-4 py-3 cursor-pointer rounded-xl w-full text-muted hover:bg-surface-800 hover:text-white transition-colors ${
             activeKey === "settings"
-              ? "bg-primary/10 text-primary border border-primary/20 shadow-[0_0_15px_rgba(43,238,121,0.1)]"
+              ? "bg-primary/10 text-primary border border-primary/20 shadow-[var(--shadow-primary-15-weak)]"
               : "border border-transparent"
           }`}
           onClick={() => onSelect("settings")}
@@ -92,7 +92,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           <p className="text-sm font-medium">Ajustes</p>
         </button>
 
-        <div className="mt-4 pt-4 border-t border-[#28392f] flex items-center gap-3 px-2">
+        <div className="mt-4 pt-4 border-t border-border flex items-center gap-3 px-2">
           <div
             className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-primary/30"
             aria-label="Foto de perfil de usuario"
@@ -103,7 +103,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           />
           <div className="flex flex-col">
             <p className="text-white text-sm font-bold">Invitado</p>
-            <p className="text-[#9db9a8] text-xs">Acceso limitado</p>
+            <p className="text-muted text-xs">Acceso limitado</p>
           </div>
         </div>
       </div>

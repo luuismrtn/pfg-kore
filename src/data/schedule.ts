@@ -15,12 +15,12 @@ export const schedule: DayColumn[] = [
           {
             label: "Pecho",
             className:
-              "px-2 py-0.5 rounded-full bg-[#2bee79]/10 text-[#2bee79] text-[10px] font-bold uppercase border border-[#2bee79]/20",
+              "px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase border border-primary/20",
           },
           {
             label: "Compuesto",
             className:
-              "px-2 py-0.5 rounded-full bg-[#28392f] text-[#9db9a8] text-[10px] font-bold uppercase",
+              "px-2 py-0.5 rounded-full bg-border text-muted text-[10px] font-bold uppercase",
           },
         ],
         stats: [
@@ -65,7 +65,7 @@ export const schedule: DayColumn[] = [
           {
             label: "Pesado",
             className:
-              "px-2 py-0.5 rounded-full bg-[#28392f] text-[#9db9a8] text-[10px] font-bold uppercase",
+              "px-2 py-0.5 rounded-full bg-border text-muted text-[10px] font-bold uppercase",
           },
         ],
         stats: [
@@ -117,7 +117,7 @@ export const schedule: DayColumn[] = [
           {
             label: "Compuesto",
             className:
-              "px-2 py-0.5 rounded-full bg-[#28392f] text-[#9db9a8] text-[10px] font-bold uppercase",
+              "px-2 py-0.5 rounded-full bg-border text-muted text-[10px] font-bold uppercase",
           },
         ],
         stats: [
