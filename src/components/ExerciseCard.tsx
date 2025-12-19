@@ -2,7 +2,7 @@ import type { Exercise } from "../types/schedule";
 
 function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
-    <div className="group relative flex flex-col gap-3 rounded-xl bg-surface-800 border border-border p-3 hover:border-primary/50 hover:shadow-[var(--shadow-primary-20-soft)] hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    <div className="group relative flex flex-col gap-3 rounded-xl bg-surface-800 border border-border p-3 hover:border-primary/50 hover:shadow-(--shadow-primary-20-soft) hover:-translate-y-1 transition-all duration-300 cursor-pointer">
       <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-surface-900">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-80 group-hover:opacity-100 transition-opacity"

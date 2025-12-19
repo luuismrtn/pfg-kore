@@ -21,10 +21,9 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
       <div className="p-6 flex items-center gap-3 mb-6">
         <div
           className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-border"
-          aria-label="Logotipo geométrico abstracto verde"
+          aria-label="Logo de Kore IA"
           style={{
-            backgroundImage:
-              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCya-YwO8wvPgbaKU29VZaVO1LUYJy20l-bFyaZSxFpTq97IyI_v2hqYV3vdpCrk9R3WN5jExfmyEmlyyQRg9Q8jvZeqY1kAW1Tymb3jfsIu7cTrCqVjNVeo1p_X9ZXo1uDmTqaUm5uX8wviFyIe3EmzpxhaB48lSXbDBHl6tgQ2j6qMz8vmnmO2IZI9DnS-OUsuwH0yoW67G-KCFFGZIRcmREwygtHQZcdILPoNjU1gdL03aNIy_6f-IymtwLoqmuQ_a32QbdQYIE')",
+            backgroundImage: "url('/kore.svg')",
           }}
         />
         <div className="flex flex-col">
@@ -46,7 +45,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
               onClick={() => onSelect(item.key)}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all text-left cursor-pointer border ${
                 isActive
-                  ? "bg-primary/10 text-primary border-primary/20 shadow-[var(--shadow-primary-15-weak)]"
+                  ? "bg-primary/10 text-primary border-primary/20 shadow-(--shadow-primary-15-weak)"
                   : "text-muted hover:bg-surface-800 hover:text-white border-transparent"
               }`}
               type="button"
@@ -76,7 +75,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
         <button
           className={`flex items-center gap-4 px-4 py-3 cursor-pointer rounded-xl w-full text-muted hover:bg-surface-800 hover:text-white transition-colors ${
             activeKey === "settings"
-              ? "bg-primary/10 text-primary border border-primary/20 shadow-[var(--shadow-primary-15-weak)]"
+              ? "bg-primary/10 text-primary border border-primary/20 shadow-(--shadow-primary-15-weak)"
               : "border border-transparent"
           }`}
           onClick={() => onSelect("settings")}

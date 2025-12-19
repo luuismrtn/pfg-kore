@@ -52,7 +52,7 @@ function HeaderBar({
             </div>
           ) : null}
           {showRegenerate ? (
-            <button className="flex items-center justify-center gap-2 h-10 px-5 rounded-full bg-primary text-contrast text-sm font-bold hover:bg-white transition-colors shadow-[var(--shadow-primary-15-strong)]">
+            <button className="flex items-center justify-center gap-2 h-10 px-5 rounded-full bg-primary text-contrast text-sm font-bold hover:bg-white transition-colors shadow-(--shadow-primary-15-strong)">
               <span className="material-symbols-outlined text-[20px]">
                 autorenew
               </span>
