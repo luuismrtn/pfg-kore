@@ -15,7 +15,7 @@ const weekdayNames = [
 
 function PanelPage() {
   const defaultSelectedDay = useMemo(() => {
-    const todayName = weekdayNames[new Date().getDay()];
+    const todayName = weekdayNames[new Date().getDay() - 1];
     return schedule.some((day) => day.name === todayName)
       ? todayName
       : schedule[0]?.name ?? "";
@@ -36,9 +36,6 @@ function PanelPage() {
               <h3 className="text-white font-bold text-sm uppercase tracking-wider">
                 Días
               </h3>
-              <span className="text-[11px] text-muted uppercase tracking-wider">
-                Semana
-              </span>
             </div>
             <div className="flex flex-col gap-3">
               {schedule.map((day) => {
