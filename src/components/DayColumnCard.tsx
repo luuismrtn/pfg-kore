@@ -78,7 +78,7 @@ function DayColumnCard({ day }: DayColumnCardProps) {
                 Añade tu primera rutina para este día.
               </p>
             </div>
-            <button className="px-4 py-2 rounded-lg bg-surface-800 text-muted hover:text-white hover:bg-border text-xs font-bold uppercase tracking-wide transition-colors">
+            <button className="px-4 py-2 rounded-lg bg-surface-800 cursor-pointer text-muted hover:text-white hover:bg-border text-xs font-bold uppercase tracking-wide transition-colors">
               Añadir Ejercicio
             </button>
           </div>

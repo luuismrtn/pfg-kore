@@ -1,7 +1,3 @@
-export type Badge = {
-  label: string;
-  className: string;
-};
 
 export type Stat = {
   label: string;
@@ -10,7 +6,7 @@ export type Stat = {
 
 export type Exercise = {
   title: string;
-  badges: Badge[];
+  badges: string[];
   stats: Stat[];
 };
 
