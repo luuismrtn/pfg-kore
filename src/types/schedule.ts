@@ -10,9 +10,6 @@ export type Stat = {
 
 export type Exercise = {
   title: string;
-  image: string;
-  alt: string;
-  tag?: string;
   badges: Badge[];
   stats: Stat[];
 };
