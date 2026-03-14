@@ -1,0 +1,112 @@
+[
+  {
+    "id": "musc_001",
+    "nombre": "Press de Banca Plano con Barra",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barra", "Banco Plano", "Discos"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_001.gif",
+    "grupo_muscular": "Pectoral",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Empuje Horizontal"
+  },
+  {
+    "id": "musc_002",
+    "nombre": "Press de Banca Inclinado con Mancuernas",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas", "Banco Inclinado"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_002.gif",
+    "grupo_muscular": "Pectoral Superior",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Empuje Horizontal"
+  },
+  {
+    "id": "musc_003",
+    "nombre": "Aperturas con Mancuernas",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas", "Banco Plano"],
+    "lesiones_prohibidas": ["Hombro", "Pectoral"],
+    "media_url": "/assets/ejercicios/musc_003.gif",
+    "grupo_muscular": "Pectoral",
+    "tipo_mecanica": "Aislamiento",
+    "patron_movimiento": "Empuje Horizontal"
+  },
+  {
+    "id": "musc_004",
+    "nombre": "Cruces en Polea Alta",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Poleas"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_004.gif",
+    "grupo_muscular": "Pectoral Inferior",
+    "tipo_mecanica": "Aislamiento",
+    "patron_movimiento": "Empuje Horizontal"
+  },
+  {
+    "id": "musc_005",
+    "nombre": "Flexiones de Pecho",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_005.gif",
+    "grupo_muscular": "Pectoral",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Empuje Horizontal"
+  },
+  {
+    "id": "musc_006",
+    "nombre": "Dominadas",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barra de Dominadas", "Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Dorsal"],
+    "media_url": "/assets/ejercicios/musc_006.gif",
+    "grupo_muscular": "Espalda",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Tracción Vertical"
+  },
+  {
+    "id": "musc_007",
+    "nombre": "Jalón al Pecho",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquina de Poleas"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_007.gif",
+    "grupo_muscular": "Espalda",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Tracción Vertical"
+  },
+  {
+    "id": "musc_008",
+    "nombre": "Remo con Barra",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barra", "Discos"],
+    "lesiones_prohibidas": ["Zona Lumbar", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_008.gif",
+    "grupo_muscular": "Espalda",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Tracción Horizontal"
+  },
+  {
+    "id": "musc_009",
+    "nombre": "Remo Gironda en Polea Baja",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquina de Poleas", "Agarre Estrecho"],
+    "lesiones_prohibidas": ["Zona Lumbar"],
+    "media_url": "/assets/ejercicios/musc_009.gif",
+    "grupo_muscular": "Espalda",
+    "tipo_mecanica": "Compuesto",
+    "patron_movimiento": "Tracción Horizontal"
+  },
+  {
+    "id": "musc_010",
+    "nombre": "Pullover en Polea Alta",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquina de Poleas", "Cuerda"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_010.gif",
+    "grupo_muscular": "Dorsal",
+    "tipo_mecanica": "Aislamiento",
+    "patron_movimiento": "Tracción Vertical"
+  }
+]
