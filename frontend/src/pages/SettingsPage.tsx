@@ -1,5 +1,5 @@
-import HeaderBar from "../components/layout/HeaderBar";
-import PagePlaceholder from "../components/ui/PagePlaceholder";
+import HeaderBar from "@/components/layout/HeaderBar";
+import PagePlaceholder from "@/components/ui/PagePlaceholder";
 
 function SettingsPage() {
   return (

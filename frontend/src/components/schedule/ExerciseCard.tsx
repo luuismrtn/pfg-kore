@@ -1,4 +1,4 @@
-import type { Exercise } from "../../types/schedule";
+import type { Exercise } from "@/types/schedule";
 
 const badgeBaseClassName =
   "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase";

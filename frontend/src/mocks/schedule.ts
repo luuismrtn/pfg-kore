@@ -1,4 +1,4 @@
-import type { DayColumn } from "../types/schedule";
+import type { DayColumn } from "@/types/schedule";
 
 export const schedule: DayColumn[] = [
   {

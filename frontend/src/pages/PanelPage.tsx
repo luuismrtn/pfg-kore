@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import HeaderBar from "../components/layout/HeaderBar";
-import DayColumnCard from "../components/schedule/DayColumnCard";
-import { schedule } from "../mocks/schedule";
+import HeaderBar from "@/components/layout/HeaderBar";
+import DayColumnCard from "@/components/schedule/DayColumnCard";
+import { schedule } from "@/mocks/schedule";
 
 const weekdayNames = [
   "Lunes",

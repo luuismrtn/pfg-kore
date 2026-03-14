@@ -1,14 +1,14 @@
 import type { Request, Response } from "express";
-import { RagService, type PerfilUsuario } from "../services/ragService.ts";
+import { RagService, type ReqForm } from "../services/ragService.ts";
 
 export const generarRutina = async (
   req: Request,
   res: Response,
 ): Promise<void> => {
   try {
-    const perfil: PerfilUsuario = req.body;
+    const request: ReqForm = req.body;
 
-    if (!perfil || !perfil.objetivo || !perfil.nivel) {
+    if (!request) {
       res
         .status(400)
         .json({ error: "Faltan datos obligatorios en el perfil." });
@@ -16,7 +16,7 @@ export const generarRutina = async (
     }
 
     const ragService = new RagService();
-    const rutina = await ragService.generarRutina(perfil);
+    const rutina = await ragService.generarRutina(request);
 
     res.status(200).json(rutina);
   } catch (error) {

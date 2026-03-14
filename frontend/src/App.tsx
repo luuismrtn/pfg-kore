@@ -1,11 +1,12 @@
 import { useEffect, useState, type JSX } from "react";
 import "./App.css";
-import Sidebar from "./components/layout/Sidebar";
-import PanelPage from "./pages/PanelPage";
-import ChatPage from "./pages/ChatPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import SettingsPage from "./pages/SettingsPage";
-import type { PageKey } from "./types/navigation";
+import Sidebar from "@/components/layout/Sidebar";
+import PanelPage from "@/pages/PanelPage";
+import ChatPage from "@/pages/ChatPage";
+import AnalyticsPage from "@/pages/AnalyticsPage";
+import SettingsPage from "@/pages/SettingsPage";
+import ProfilePage from "@/pages/ProfilePage";
+import type { PageKey } from "@/types/navigation";
 
 function App() {
   const [activePage, setActivePage] = useState<PageKey>("panel");
@@ -16,6 +17,7 @@ function App() {
 
   const renderContent = () => {
     const pages: Record<PageKey, JSX.Element> = {
+      profile: <ProfilePage />,
       panel: <PanelPage />,
       chat: <ChatPage />,
       analytics: <AnalyticsPage />,

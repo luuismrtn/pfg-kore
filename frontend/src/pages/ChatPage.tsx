@@ -5,9 +5,9 @@ import {
   useRef,
   useState,
 } from "react";
-import HeaderBar from "../components/layout/HeaderBar";
-import { generateRutina } from "../services/api/rutinasApi";
-import type { ChatMessage, PerfilUsuario, RutinaResponse } from "../types/chat";
+import HeaderBar from "@/components/layout/HeaderBar";
+import { generateRutina } from "@/services/api/rutinasApi";
+import type { ChatMessage, PerfilUsuario, RutinaResponse } from "@/types/chat";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -107,8 +107,7 @@ function ChatPage() {
     setIsResponding(true);
 
     try {
-      const perfil = toPerfilUsuario(text);
-      const rutina = await generateRutina(perfil);
+      const rutina = await generateRutina(text);
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
