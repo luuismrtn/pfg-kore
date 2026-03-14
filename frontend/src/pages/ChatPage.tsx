@@ -7,7 +7,7 @@ import {
 } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import { generateRutina } from "@/services/api/rutinasApi";
-import type { ChatMessage, PerfilUsuario, RutinaResponse } from "@/types/chat";
+import type { ChatMessage } from "@/types/chat";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -17,71 +17,59 @@ const seedMessage: ChatMessage = {
 };
 
 const MAX_USER_CHARS = 1000;
+const CHAT_STORAGE_KEY = "pfg-kore:chat:messages";
+const ROUTINE_STORAGE_KEY = "pfg-kore:chat:rutina";
 
-function toPerfilUsuario(text: string): PerfilUsuario {
-  try {
-    const parsed = JSON.parse(text) as Partial<PerfilUsuario>;
-    if (
-      typeof parsed.objetivo === "string" &&
-      typeof parsed.nivel === "string"
-    ) {
-      return {
-        objetivo: parsed.objetivo,
-        nivel: parsed.nivel,
-        lesiones: Array.isArray(parsed.lesiones) ? parsed.lesiones : [],
-        equipamiento:
-          Array.isArray(parsed.equipamiento) && parsed.equipamiento.length > 0
-            ? parsed.equipamiento
-            : ["Peso Corporal"],
-        dias_semana:
-          typeof parsed.dias_semana === "number" && parsed.dias_semana > 0
-            ? Math.min(parsed.dias_semana, 7)
-            : 3,
-      };
-    }
-  } catch {
-    // Si no es JSON, se usará el mensaje como objetivo libre.
+function isChatMessage(value: unknown): value is ChatMessage {
+  if (typeof value !== "object" || value === null) {
+    return false;
   }
 
-  return {
-    objetivo: text,
-    nivel: "intermedio",
-    lesiones: [],
-    equipamiento: ["Peso Corporal"],
-    dias_semana: 3,
-  };
+  const message = value as Partial<ChatMessage>;
+  return (
+    typeof message.id === "string" &&
+    (message.role === "user" || message.role === "assistant") &&
+    typeof message.content === "string"
+  );
 }
 
-function formatRutina(rutina: RutinaResponse): string {
-  if (!Array.isArray(rutina.rutina) || rutina.rutina.length === 0) {
-    return "La IA respondió sin una rutina válida.";
+function readStoredMessages(): ChatMessage[] {
+  const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+  if (!raw) {
+    return [seedMessage];
   }
 
-  return rutina.rutina
-    .map((dia, dayIndex) => {
-      const ejercicios = dia.ejercicios
-        .map((ej, exerciseIndex) => {
-          const nota = ej.nota ? ` | Nota: ${ej.nota}` : "";
-          return `${dayIndex + 1}.${exerciseIndex + 1} ${ej.nombre} (${ej.series}x${ej.repeticiones}, descanso ${ej.descanso_segundos}s)${nota}`;
-        })
-        .join("\n");
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (Array.isArray(parsed)) {
+      const validMessages = parsed.filter(isChatMessage);
+      if (validMessages.length > 0) {
+        return validMessages;
+      }
+    }
+  } catch {
+    // Si hay datos corruptos, se vuelve al mensaje inicial.
+  }
 
-      return `${dia.dia}\n${ejercicios}`;
-    })
-    .join("\n\n");
+  return [seedMessage];
 }
 
 function ChatPage() {
-  const [messages, setMessages] = useState<ChatMessage[]>([seedMessage]);
+  const [messages, setMessages] = useState<ChatMessage[]>(readStoredMessages);
   const [draft, setDraft] = useState("");
   const [isResponding, setIsResponding] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const requestVersionRef = useRef(0);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+  }, [messages]);
+
+  useEffect(() => {
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
   }, [messages]);
 
   const sendMessage = async (event?: FormEvent<HTMLFormElement>) => {
@@ -102,18 +90,28 @@ function ChatPage() {
       content: text,
     };
 
+    const requestVersion = requestVersionRef.current + 1;
+    requestVersionRef.current = requestVersion;
+
     setMessages((prev) => [...prev, userMessage]);
     setDraft("");
     setIsResponding(true);
 
     try {
       const rutina = await generateRutina(text);
+      if (requestVersionRef.current === requestVersion) {
+        localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(rutina));
+      }
+
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
-        content: formatRutina(rutina),
+        content:
+          "¡Ya tienes tu rutina personalizada en tu panel! \nSi necesitas que te la ajuste o tienes alguna duda, no dudes en escribirme.",
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+      if (requestVersionRef.current === requestVersion) {
+        setMessages((prev) => [...prev, assistantMessage]);
+      }
     } catch (error) {
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
@@ -123,10 +121,22 @@ function ChatPage() {
             ? `Error al conectar con el backend: ${error.message}`
             : "Error al conectar con el backend.",
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+      if (requestVersionRef.current === requestVersion) {
+        setMessages((prev) => [...prev, assistantMessage]);
+      }
     } finally {
-      setIsResponding(false);
+      if (requestVersionRef.current === requestVersion) {
+        setIsResponding(false);
+      }
     }
+  };
+
+  const clearConversation = () => {
+    requestVersionRef.current += 1;
+    setMessages([seedMessage]);
+    setDraft("");
+    setIsResponding(false);
+    localStorage.removeItem(CHAT_STORAGE_KEY);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -222,14 +232,29 @@ function ChatPage() {
                   className="min-h-24 flex-1 resize-none rounded-xl bg-surface-800/80 px-4 py-3 text-sm text-white border border-border focus:outline-none focus:ring-2 focus:ring-primary/60 custom-scrollbar"
                 />
 
-                <button
-                  type="submit"
-                  disabled={!draft.trim() || isResponding}
-                  className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-(--shadow-primary-20-strong) hover:-translate-y-px transition-transform"
-                  aria-label="Enviar mensaje"
-                >
-                  <span className="material-symbols-outlined">send</span>
-                </button>
+                <div className="flex flex-col gap-2">
+                  <button
+                    type="submit"
+                    disabled={!draft.trim() || isResponding}
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-(--shadow-primary-20-strong) hover:-translate-y-px transition-transform"
+                    aria-label="Enviar mensaje"
+                  >
+                    <span className="material-symbols-outlined">send</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={clearConversation}
+                    disabled={isResponding}
+                    className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface-800/90 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
+                    aria-label="Nueva conversacion"
+                    title="Nueva conversacion"
+                  >
+                    <span className="material-symbols-outlined">
+                      delete_sweep
+                    </span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex justify-end text-[11px] text-muted px-1">

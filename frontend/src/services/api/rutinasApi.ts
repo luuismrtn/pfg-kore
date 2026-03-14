@@ -1,5 +1,5 @@
 import { getProfile } from "@/pages/ProfilePage";
-import type { PerfilUsuario, RutinaResponse } from "../../types/chat";
+import type { RutinaResponse } from "../../types/chat";
 import type { UserProfileForm } from "@/types/profile";
 
 type ApiErrorBody = {
@@ -56,5 +56,6 @@ function addMessage(profile: UserProfileForm | undefined, text: string) {
     availableDays: profile2.availableDays,
     averageDurationMinutes: profile2.averageDurationMinutes,
     equipment: profile2.equipment,
+    injuries: profile2.injuries,
   };
 }

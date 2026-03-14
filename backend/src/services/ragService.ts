@@ -53,16 +53,19 @@ export class RagService {
   }
 
   private filtrarEjercicios(req: ReqForm): EjercicioFiltro[] {
+    const injuries = Array.isArray(req?.injuries) ? req.injuries : [];
+    const equipment = Array.isArray(req?.equipment) ? req.equipment : [];
+
     return this.ejerciciosBD
       .filter((ej) => {
         const tieneLesion = ej.lesiones_prohibidas?.some((lesion: string) =>
-          req.injuries.includes(lesion),
+          injuries.includes(lesion),
         );
         if (tieneLesion) return false;
 
         const faltaMaterial = ej.equipamiento?.some(
           (item: string) =>
-            item !== "Peso Corporal" && !req.equipment.includes(item),
+            item !== "Peso Corporal" && !equipment.includes(item),
         );
         if (faltaMaterial) return false;
 
@@ -79,7 +82,19 @@ export class RagService {
   public async generarRutina(request: ReqForm): Promise<any> {
     console.log("Iniciando generación de rutina...");
 
-    const ejerciciosValidos = this.filtrarEjercicios(request);
+    const normalizedRequest: ReqForm = {
+      text: request?.text ?? "",
+      name: request?.name ?? "",
+      weightKg: request?.weightKg ?? "",
+      heightCm: request?.heightCm ?? "",
+      sport: request?.sport ?? "",
+      availableDays: Number(request?.availableDays) || 3,
+      averageDurationMinutes: Number(request?.averageDurationMinutes) || 60,
+      equipment: Array.isArray(request?.equipment) ? request.equipment : [],
+      injuries: Array.isArray(request?.injuries) ? request.injuries : [],
+    };
+
+    const ejerciciosValidos = this.filtrarEjercicios(normalizedRequest);
     const contextoEjercicios = JSON.stringify(ejerciciosValidos);
 
     const systemPrompt = `
@@ -89,7 +104,7 @@ export class RagService {
     \n\nREGLAS ESTRICTAS (HARD CONSTRAINTS):
     \n1. SOLO PUEDES ELEGIR ejercicios de la siguiente lista de ejercicios válidos.
     \n   Si inventas un ejercicio o usas uno fuera de esta lista, el sistema fallará.
-    \n2. La rutina debe ser de ${request.availableDays} días.
+    \n2. La rutina debe ser de ${normalizedRequest.availableDays} días.
     \n3. Devuelve ÚNICAMENTE código JSON válido, sin texto adicional antes o después.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
@@ -116,6 +131,8 @@ export class RagService {
     \n
     `;
 
+    console.log(normalizedRequest);
+
     try {
       console.log("Contactando con LLM local (Ollama)...");
       const response = await this.openai.chat.completions.create({
@@ -126,14 +143,13 @@ export class RagService {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `Genera una rutina de ejercicios para el siguiente perfil:\n${JSON.stringify(request)}. Además, ten en cuenta el texto que nos propocionado: "${request.text}"`,
+            content: `Genera una rutina de ejercicios para el siguiente perfil:\n${JSON.stringify(normalizedRequest)}. Además, ten en cuenta el texto que nos propocionado: "${normalizedRequest.text}"`,
           },
         ],
       });
 
       const firstChoice = response.choices[0];
 
-      console.log(firstChoice);
       const iaResponseText = firstChoice?.message?.content;
       if (!iaResponseText) throw new Error("Respuesta vacía de la IA");
 
