@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { RagService, PerfilUsuario } from "../services/ragService";
+import type { Request, Response } from "express";
+import { RagService, type PerfilUsuario } from "../services/ragService.ts";
 
 export const generarRutina = async (
   req: Request,

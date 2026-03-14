@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { generarRutina } from "../controllers/rutinaController";
+import { generarRutina } from "../controllers/rutinaController.ts";
 
 const router = Router();
 

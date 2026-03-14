@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import rutinaRoutes from "./routes/rutinaRoutes";
+import rutinaRoutes from "./routes/rutinaRoutes.ts";
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor Backend escuchando en http://localhost:${PORT}`);
+  console.log(`Servidor Backend escuchando en http://localhost:${PORT}`);
   console.log(
     "Recuerda tener Ollama ejecutándose en tu PC para la generación de IA.",
   );
