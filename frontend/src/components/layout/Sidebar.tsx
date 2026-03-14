@@ -1,12 +1,14 @@
+import type { PageKey } from "../../types/navigation";
+
 type NavItem = {
-  key: string;
+  key: PageKey;
   label: string;
   icon: string;
 };
 
 type SidebarProps = {
-  activeKey: string;
-  onSelect: (key: string) => void;
+  activeKey: PageKey;
+  onSelect: (key: PageKey) => void;
 };
 
 const navItems: NavItem[] = [

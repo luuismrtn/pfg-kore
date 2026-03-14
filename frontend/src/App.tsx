@@ -1,12 +1,11 @@
 import { useEffect, useState, type JSX } from "react";
 import "./App.css";
-import Sidebar from "./components/Sidebar";
-import PanelPage from "./components/pages/PanelPage";
-import ChatPage from "./components/pages/ChatPage";
-import AnalyticsPage from "./components/pages/AnalyticsPage";
-import SettingsPage from "./components/pages/SettingsPage";
-
-type PageKey = "panel" | "chat" | "analytics" | "settings";
+import Sidebar from "./components/layout/Sidebar";
+import PanelPage from "./pages/PanelPage";
+import ChatPage from "./pages/ChatPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import SettingsPage from "./pages/SettingsPage";
+import type { PageKey } from "./types/navigation";
 
 function App() {
   const [activePage, setActivePage] = useState<PageKey>("panel");
@@ -29,10 +28,7 @@ function App() {
   return (
     <div className="bg-canvas dark:bg-deep font-display text-slate-100 dark:text-white overflow-hidden selection:bg-primary selection:text-contrast">
       <div className="flex h-screen w-full">
-        <Sidebar
-          activeKey={activePage}
-          onSelect={(key) => setActivePage(key as PageKey)}
-        />
+        <Sidebar activeKey={activePage} onSelect={setActivePage} />
 
         <main className="flex-1 flex flex-col h-full bg-canvas dark:bg-deep relative overflow-hidden">
           <div className="absolute top-0 right-0 w-125 h-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />

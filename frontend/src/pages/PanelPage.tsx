@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import HeaderBar from "../HeaderBar";
-import DayColumnCard from "../DayColumnCard";
-import { schedule } from "../../data/schedule";
+import HeaderBar from "../components/layout/HeaderBar";
+import DayColumnCard from "../components/schedule/DayColumnCard";
+import { schedule } from "../mocks/schedule";
 
 const weekdayNames = [
   "Lunes",
@@ -18,7 +18,7 @@ function PanelPage() {
     const todayName = weekdayNames[new Date().getDay() - 1];
     return schedule.some((day) => day.name === todayName)
       ? todayName
-      : schedule[0]?.name ?? "";
+      : (schedule[0]?.name ?? "");
   }, []);
 
   const [selectedDay, setSelectedDay] = useState(defaultSelectedDay);
@@ -82,11 +82,7 @@ function PanelPage() {
           </aside>
 
           <section className="flex flex-col gap-4 h-full overflow-y-auto">
-            {activeDay ? (
-              <DayColumnCard
-                day={activeDay}
-              />
-            ) : null}
+            {activeDay ? <DayColumnCard day={activeDay} /> : null}
           </section>
         </div>
       </div>

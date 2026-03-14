@@ -5,13 +5,9 @@ import {
   useRef,
   useState,
 } from "react";
-import HeaderBar from "../HeaderBar";
-
-type ChatMessage = {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-};
+import HeaderBar from "../components/layout/HeaderBar";
+import { generateRutina } from "../services/api/rutinasApi";
+import type { ChatMessage, PerfilUsuario, RutinaResponse } from "../types/chat";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -21,6 +17,59 @@ const seedMessage: ChatMessage = {
 };
 
 const MAX_USER_CHARS = 1000;
+
+function toPerfilUsuario(text: string): PerfilUsuario {
+  try {
+    const parsed = JSON.parse(text) as Partial<PerfilUsuario>;
+    if (
+      typeof parsed.objetivo === "string" &&
+      typeof parsed.nivel === "string"
+    ) {
+      return {
+        objetivo: parsed.objetivo,
+        nivel: parsed.nivel,
+        lesiones: Array.isArray(parsed.lesiones) ? parsed.lesiones : [],
+        equipamiento:
+          Array.isArray(parsed.equipamiento) && parsed.equipamiento.length > 0
+            ? parsed.equipamiento
+            : ["Peso Corporal"],
+        dias_semana:
+          typeof parsed.dias_semana === "number" && parsed.dias_semana > 0
+            ? Math.min(parsed.dias_semana, 7)
+            : 3,
+      };
+    }
+  } catch {
+    // Si no es JSON, se usará el mensaje como objetivo libre.
+  }
+
+  return {
+    objetivo: text,
+    nivel: "intermedio",
+    lesiones: [],
+    equipamiento: ["Peso Corporal"],
+    dias_semana: 3,
+  };
+}
+
+function formatRutina(rutina: RutinaResponse): string {
+  if (!Array.isArray(rutina.rutina) || rutina.rutina.length === 0) {
+    return "La IA respondió sin una rutina válida.";
+  }
+
+  return rutina.rutina
+    .map((dia, dayIndex) => {
+      const ejercicios = dia.ejercicios
+        .map((ej, exerciseIndex) => {
+          const nota = ej.nota ? ` | Nota: ${ej.nota}` : "";
+          return `${dayIndex + 1}.${exerciseIndex + 1} ${ej.nombre} (${ej.series}x${ej.repeticiones}, descanso ${ej.descanso_segundos}s)${nota}`;
+        })
+        .join("\n");
+
+      return `${dia.dia}\n${ejercicios}`;
+    })
+    .join("\n\n");
+}
 
 function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([seedMessage]);
@@ -35,7 +84,7 @@ function ChatPage() {
     });
   }, [messages]);
 
-  const sendMessage = (event?: FormEvent<HTMLFormElement>) => {
+  const sendMessage = async (event?: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
 
     if (!draft.trim() || isResponding) {
@@ -57,18 +106,28 @@ function ChatPage() {
     setDraft("");
     setIsResponding(true);
 
-    setTimeout(() => {
+    try {
+      const perfil = toPerfilUsuario(text);
+      const rutina = await generateRutina(perfil);
       const assistantMessage: ChatMessage = {
         id: crypto.randomUUID(),
         role: "assistant",
-        content: "Correcto",
+        content: formatRutina(rutina),
       };
-
-      //Aquí iría la llamada a la API para obtener la respuesta real
-
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (error) {
+      const assistantMessage: ChatMessage = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        content:
+          error instanceof Error
+            ? `Error al conectar con el backend: ${error.message}`
+            : "Error al conectar con el backend.",
+      };
+      setMessages((prev) => [...prev, assistantMessage]);
+    } finally {
       setIsResponding(false);
-    }, 400);
+    }
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {

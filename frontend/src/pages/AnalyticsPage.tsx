@@ -1,5 +1,5 @@
-import HeaderBar from "../HeaderBar";
-import PagePlaceholder from "../PagePlaceholder";
+import HeaderBar from "../components/layout/HeaderBar";
+import PagePlaceholder from "../components/ui/PagePlaceholder";
 
 function AnalyticsPage() {
   return (

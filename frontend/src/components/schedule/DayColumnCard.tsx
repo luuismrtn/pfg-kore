@@ -1,5 +1,5 @@
 import ExerciseCard from "./ExerciseCard";
-import type { DayColumn } from "../types/schedule";
+import type { DayColumn } from "../../types/schedule";
 
 const columnVariants: Record<"default" | "muted", string> = {
   default: "bg-surface-900/40 border border-border",
