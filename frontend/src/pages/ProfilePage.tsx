@@ -13,14 +13,12 @@ const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 const sportOptions = ["Musculacion", "Running", "Calistenia"];
 
 const equipmentOptions = [
-  "Peso Corporal",
-  "Mancuernas",
-  "Barra",
-  "Banda elástica",
-  "Kettlebell",
-  "Máquina",
-  "Cinta de correr",
-  "Bicicleta estática",
+  "Mancuernas y Pesas Libres",
+  "Barras y Discos",
+  "Banco de musculacion",
+  "Máquinas de gimnasio",
+  "Estructuras de Calistenia",
+  "Accesorios",
 ];
 
 const injuryOptions = [
@@ -34,6 +32,8 @@ const injuryOptions = [
   "Tobillo",
 ];
 
+const levelOptions = ["Principiante", "Intermedio", "Avanzado"];
+
 const defaultProfile: UserProfileForm = {
   name: "",
   weightKg: "",
@@ -43,6 +43,7 @@ const defaultProfile: UserProfileForm = {
   injuries: [],
   availableDays: 3,
   averageDurationMinutes: 60,
+  level: "Principiante",
 };
 
 function toValidProfile(value: unknown): UserProfileForm | null {
@@ -66,6 +67,7 @@ function toValidProfile(value: unknown): UserProfileForm | null {
     sport: candidate.sport || "Musculacion",
     equipment: equipment || [],
     injuries: injuries || [],
+    level: candidate.level || "Principiante",
     availableDays: Math.min(Math.max(candidate.availableDays || 1, 1), 7),
     averageDurationMinutes: Math.min(
       Math.max(candidate.averageDurationMinutes || 60, 20),
@@ -244,6 +246,24 @@ function ProfilePage() {
                 </select>
               </label>
 
+              <label className="flex flex-col gap-2">
+                <span className="text-sm font-medium text-white">Nivel</span>
+                <select
+                  value={form.level}
+                  onChange={(event) => {
+                    setSaved(false);
+                    setForm((prev) => ({ ...prev, level: event.target.value }));
+                  }}
+                  className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+                >
+                  {levelOptions.map((level) => (
+                    <option key={level} value={level}>
+                      {level}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
               <fieldset className="flex flex-col gap-2 md:col-span-2">
                 <legend className="text-sm font-medium text-white">
                   Equipamiento disponible
@@ -399,10 +419,8 @@ function ProfilePage() {
                 <p className="mt-1 font-semibold text-white">{form.sport}</p>
               </div>
               <div className="rounded-xl border border-border bg-surface-800/70 px-4 py-3">
-                <p className="text-muted">Equipamiento</p>
-                <p className="mt-1 font-semibold text-white">
-                  {form.equipment.join(", ") || "Sin equipamiento"}
-                </p>
+                <p className="text-muted">Nivel</p>
+                <p className="mt-1 font-semibold text-white">{form.level}</p>
               </div>
               <div className="rounded-xl border border-border bg-surface-800/70 px-4 py-3">
                 <p className="text-muted">Disponibilidad</p>

@@ -57,5 +57,6 @@ function addMessage(profile: UserProfileForm | undefined, text: string) {
     averageDurationMinutes: profile2.averageDurationMinutes,
     equipment: profile2.equipment,
     injuries: profile2.injuries,
+    level: profile2.level,
   };
 }

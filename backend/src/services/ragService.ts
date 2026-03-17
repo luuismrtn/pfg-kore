@@ -16,6 +16,7 @@ export interface ReqForm {
   averageDurationMinutes: number;
   equipment: string[];
   injuries: string[];
+  level: string;
 }
 
 interface EjercicioFiltro {
@@ -53,30 +54,24 @@ export class RagService {
   }
 
   private filtrarEjercicios(req: ReqForm): EjercicioFiltro[] {
-    const injuries = Array.isArray(req?.injuries) ? req.injuries : [];
-    const equipment = Array.isArray(req?.equipment) ? req.equipment : [];
+    const exercises = this.ejerciciosBD;
 
-    return this.ejerciciosBD
-      .filter((ej) => {
-        const tieneLesion = ej.lesiones_prohibidas?.some((lesion: string) =>
-          injuries.includes(lesion),
-        );
-        if (tieneLesion) return false;
+    //Primero filtramos por nivel
+    
 
-        const faltaMaterial = ej.equipamiento?.some(
-          (item: string) =>
-            item !== "Peso Corporal" && !equipment.includes(item),
-        );
-        if (faltaMaterial) return false;
 
-        return true;
-      })
-      .map((ej) => ({
-        id: ej.id,
-        nombre: ej.nombre,
-        grupo_muscular: ej.grupo_muscular,
-        tipo_mecanica: ej.tipo_mecanica,
-      }));
+    return exercises.map((ej) => ({
+      id: ej.id,
+      nombre: ej.nombre,
+      grupo_muscular:
+        ej.atributos_especificos?.grupo_muscular ?? ej.grupo_muscular ?? "",
+      tipo_mecanica:
+        ej.atributos_especificos?.tipo_mecanica ?? ej.tipo_mecanica ?? "",
+      patron_movimiento:
+        ej.atributos_especificos?.patron_movimiento ??
+        ej.patron_movimiento ??
+        "",
+    }));
   }
 
   public async generarRutina(request: ReqForm): Promise<any> {
@@ -92,6 +87,7 @@ export class RagService {
       averageDurationMinutes: Number(request?.averageDurationMinutes) || 60,
       equipment: Array.isArray(request?.equipment) ? request.equipment : [],
       injuries: Array.isArray(request?.injuries) ? request.injuries : [],
+      level: request?.level ?? "Principiante",
     };
 
     const ejerciciosValidos = this.filtrarEjercicios(normalizedRequest);
@@ -132,6 +128,9 @@ export class RagService {
     `;
 
     console.log(normalizedRequest);
+    console.log("Contexto de ejercicios filtrados:", contextoEjercicios);
+
+    /*
 
     try {
       console.log("Contactando con LLM local (Ollama)...");
@@ -169,5 +168,6 @@ export class RagService {
 
       throw new Error("Fallo al generar la rutina con la IA.");
     }
+      */
   }
 }

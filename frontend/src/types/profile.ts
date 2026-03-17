@@ -7,4 +7,5 @@ export type UserProfileForm = {
   availableDays: number;
   averageDurationMinutes: number;
   equipment: string[];
+  level: string;
 };
