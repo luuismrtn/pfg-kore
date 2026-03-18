@@ -24,11 +24,25 @@ interface EjercicioFiltro {
   nombre: string;
   grupo_muscular: string;
   tipo_mecanica: string;
+  patron_movimiento: string;
+}
+
+interface EjercicioBD {
+  id: string;
+  nombre: string;
+  nivel_dificultad?: string;
+  equipamiento?: string[];
+  lesiones_prohibidas?: string[];
+  atributos_especificos?: {
+    grupo_muscular?: string;
+    tipo_mecanica?: string;
+    patron_movimiento?: string;
+  };
 }
 
 export class RagService {
   private openai: OpenAI;
-  private ejerciciosBD: any[];
+  private ejerciciosBD: EjercicioBD[];
 
   constructor() {
     const baseURL =
@@ -53,24 +67,105 @@ export class RagService {
     }
   }
 
+  private normalizarTexto(value: string): string {
+    return value
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  private filtrarPorNivel(
+    exercises: EjercicioBD[],
+    level: string,
+  ): EjercicioBD[] {
+    const nivel = this.normalizarTexto(level);
+
+    let nivelesPermitidos: string[] = ["principiante"];
+    if (nivel === "2" || nivel.includes("intermedio")) {
+      nivelesPermitidos = ["principiante", "intermedio"];
+    } else if (nivel === "3" || nivel.includes("avanzado")) {
+      nivelesPermitidos = ["principiante", "intermedio", "avanzado"];
+    }
+
+    const nivelesPermitidosSet = new Set(nivelesPermitidos);
+
+    return exercises.filter((ejercicio) => {
+      const nivelEjercicio = this.normalizarTexto(
+        ejercicio.nivel_dificultad ?? "Principiante",
+      );
+      return nivelesPermitidosSet.has(nivelEjercicio);
+    });
+  }
+
+  private filtrarPorLesiones(
+    exercises: EjercicioBD[],
+    injuries: string[],
+  ): EjercicioBD[] {
+    const lesionesUsuario = new Set(
+      injuries.map((lesion) => this.normalizarTexto(lesion)),
+    );
+
+    if (lesionesUsuario.size === 0) {
+      return exercises;
+    }
+
+    return exercises.filter((ejercicio) => {
+      const lesionesProhibidas = (ejercicio.lesiones_prohibidas ?? []).map(
+        (lesion) => this.normalizarTexto(lesion),
+      );
+
+      return !lesionesProhibidas.some((lesion) => lesionesUsuario.has(lesion));
+    });
+  }
+
+  private filtrarPorMaterial(
+    exercises: EjercicioBD[],
+    equipment: string[],
+  ): EjercicioBD[] {
+    const equipamientoUsuario = new Set(
+      equipment.map((item) => this.normalizarTexto(item)),
+    );
+
+    equipamientoUsuario.add("peso corporal");
+
+    return exercises.filter((ejercicio) => {
+      const equipamientoNecesario = (ejercicio.equipamiento ?? []).map((item) =>
+        this.normalizarTexto(item),
+      );
+
+      if (equipamientoNecesario.length === 0) {
+        return true;
+      }
+
+      return equipamientoNecesario.every((item) =>
+        equipamientoUsuario.has(item),
+      );
+    });
+  }
+
   private filtrarEjercicios(req: ReqForm): EjercicioFiltro[] {
     const exercises = this.ejerciciosBD;
 
-    //Primero filtramos por nivel
-    
+    const ejerciciosPorNivel = this.filtrarPorNivel(exercises, req.level);
+    const ejerciciosSinLesiones = this.filtrarPorLesiones(
+      ejerciciosPorNivel,
+      req.injuries,
+    );
+    const ejerciciosValidos = this.filtrarPorMaterial(
+      ejerciciosSinLesiones,
+      req.equipment,
+    );
 
-
-    return exercises.map((ej) => ({
+    return ejerciciosValidos.map((ej) => ({
       id: ej.id,
       nombre: ej.nombre,
       grupo_muscular:
-        ej.atributos_especificos?.grupo_muscular ?? ej.grupo_muscular ?? "",
+        ej.atributos_especificos?.grupo_muscular || "Sin especificar",
       tipo_mecanica:
-        ej.atributos_especificos?.tipo_mecanica ?? ej.tipo_mecanica ?? "",
+        ej.atributos_especificos?.tipo_mecanica || "Sin especificar",
       patron_movimiento:
-        ej.atributos_especificos?.patron_movimiento ??
-        ej.patron_movimiento ??
-        "",
+        ej.atributos_especificos?.patron_movimiento || "Sin especificar",
     }));
   }
 
@@ -100,8 +195,9 @@ export class RagService {
     \n\nREGLAS ESTRICTAS (HARD CONSTRAINTS):
     \n1. SOLO PUEDES ELEGIR ejercicios de la siguiente lista de ejercicios válidos.
     \n   Si inventas un ejercicio o usas uno fuera de esta lista, el sistema fallará.
-    \n2. La rutina debe ser de ${normalizedRequest.availableDays} días.
+    \n2. La rutina debe ser de ${normalizedRequest.availableDays} días. El objetivo es cubrir todo el cuerpo de manera equilibrada, pero puedes enfocarte más en las preferencias del usuario si las hay. Cada día debe tener un enfoque claro (ej. "Día 1 - Pecho y Tríceps").
     \n3. Devuelve ÚNICAMENTE código JSON válido, sin texto adicional antes o después.
+    \n4. El tiempo medio de entrenamiento por día debe ser de aproximadamente ${normalizedRequest.averageDurationMinutes} minutos. Ajusta el número de ejercicios, series y repeticiones (si puede ser un número exacto de repeticiones mejor o también es válido poner como repeticiones "FALLO" para que el usuario haga el máximo de repeticiones) para cumplir con este tiempo.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
     \n${contextoEjercicios}
@@ -115,10 +211,11 @@ export class RagService {
     \n        {
     \n          "ejercicio_id": "musc_001",
     \n          "nombre": "Press de Banca",
-    \n          "series": 4,
-    \n          "repeticiones": "8-12",
+    \n          "series": 3,
+    \n          "repeticiones": "10",
     \n          "descanso_segundos": 90,
     \n          "nota": "Controlar excéntrica"
+    \n          "badges": ["Pecho", "Hombro"]
     \n        }
     \n      ]
     \n    }
