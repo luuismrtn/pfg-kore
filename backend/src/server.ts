@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import rutinaRoutes from "./routes/rutinaRoutes.ts";
+import routineRoutes from "@backend/routes/routineRoutes";
 
 dotenv.config();
 
@@ -11,19 +11,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/rutinas", rutinaRoutes);
+app.use("/api/routines", routineRoutes);
 
 app.get("/api/health", (req, res) => {
-  res
-    .status(200)
-    .json({ status: "Servidor Backend funcionando correctamente" });
+  res.status(200).json({ status: "Backend server is running correctly" });
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor Backend escuchando en http://localhost:${PORT}`);
-  console.log(
-    "Recuerda tener Ollama ejecutándose en tu PC para la generación de IA.",
-  );
+  console.log(`Backend server listening on http://localhost:${PORT}`);
+  console.log("Remember to keep Ollama running locally for AI generation.");
 });
 
 export default app;

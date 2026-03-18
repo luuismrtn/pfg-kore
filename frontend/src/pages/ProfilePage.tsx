@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
-import type { UserProfileForm } from "@/types/profile";
+import type { UserProfileForm } from "@/features/profile/types";
 
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 
@@ -80,14 +80,17 @@ export function getProfile() {
   const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
   if (stored) {
     try {
-      return JSON.parse(stored) as UserProfileForm;
+      const parsed = JSON.parse(stored) as unknown;
+      return toValidProfile(parsed) ?? defaultProfile;
     } catch {
       console.error(
-        "Error al parsear el perfil de usuario desde localStorage. Se usará un perfil por defecto.",
+        "Failed to parse user profile from localStorage. Falling back to default profile.",
       );
       localStorage.removeItem(PROFILE_STORAGE_KEY);
     }
   }
+
+  return defaultProfile;
 }
 
 function ProfilePage() {
@@ -95,23 +98,10 @@ function ProfilePage() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    const rawProfile = localStorage.getItem(PROFILE_STORAGE_KEY);
-    if (!rawProfile) {
-      return;
-    }
-
-    try {
-      const parsedProfile = JSON.parse(rawProfile) as unknown;
-      const validProfile = toValidProfile(parsedProfile);
-      if (validProfile) {
-        setForm(validProfile);
-      }
-    } catch {
-      // Si el contenido del storage no es JSON valido, ignoramos y usamos defaults.
-    }
+    setForm(getProfile());
   }, []);
 
-  const imc = useMemo(() => {
+  const bmi = useMemo(() => {
     if (
       typeof form.weightKg !== "number" ||
       typeof form.heightCm !== "number"
@@ -437,7 +427,7 @@ function ProfilePage() {
               <div className="rounded-xl border border-border bg-surface-800/70 px-4 py-3">
                 <p className="text-muted">IMC estimado</p>
                 <p className="mt-1 font-semibold text-white">
-                  {imc ?? "Completa peso y altura"}
+                  {bmi ?? "Completa peso y altura"}
                 </p>
               </div>
             </div>

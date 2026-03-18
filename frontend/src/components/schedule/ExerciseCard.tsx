@@ -1,4 +1,4 @@
-import type { EjercicioRutina } from "@/types/chat";
+import type { RoutineExercise } from "@/features/routine/types";
 
 const badgeClassByLabel: Record<string, string> = {
   Pecho: "bg-primary/10 text-primary border border-primary/20",
@@ -29,13 +29,13 @@ const getBadgeClassName = (label: string) => {
   return `px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${labelClass}`;
 };
 
-function ExerciseCard({ exercise }: { exercise: EjercicioRutina }) {
+function ExerciseCard({ exercise }: { exercise: RoutineExercise }) {
   return (
     <article className="relative flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft) transition-colors hover:border-primary/30">
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h4 className="text-white font-bold leading-tight text-[15px]">
-            {exercise.nombre}
+            {exercise.name}
           </h4>
         </div>
       </div>
@@ -44,7 +44,7 @@ function ExerciseCard({ exercise }: { exercise: EjercicioRutina }) {
         <div className="flex flex-wrap items-center gap-2">
           {exercise.badges.map((badge) => (
             <span
-              key={`${exercise.nombre}-${badge}`}
+              key={`${exercise.name}-${badge}`}
               className={getBadgeClassName(badge)}
             >
               {badge}
@@ -58,31 +58,29 @@ function ExerciseCard({ exercise }: { exercise: EjercicioRutina }) {
           <p className="text-[10px] uppercase tracking-wide text-muted">
             Series
           </p>
-          <p className="text-sm font-bold text-white">{exercise.series}</p>
+          <p className="text-sm font-bold text-white">{exercise.sets}</p>
         </div>
         <div className="rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center">
           <p className="text-[10px] uppercase tracking-wide text-muted">Reps</p>
-          <p className="text-sm font-bold text-white">
-            {exercise.repeticiones}
-          </p>
+          <p className="text-sm font-bold text-white">{exercise.reps}</p>
         </div>
         <div className="rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center">
           <p className="text-[10px] uppercase tracking-wide text-muted">
             Descanso
           </p>
           <p className="text-sm font-bold text-white">
-            {exercise.descanso_segundos}s
+            {exercise.restSeconds}s
           </p>
         </div>
       </div>
 
-      {exercise.nota ? (
+      {exercise.note ? (
         <div className="rounded-lg border border-border bg-surface-900/70 px-3 py-2">
           <p className="text-[10px] uppercase tracking-wide text-muted mb-1">
             Nota
           </p>
           <p className="text-sm text-white/90 leading-relaxed">
-            {exercise.nota}
+            {exercise.note}
           </p>
         </div>
       ) : null}

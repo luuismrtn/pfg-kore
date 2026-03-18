@@ -1,21 +1,21 @@
 import { useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
-import type { DiaRutina, RutinaResponse } from "@/types/chat";
-import { generateRutina } from "@/services/api/rutinasApi";
+import type { RoutineDay, RoutineResponse } from "@/features/routine/types";
+import { generateRoutine } from "@/services/api/routinesApi";
 
-const ROUTINE_STORAGE_KEY = "pfg-kore:chat:rutina";
+const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
 
-function isRutinaResponse(value: unknown): value is RutinaResponse {
+function isRoutineResponse(value: unknown): value is RoutineResponse {
   if (typeof value !== "object" || value === null) {
     return false;
   }
 
-  const maybeRutina = value as Partial<RutinaResponse>;
-  return Array.isArray(maybeRutina.rutina);
+  const maybeRoutine = value as Partial<RoutineResponse>;
+  return Array.isArray(maybeRoutine.routine);
 }
 
-function readPanelSchedule(): DiaRutina[] {
+function readPanelSchedule(): RoutineDay[] {
   const raw = localStorage.getItem(ROUTINE_STORAGE_KEY);
   if (!raw) {
     return [];
@@ -23,18 +23,18 @@ function readPanelSchedule(): DiaRutina[] {
 
   try {
     const parsed = JSON.parse(raw) as unknown;
-    if (!isRutinaResponse(parsed)) {
+    if (!isRoutineResponse(parsed)) {
       return [];
     }
 
-    return parsed.rutina.length > 0 ? parsed.rutina : [];
+    return parsed.routine.length > 0 ? parsed.routine : [];
   } catch {
     return [];
   }
 }
 
 function PanelPage() {
-  const [panelSchedule, setPanelSchedule] = useState<DiaRutina[]>(() =>
+  const [panelSchedule, setPanelSchedule] = useState<RoutineDay[]>(() =>
     readPanelSchedule(),
   );
 
@@ -42,7 +42,7 @@ function PanelPage() {
 
   const [selectedDay, setSelectedDay] = useState("");
   const activeDay =
-    panelSchedule.find((day) => day.dia === selectedDay) ?? panelSchedule[0];
+    panelSchedule.find((day) => day.day === selectedDay) ?? panelSchedule[0];
 
   return (
     <div className="relative flex flex-col h-full">
@@ -71,13 +71,13 @@ function PanelPage() {
               onClick={async () => {
                 setIsLoading(true);
                 try {
-                  const rutina = await generateRutina("");
+                  const routine = await generateRoutine("");
                   localStorage.setItem(
                     ROUTINE_STORAGE_KEY,
-                    JSON.stringify(rutina),
+                    JSON.stringify(routine),
                   );
-                  setPanelSchedule(rutina.rutina);
-                  setSelectedDay(rutina.rutina[0]?.dia ?? "");
+                  setPanelSchedule(routine.routine);
+                  setSelectedDay(routine.routine[0]?.day ?? "");
                 } catch (err) {
                   console.error("Error generando rutina:", err);
                 } finally {
@@ -101,14 +101,14 @@ function PanelPage() {
                 </div>
                 <div className="flex flex-col gap-3">
                   {panelSchedule.map((day) => {
-                    const exerciseCount = day.ejercicios?.length ?? 0;
-                    const isActive = day.dia === selectedDay;
+                    const exerciseCount = day.exercises?.length ?? 0;
+                    const isActive = day.day === selectedDay;
 
                     return (
                       <button
-                        key={day.dia}
+                        key={day.day}
                         type="button"
-                        onClick={() => setSelectedDay(day.dia)}
+                        onClick={() => setSelectedDay(day.day)}
                         className={`group relative flex items-center justify-between gap-3 cursor-pointer rounded-2xl border px-4 py-3 text-left transition-all duration-200 ${
                           isActive
                             ? "border-primary/60 bg-primary/10 text-white shadow-(--shadow-primary-20-soft)"
@@ -116,15 +116,9 @@ function PanelPage() {
                         }`}
                         aria-pressed={isActive}
                       >
-                        <span
-                          className={`absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-full transition-all ${
-                            isActive ? "bg-primary" : "bg-transparent"
-                          }`}
-                          aria-hidden="true"
-                        />
                         <div className="flex flex-col">
                           <span className="text-sm font-semibold">
-                            {day.dia}
+                            {day.day}
                           </span>
                         </div>
                         <span
@@ -144,8 +138,8 @@ function PanelPage() {
               <section className="flex flex-col gap-4 h-full min-h-0 overflow-hidden">
                 {activeDay ? (
                   <DayColumnCard
-                    dia={activeDay.dia}
-                    ejercicios={activeDay.ejercicios}
+                    day={activeDay.day}
+                    exercises={activeDay.exercises}
                   />
                 ) : null}
               </section>

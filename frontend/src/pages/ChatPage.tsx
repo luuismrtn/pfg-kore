@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
-import { generateRutina } from "@/services/api/rutinasApi";
-import type { ChatMessage } from "@/types/chat";
+import { generateRoutine } from "@/services/api/routinesApi";
+import type { ChatMessage } from "@/features/chat/types";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -18,7 +18,7 @@ const seedMessage: ChatMessage = {
 
 const MAX_USER_CHARS = 1000;
 const CHAT_STORAGE_KEY = "pfg-kore:chat:messages";
-const ROUTINE_STORAGE_KEY = "pfg-kore:chat:rutina";
+const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
 
 function isChatMessage(value: unknown): value is ChatMessage {
   if (typeof value !== "object" || value === null) {
@@ -48,7 +48,7 @@ function readStoredMessages(): ChatMessage[] {
       }
     }
   } catch {
-    // Si hay datos corruptos, se vuelve al mensaje inicial.
+    // Fall back to seed data when local storage is corrupted.
   }
 
   return [seedMessage];
@@ -98,9 +98,9 @@ function ChatPage() {
     setIsResponding(true);
 
     try {
-      const rutina = await generateRutina(text);
+      const routine = await generateRoutine(text);
       if (requestVersionRef.current === requestVersion) {
-        localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(rutina));
+        localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
       }
 
       const assistantMessage: ChatMessage = {

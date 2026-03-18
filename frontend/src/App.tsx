@@ -5,7 +5,7 @@ import PanelPage from "@/pages/PanelPage";
 import ChatPage from "@/pages/ChatPage";
 import SettingsPage from "@/pages/SettingsPage";
 import ProfilePage from "@/pages/ProfilePage";
-import type { PageKey } from "@/types/navigation";
+import type { PageKey } from "@/features/navigation/types";
 
 function App() {
   const [activePage, setActivePage] = useState<PageKey>("panel");

@@ -2,55 +2,19 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import type { ExerciseRecord, FilteredExercise } from "@backend/types/exercise";
+import type { RoutineRequest, RoutineResponse } from "@backend/types/routine";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export interface ReqForm {
-  text: string;
-  name: string;
-  weightKg: number | "";
-  heightCm: number | "";
-  sport: string;
-  availableDays: number;
-  averageDurationMinutes: number;
-  equipment: string[];
-  injuries: string[];
-  level: string;
-}
-
-interface EjercicioFiltro {
-  id: string;
-  nombre: string;
-  grupo_muscular: string;
-  tipo_mecanica: string;
-  patron_movimiento: string;
-}
-
-interface EjercicioBD {
-  id: string;
-  nombre: string;
-  nivel_dificultad?: string;
-  equipamiento?: string[];
-  lesiones_prohibidas?: string[];
-  atributos_especificos?: {
-    grupo_muscular?: string;
-    tipo_mecanica?: string;
-    patron_movimiento?: string;
-  };
-}
-
 export class RagService {
   private openai: OpenAI;
-  private ejerciciosBD: EjercicioBD[];
+  private exercisesDb: ExerciseRecord[];
 
   constructor() {
-    const baseURL =
-      process.env.OLLAMA_BASE_URL ||
-      process.env.OLLAMA_URL ||
-      "http://127.0.0.1:11434/v1";
-    const apiKey =
-      process.env.OLLAMA_API_KEY || process.env.OLLAMA_KEY || "ollama";
+    const baseURL = "http://127.0.0.1:11434/v1";
+    const apiKey = "ollama";
 
     this.openai = new OpenAI({
       baseURL,
@@ -60,14 +24,14 @@ export class RagService {
     const dataPath = path.join(__dirname, "../data/musculacion.json");
     try {
       const fileData = fs.readFileSync(dataPath, "utf-8");
-      this.ejerciciosBD = JSON.parse(fileData);
+      this.exercisesDb = JSON.parse(fileData);
     } catch (error) {
-      console.error("Error al cargar el dataset de musculación:", error);
-      this.ejerciciosBD = [];
+      console.error("Error loading strength training dataset:", error);
+      this.exercisesDb = [];
     }
   }
 
-  private normalizarTexto(value: string): string {
+  private normalizeText(value: string): string {
     return value
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -75,104 +39,109 @@ export class RagService {
       .trim();
   }
 
-  private filtrarPorNivel(
-    exercises: EjercicioBD[],
+  private filterByLevel(
+    exercises: ExerciseRecord[],
     level: string,
-  ): EjercicioBD[] {
-    const nivel = this.normalizarTexto(level);
+  ): ExerciseRecord[] {
+    const normalizedLevel = this.normalizeText(level);
 
-    let nivelesPermitidos: string[] = ["principiante"];
-    if (nivel === "2" || nivel.includes("intermedio")) {
-      nivelesPermitidos = ["principiante", "intermedio"];
-    } else if (nivel === "3" || nivel.includes("avanzado")) {
-      nivelesPermitidos = ["principiante", "intermedio", "avanzado"];
+    let allowedLevels: string[] = ["principiante"];
+    if (normalizedLevel === "2" || normalizedLevel.includes("intermedio")) {
+      allowedLevels = ["principiante", "intermedio"];
+    } else if (
+      normalizedLevel === "3" ||
+      normalizedLevel.includes("avanzado")
+    ) {
+      allowedLevels = ["principiante", "intermedio", "avanzado"];
     }
 
-    const nivelesPermitidosSet = new Set(nivelesPermitidos);
+    const allowedLevelsSet = new Set(allowedLevels);
 
-    return exercises.filter((ejercicio) => {
-      const nivelEjercicio = this.normalizarTexto(
-        ejercicio.nivel_dificultad ?? "Principiante",
+    return exercises.filter((exercise) => {
+      const exerciseLevel = this.normalizeText(
+        exercise.nivel_dificultad ?? "Principiante",
       );
-      return nivelesPermitidosSet.has(nivelEjercicio);
+      return allowedLevelsSet.has(exerciseLevel);
     });
   }
 
-  private filtrarPorLesiones(
-    exercises: EjercicioBD[],
+  private filterByInjuries(
+    exercises: ExerciseRecord[],
     injuries: string[],
-  ): EjercicioBD[] {
-    const lesionesUsuario = new Set(
-      injuries.map((lesion) => this.normalizarTexto(lesion)),
+  ): ExerciseRecord[] {
+    const userInjuries = new Set(
+      injuries.map((injury) => this.normalizeText(injury)),
     );
 
-    if (lesionesUsuario.size === 0) {
+    if (userInjuries.size === 0) {
       return exercises;
     }
 
-    return exercises.filter((ejercicio) => {
-      const lesionesProhibidas = (ejercicio.lesiones_prohibidas ?? []).map(
-        (lesion) => this.normalizarTexto(lesion),
+    return exercises.filter((exercise) => {
+      const restrictedInjuries = (exercise.lesiones_prohibidas ?? []).map(
+        (injury: string) => this.normalizeText(injury),
       );
 
-      return !lesionesProhibidas.some((lesion) => lesionesUsuario.has(lesion));
+      return !restrictedInjuries.some((injury: string) =>
+        userInjuries.has(injury),
+      );
     });
   }
 
-  private filtrarPorMaterial(
-    exercises: EjercicioBD[],
+  private filterByEquipment(
+    exercises: ExerciseRecord[],
     equipment: string[],
-  ): EjercicioBD[] {
-    const equipamientoUsuario = new Set(
-      equipment.map((item) => this.normalizarTexto(item)),
+  ): ExerciseRecord[] {
+    const userEquipment = new Set(
+      equipment.map((item) => this.normalizeText(item)),
     );
 
-    equipamientoUsuario.add("peso corporal");
+    userEquipment.add("peso corporal");
 
-    return exercises.filter((ejercicio) => {
-      const equipamientoNecesario = (ejercicio.equipamiento ?? []).map((item) =>
-        this.normalizarTexto(item),
+    return exercises.filter((exercise) => {
+      const requiredEquipment = (exercise.equipamiento ?? []).map(
+        (item: string) => this.normalizeText(item),
       );
 
-      if (equipamientoNecesario.length === 0) {
+      if (requiredEquipment.length === 0) {
         return true;
       }
 
-      return equipamientoNecesario.every((item) =>
-        equipamientoUsuario.has(item),
-      );
+      return requiredEquipment.every((item: string) => userEquipment.has(item));
     });
   }
 
-  private filtrarEjercicios(req: ReqForm): EjercicioFiltro[] {
-    const exercises = this.ejerciciosBD;
+  private filterExercises(request: RoutineRequest): FilteredExercise[] {
+    const exercises = this.exercisesDb;
 
-    const ejerciciosPorNivel = this.filtrarPorNivel(exercises, req.level);
-    const ejerciciosSinLesiones = this.filtrarPorLesiones(
-      ejerciciosPorNivel,
-      req.injuries,
+    const levelFiltered = this.filterByLevel(exercises, request.level);
+    const injuryFiltered = this.filterByInjuries(
+      levelFiltered,
+      request.injuries,
     );
-    const ejerciciosValidos = this.filtrarPorMaterial(
-      ejerciciosSinLesiones,
-      req.equipment,
+    const validExercises = this.filterByEquipment(
+      injuryFiltered,
+      request.equipment,
     );
 
-    return ejerciciosValidos.map((ej) => ({
-      id: ej.id,
-      nombre: ej.nombre,
-      grupo_muscular:
-        ej.atributos_especificos?.grupo_muscular || "Sin especificar",
-      tipo_mecanica:
-        ej.atributos_especificos?.tipo_mecanica || "Sin especificar",
-      patron_movimiento:
-        ej.atributos_especificos?.patron_movimiento || "Sin especificar",
+    return validExercises.map((exercise) => ({
+      id: exercise.id,
+      name: exercise.nombre,
+      muscleGroup:
+        exercise.atributos_especificos?.grupo_muscular || "Sin especificar",
+      mechanicType:
+        exercise.atributos_especificos?.tipo_mecanica || "Sin especificar",
+      movementPattern:
+        exercise.atributos_especificos?.patron_movimiento || "Sin especificar",
     }));
   }
 
-  public async generarRutina(request: ReqForm): Promise<any> {
-    console.log("Iniciando generación de rutina...");
+  public async generateRoutine(
+    request: RoutineRequest,
+  ): Promise<RoutineResponse> {
+    console.log("Starting routine generation...");
 
-    const normalizedRequest: ReqForm = {
+    const normalizedRequest: RoutineRequest = {
       text: request?.text ?? "",
       name: request?.name ?? "",
       weightKg: request?.weightKg ?? "",
@@ -185,8 +154,8 @@ export class RagService {
       level: request?.level ?? "Principiante",
     };
 
-    const ejerciciosValidos = this.filtrarEjercicios(normalizedRequest);
-    const contextoEjercicios = JSON.stringify(ejerciciosValidos);
+    const validExercises = this.filterExercises(normalizedRequest);
+    const exerciseContext = JSON.stringify(validExercises);
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
@@ -200,21 +169,21 @@ export class RagService {
     \n4. El tiempo medio de entrenamiento por día debe ser de aproximadamente ${normalizedRequest.averageDurationMinutes} minutos. Ajusta el número de ejercicios, series y repeticiones (si puede ser un número exacto de repeticiones mejor o también es válido poner como repeticiones "FALLO" para que el usuario haga el máximo de repeticiones) para cumplir con este tiempo.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
-    \n${contextoEjercicios}
+    \n${exerciseContext}
     
     \n\nFORMATO JSON REQUERIDO:
     \n{
-    \n  "rutina": [
+    \n  "routine": [
     \n    {
-    \n      "dia": "Día 1 - Pecho y Tríceps",
-    \n      "ejercicios": [
+    \n      "day": "Día 1 - Pecho y Tríceps",
+    \n      "exercises": [
     \n        {
-    \n          "ejercicio_id": "musc_001",
-    \n          "nombre": "Press de Banca",
-    \n          "series": 3,
-    \n          "repeticiones": "10",
-    \n          "descanso_segundos": 90,
-    \n          "nota": "Controlar excéntrica"
+    \n          "exerciseId": "musc_001",
+    \n          "name": "Press de Banca",
+    \n          "sets": 3,
+    \n          "reps": "10",
+    \n          "restSeconds": 90,
+    \n          "note": "Controlar excéntrica"
     \n          "badges": ["Pecho", "Hombro"]
     \n        }
     \n      ]
@@ -224,13 +193,8 @@ export class RagService {
     \n
     `;
 
-    console.log(normalizedRequest);
-    console.log("Contexto de ejercicios filtrados:", contextoEjercicios);
-
-    /*
-
     try {
-      console.log("Contactando con LLM local (Ollama)...");
+      console.log("Connecting to local LLM (Ollama)...");
       const response = await this.openai.chat.completions.create({
         model: "llama3.1",
         response_format: { type: "json_object" },
@@ -239,32 +203,30 @@ export class RagService {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `Genera una rutina de ejercicios para el siguiente perfil:\n${JSON.stringify(normalizedRequest)}. Además, ten en cuenta el texto que nos propocionado: "${normalizedRequest.text}"`,
+            content: `Generate a routine for this user profile: ${JSON.stringify(normalizedRequest)}. Additional user request: "${normalizedRequest.text}".`,
           },
         ],
       });
 
-      const firstChoice = response.choices[0];
+      const modelOutput = response.choices[0]?.message?.content;
+      if (!modelOutput) {
+        throw new Error("Empty response from AI model.");
+      }
 
-      const iaResponseText = firstChoice?.message?.content;
-      if (!iaResponseText) throw new Error("Respuesta vacía de la IA");
-
-      console.log("Rutina generada con éxito.");
-      return JSON.parse(iaResponseText as unknown as string);
+      return JSON.parse(modelOutput) as RoutineResponse;
     } catch (error) {
-      const e = error as any;
-      console.error("Error en el servicio RAG:", e?.message || e);
+      const e = error as { code?: string; message?: string };
+      console.error("Error in RAG service:", e?.message || e);
       if (
         e?.code === "ECONNREFUSED" ||
         (e?.message && e.message.includes("ECONNREFUSED"))
       ) {
         throw new Error(
-          `No se pudo conectar con el LLM en la URL configurada. Comprueba que Ollama esté en ejecución y que OLLAMA_BASE_URL apunte a la dirección correcta. (${process.env.OLLAMA_BASE_URL || process.env.OLLAMA_URL || "http://127.0.0.1:11434/v1"})`,
+          `Could not connect to the configured LLM URL. Verify Ollama is running and OLLAMA_BASE_URL is correct. (${process.env.OLLAMA_BASE_URL || process.env.OLLAMA_URL || "http://127.0.0.1:11434/v1"})`,
         );
       }
 
-      throw new Error("Fallo al generar la rutina con la IA.");
+      throw new Error("Failed to generate routine with AI.");
     }
-      */
   }
 }

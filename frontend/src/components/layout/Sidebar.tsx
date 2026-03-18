@@ -1,4 +1,4 @@
-import type { PageKey } from "@/types/navigation";
+import type { PageKey } from "@/features/navigation/types";
 
 type NavItem = {
   key: PageKey;

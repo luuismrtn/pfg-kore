@@ -1,10 +1,5 @@
 type HeaderBarProps = {
   title: string;
-  weekLabel?: string;
-  phaseLabel?: string;
-  statusLabel?: string;
-  showLayoutSwitch?: boolean;
-  showRegenerate?: boolean;
 };
 
 function HeaderBar({ title }: HeaderBarProps) {
