@@ -1,21 +1,10 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
-import type { DayColumn, Exercise } from "@/types/schedule";
-import type { RutinaResponse } from "@/types/chat";
+import type { DiaRutina, RutinaResponse } from "@/types/chat";
 import { generateRutina } from "@/services/api/rutinasApi";
 
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:rutina";
-
-const weekdayNames = [
-  "Lunes",
-  "Martes",
-  "Miércoles",
-  "Jueves",
-  "Viernes",
-  "Sábado",
-  "Domingo",
-];
 
 function isRutinaResponse(value: unknown): value is RutinaResponse {
   if (typeof value !== "object" || value === null) {
@@ -26,45 +15,7 @@ function isRutinaResponse(value: unknown): value is RutinaResponse {
   return Array.isArray(maybeRutina.rutina);
 }
 
-function normalizeDayName(name: string, fallbackIndex: number): string {
-  const normalized = name.trim().toLowerCase();
-  const fromName = weekdayNames.find(
-    (weekday) => weekday.toLowerCase() === normalized,
-  );
-
-  if (fromName) {
-    return fromName;
-  }
-
-  return weekdayNames[fallbackIndex] ?? `Día ${fallbackIndex + 1}`;
-}
-
-function toExerciseCards(rutina: RutinaResponse): DayColumn[] {
-  return rutina.rutina.map((day, dayIndex) => {
-    const exercises: Exercise[] = day.ejercicios.map((exercise) => ({
-      title: exercise.nombre,
-      badges: exercise.nota ? ["IA", "Nota"] : ["IA"],
-      stats: [
-        { label: "Series", value: String(exercise.series) },
-        { label: "Reps", value: exercise.repeticiones },
-        { label: "Descanso", value: `${exercise.descanso_segundos}s` },
-      ],
-    }));
-
-    const dayName = normalizeDayName(day.dia, dayIndex);
-    const isRestDay = exercises.length === 0;
-
-    return {
-      name: dayName,
-      meta: isRestDay ? "Recuperación" : `${exercises.length} ejercicios`,
-      variant: isRestDay ? "muted" : "default",
-      rest: isRestDay,
-      exercises,
-    };
-  });
-}
-
-function readPanelSchedule(): DayColumn[] {
+function readPanelSchedule(): DiaRutina[] {
   const raw = localStorage.getItem(ROUTINE_STORAGE_KEY);
   if (!raw) {
     return [];
@@ -76,30 +27,22 @@ function readPanelSchedule(): DayColumn[] {
       return [];
     }
 
-    const mapped = toExerciseCards(parsed);
-    return mapped.length > 0 ? mapped : [];
+    return parsed.rutina.length > 0 ? parsed.rutina : [];
   } catch {
     return [];
   }
 }
 
 function PanelPage() {
-  const [panelSchedule, setPanelSchedule] = useState<DayColumn[]>(() =>
+  const [panelSchedule, setPanelSchedule] = useState<DiaRutina[]>(() =>
     readPanelSchedule(),
   );
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const defaultSelectedDay = useMemo(() => {
-    const todayName = weekdayNames[new Date().getDay() - 1];
-    return panelSchedule.some((day) => day.name === todayName)
-      ? todayName
-      : (panelSchedule[0]?.name ?? "");
-  }, [panelSchedule]);
-
-  const [selectedDay, setSelectedDay] = useState(defaultSelectedDay);
+  const [selectedDay, setSelectedDay] = useState("");
   const activeDay =
-    panelSchedule.find((day) => day.name === selectedDay) ?? panelSchedule[0];
+    panelSchedule.find((day) => day.dia === selectedDay) ?? panelSchedule[0];
 
   return (
     <div className="relative flex flex-col h-full">
@@ -129,13 +72,12 @@ function PanelPage() {
                 setIsLoading(true);
                 try {
                   const rutina = await generateRutina("");
-                  const mapped = toExerciseCards(rutina);
                   localStorage.setItem(
                     ROUTINE_STORAGE_KEY,
                     JSON.stringify(rutina),
                   );
-                  setPanelSchedule(mapped);
-                  setSelectedDay(mapped[0]?.name ?? "");
+                  setPanelSchedule(rutina.rutina);
+                  setSelectedDay(rutina.rutina[0]?.dia ?? "");
                 } catch (err) {
                   console.error("Error generando rutina:", err);
                 } finally {
@@ -159,14 +101,14 @@ function PanelPage() {
                 </div>
                 <div className="flex flex-col gap-3">
                   {panelSchedule.map((day) => {
-                    const exerciseCount = day.exercises?.length ?? 0;
-                    const isActive = day.name === selectedDay;
+                    const exerciseCount = day.ejercicios?.length ?? 0;
+                    const isActive = day.dia === selectedDay;
 
                     return (
                       <button
-                        key={day.name}
+                        key={day.dia}
                         type="button"
-                        onClick={() => setSelectedDay(day.name)}
+                        onClick={() => setSelectedDay(day.dia)}
                         className={`group relative flex items-center justify-between gap-3 cursor-pointer rounded-2xl border px-4 py-3 text-left transition-all duration-200 ${
                           isActive
                             ? "border-primary/60 bg-primary/10 text-white shadow-(--shadow-primary-20-soft)"
@@ -182,10 +124,7 @@ function PanelPage() {
                         />
                         <div className="flex flex-col">
                           <span className="text-sm font-semibold">
-                            {day.name}
-                          </span>
-                          <span className="text-[11px] uppercase tracking-wider text-muted/70">
-                            {day.meta}
+                            {day.dia}
                           </span>
                         </div>
                         <span
@@ -202,8 +141,13 @@ function PanelPage() {
                   })}
                 </div>
               </aside>
-              <section className="flex flex-col gap-4 h-full overflow-y-auto">
-                {activeDay ? <DayColumnCard day={activeDay} /> : null}
+              <section className="flex flex-col gap-4 h-full min-h-0 overflow-hidden">
+                {activeDay ? (
+                  <DayColumnCard
+                    dia={activeDay.dia}
+                    ejercicios={activeDay.ejercicios}
+                  />
+                ) : null}
               </section>
             </div>
           </>

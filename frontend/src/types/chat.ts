@@ -13,6 +13,7 @@ export type EjercicioRutina = {
   repeticiones: string;
   descanso_segundos: number;
   nota?: string;
+  badges?: string[];
 };
 
 export type DiaRutina = {
