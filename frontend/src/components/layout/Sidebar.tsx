@@ -15,7 +15,6 @@ const navItems: NavItem[] = [
   { key: "profile", label: "Perfil", icon: "person_edit" },
   { key: "chat", label: "Chat IA", icon: "smart_toy" },
   { key: "panel", label: "Panel", icon: "dashboard" },
-  { key: "analytics", label: "Analíticas", icon: "analytics" },
 ];
 
 function Sidebar({ activeKey, onSelect }: SidebarProps) {
