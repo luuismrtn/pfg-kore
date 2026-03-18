@@ -91,12 +91,15 @@ export class RagService {
   private filterByEquipment(
     exercises: ExerciseRecord[],
     equipment: string[],
+    weightKg: number,
   ): ExerciseRecord[] {
     const userEquipment = new Set(
       equipment.map((item) => this.normalizeText(item)),
     );
 
-    userEquipment.add("peso corporal");
+    if (weightKg > 0 && weightKg < 80) {
+      userEquipment.add("peso corporal");
+    }
 
     return exercises.filter((exercise) => {
       const requiredEquipment = (exercise.equipamiento ?? []).map(
@@ -122,6 +125,7 @@ export class RagService {
     const validExercises = this.filterByEquipment(
       injuryFiltered,
       request.equipment,
+      weightKg,
     );
 
     return validExercises.map((exercise) => ({
