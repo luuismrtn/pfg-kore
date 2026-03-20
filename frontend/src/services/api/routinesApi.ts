@@ -6,6 +6,19 @@ type ApiErrorBody = {
   error?: string;
 };
 
+type ChangeRoutineDayPayload = {
+  routine: RoutineResponse;
+  dayToChange: string;
+  profile?: ReturnType<typeof buildRoutineRequestPayload>;
+};
+
+type ChangeRoutineExercisePayload = {
+  routine: RoutineResponse;
+  dayToChange: string;
+  exerciseToChange: string;
+  profile?: ReturnType<typeof buildRoutineRequestPayload>;
+};
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
 
 export async function generateRoutine(text: string): Promise<RoutineResponse> {
@@ -15,8 +28,6 @@ export async function generateRoutine(text: string): Promise<RoutineResponse> {
   if (!requestPayload) {
     throw new Error("Debes guardar tu perfil antes de generar una rutina.");
   }
-
-  console.log("Sending routine generation request with payload:", requestPayload);
 
   const response = await fetch(`${API_BASE_URL}/api/routines/generate`, {
     method: "POST",
@@ -28,6 +39,89 @@ export async function generateRoutine(text: string): Promise<RoutineResponse> {
 
   if (!response.ok) {
     let backendError = "No se pudo generar la rutina.";
+
+    try {
+      const errorBody = (await response.json()) as ApiErrorBody;
+      if (errorBody.error) {
+        backendError = errorBody.error;
+      }
+    } catch {
+      // Keep generic message when backend does not return valid JSON.
+    }
+
+    throw new Error(backendError);
+  }
+
+  return (await response.json()) as RoutineResponse;
+}
+
+export async function changeRoutineDay(
+  routine: RoutineResponse,
+  dayToChange: string,
+): Promise<RoutineResponse> {
+  const profile = getProfile();
+  const profilePayload = buildRoutineRequestPayload(profile, "");
+
+  const requestPayload: ChangeRoutineDayPayload = {
+    routine,
+    dayToChange,
+    profile: profilePayload ?? undefined,
+  };
+
+  const response = await fetch(`${API_BASE_URL}/api/routines/change-day`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestPayload),
+  });
+
+  if (!response.ok) {
+    let backendError = "No se pudo regenerar el dia.";
+
+    try {
+      const errorBody = (await response.json()) as ApiErrorBody;
+      if (errorBody.error) {
+        backendError = errorBody.error;
+      }
+    } catch {
+      // Keep generic message when backend does not return valid JSON.
+    }
+
+    throw new Error(backendError);
+  }
+
+  return (await response.json()) as RoutineResponse;
+}
+
+export async function changeRoutineExercise(
+  routine: RoutineResponse,
+  dayToChange: string,
+  exerciseToChange: string,
+): Promise<RoutineResponse> {
+  const profile = getProfile();
+  const profilePayload = buildRoutineRequestPayload(profile, "");
+
+  const requestPayload: ChangeRoutineExercisePayload = {
+    routine,
+    dayToChange,
+    exerciseToChange,
+    profile: profilePayload ?? undefined,
+  };
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/routines/cambiar-ejercicio-rutina`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestPayload),
+    },
+  );
+
+  if (!response.ok) {
+    let backendError = "No se pudo cambiar el ejercicio.";
 
     try {
       const errorBody = (await response.json()) as ApiErrorBody;

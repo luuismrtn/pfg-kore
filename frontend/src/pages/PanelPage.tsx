@@ -2,7 +2,11 @@ import { useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
 import type { RoutineDay, RoutineResponse } from "@/features/routine/types";
-import { generateRoutine } from "@/services/api/routinesApi";
+import {
+  changeRoutineDay,
+  changeRoutineExercise,
+  generateRoutine,
+} from "@/services/api/routinesApi";
 
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
 
@@ -39,6 +43,13 @@ function PanelPage() {
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isRegeneratingDay, setIsRegeneratingDay] = useState(false);
+  const [changingExerciseRef, setChangingExerciseRef] = useState<string | null>(
+    null,
+  );
+  const [changingExerciseDay, setChangingExerciseDay] = useState<string | null>(
+    null,
+  );
 
   const [selectedDay, setSelectedDay] = useState("");
   const activeDay =
@@ -55,6 +66,66 @@ function PanelPage() {
       console.error("Error generando rutina:", err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRegenerateDay = async (dayToChange: string) => {
+    if (panelSchedule.length <= 0 || isRegeneratingDay) {
+      return;
+    }
+
+    setIsRegeneratingDay(true);
+    try {
+      const updatedRoutine = await changeRoutineDay(
+        { routine: panelSchedule },
+        dayToChange,
+      );
+
+      localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
+      setPanelSchedule(updatedRoutine.routine);
+      setSelectedDay((currentDay) => {
+        const exists = updatedRoutine.routine.some(
+          (day) => day.day === currentDay,
+        );
+        return exists ? currentDay : (updatedRoutine.routine[0]?.day ?? "");
+      });
+    } catch (err) {
+      console.error("Error regenerando dia de rutina:", err);
+    } finally {
+      setIsRegeneratingDay(false);
+    }
+  };
+
+  const handleChangeExercise = async (
+    dayToChange: string,
+    exerciseToChange: string,
+  ) => {
+    if (panelSchedule.length <= 0 || changingExerciseRef) {
+      return;
+    }
+
+    setChangingExerciseDay(dayToChange);
+    setChangingExerciseRef(exerciseToChange);
+    try {
+      const updatedRoutine = await changeRoutineExercise(
+        { routine: panelSchedule },
+        dayToChange,
+        exerciseToChange,
+      );
+
+      localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
+      setPanelSchedule(updatedRoutine.routine);
+      setSelectedDay((currentDay) => {
+        const exists = updatedRoutine.routine.some(
+          (day) => day.day === currentDay,
+        );
+        return exists ? currentDay : (updatedRoutine.routine[0]?.day ?? "");
+      });
+    } catch (err) {
+      console.error("Error cambiando ejercicio de rutina:", err);
+    } finally {
+      setChangingExerciseRef(null);
+      setChangingExerciseDay(null);
     }
   };
 
@@ -169,6 +240,14 @@ function PanelPage() {
                   <DayColumnCard
                     day={activeDay.day}
                     exercises={activeDay.exercises}
+                    onRegenerateDay={handleRegenerateDay}
+                    isRegeneratingDay={isRegeneratingDay}
+                    onChangeExercise={handleChangeExercise}
+                    changingExerciseRef={
+                      changingExerciseDay === activeDay.day
+                        ? changingExerciseRef
+                        : null
+                    }
                   />
                 ) : null}
               </section>

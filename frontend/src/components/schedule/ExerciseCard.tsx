@@ -29,7 +29,17 @@ const getBadgeClassName = (label: string) => {
   return `px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${labelClass}`;
 };
 
-function ExerciseCard({ exercise }: { exercise: RoutineExercise }) {
+type ExerciseCardProps = {
+  exercise: RoutineExercise;
+  onChangeExercise?: () => void;
+  isChangingExercise?: boolean;
+};
+
+function ExerciseCard({
+  exercise,
+  onChangeExercise,
+  isChangingExercise = false,
+}: ExerciseCardProps) {
   return (
     <article className="relative flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft) transition-colors hover:border-primary/30">
       <div className="flex items-start justify-between gap-3">
@@ -38,6 +48,23 @@ function ExerciseCard({ exercise }: { exercise: RoutineExercise }) {
             {exercise.name}
           </h4>
         </div>
+        <button
+          type="button"
+          onClick={onChangeExercise}
+          disabled={!onChangeExercise || isChangingExercise}
+          className="inline-flex items-center gap-1 rounded-lg border border-border bg-surface-900/70 px-2 py-1 text-[11px] font-semibold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary/50 hover:text-primary transition-colors"
+          aria-busy={isChangingExercise}
+        >
+          <span
+            className={`material-symbols-outlined text-[14px] leading-none ${
+              isChangingExercise ? "animate-spin" : ""
+            }`}
+            aria-hidden="true"
+          >
+            sync
+          </span>
+          {isChangingExercise ? "Cambiando..." : "Cambiar"}
+        </button>
       </div>
 
       {exercise.badges && exercise.badges.length > 0 ? (

@@ -29,3 +29,18 @@ export interface RoutineDay {
 export interface RoutineResponse {
   routine: RoutineDay[];
 }
+
+export interface ChangeRoutineDayRequest {
+  routine: RoutineResponse;
+  dayToChange: string;
+  profile?: Partial<RoutineRequest>;
+  changeRequest?: string;
+}
+
+export interface ChangeRoutineExerciseRequest {
+  routine: RoutineResponse;
+  dayToChange: string;
+  exerciseToChange: string;
+  profile?: Partial<RoutineRequest>;
+  changeRequest?: string;
+}
