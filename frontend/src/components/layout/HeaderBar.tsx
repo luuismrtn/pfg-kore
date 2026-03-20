@@ -1,8 +1,11 @@
+import type { ReactNode } from "react";
+
 type HeaderBarProps = {
   title: string;
+  action?: ReactNode;
 };
 
-function HeaderBar({ title }: HeaderBarProps) {
+function HeaderBar({ title, action }: HeaderBarProps) {
   return (
     <header className="flex items-center justify-between border-b border-border bg-surface-900/80 backdrop-blur-md px-8 py-5 sticky top-0 z-10">
       <div className="flex flex-col gap-1">
@@ -12,6 +15,7 @@ function HeaderBar({ title }: HeaderBarProps) {
           </h2>
         </div>
       </div>
+      {action ? <div className="shrink-0">{action}</div> : null}
     </header>
   );
 }

@@ -125,7 +125,7 @@ export class RagService {
     const validExercises = this.filterByEquipment(
       injuryFiltered,
       request.equipment,
-      weightKg,
+      request.weightKg as number,
     );
 
     return validExercises.map((exercise) => ({
@@ -160,6 +160,8 @@ export class RagService {
 
     const validExercises = this.filterExercises(normalizedRequest);
     const exerciseContext = JSON.stringify(validExercises);
+
+    console.log("Valid exercises for this user:", validExercises);
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
@@ -197,6 +199,7 @@ export class RagService {
     \n
     `;
 
+    /*
     try {
       console.log("Connecting to local LLM (Ollama)...");
       const response = await this.openai.chat.completions.create({
@@ -232,5 +235,6 @@ export class RagService {
 
       throw new Error("Failed to generate routine with AI.");
     }
+    */
   }
 }

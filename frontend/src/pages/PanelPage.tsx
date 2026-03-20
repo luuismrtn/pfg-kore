@@ -44,9 +44,44 @@ function PanelPage() {
   const activeDay =
     panelSchedule.find((day) => day.day === selectedDay) ?? panelSchedule[0];
 
+  const handleGenerateRoutine = async () => {
+    setIsLoading(true);
+    try {
+      const routine = await generateRoutine("");
+      localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
+      setPanelSchedule(routine.routine);
+      setSelectedDay(routine.routine[0]?.day ?? "");
+    } catch (err) {
+      console.error("Error generando rutina:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="relative flex flex-col h-full">
-      <HeaderBar title="Horario Semanal" />
+      <HeaderBar
+        title="Horario Semanal"
+        action={
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={handleGenerateRoutine}
+            disabled={isLoading}
+            aria-busy={isLoading}
+          >
+            <span
+              className={`material-symbols-outlined text-base leading-none ${
+                isLoading ? "animate-spin" : ""
+              }`}
+              aria-hidden="true"
+            >
+              autorenew
+            </span>
+            {isLoading ? "Generando..." : "Generar Nueva Rutina"}
+          </button>
+        }
+      />
 
       <div className="flex-1 overflow-hidden p-8">
         {panelSchedule.length <= 0 ? (
@@ -67,26 +102,20 @@ function PanelPage() {
               O haz click en este botón.
             </p>
             <button
-              className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={async () => {
-                setIsLoading(true);
-                try {
-                  const routine = await generateRoutine("");
-                  localStorage.setItem(
-                    ROUTINE_STORAGE_KEY,
-                    JSON.stringify(routine),
-                  );
-                  setPanelSchedule(routine.routine);
-                  setSelectedDay(routine.routine[0]?.day ?? "");
-                } catch (err) {
-                  console.error("Error generando rutina:", err);
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
+              type="button"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleGenerateRoutine}
               disabled={isLoading}
               aria-busy={isLoading}
             >
+              <span
+                className={`material-symbols-outlined text-base leading-none ${
+                  isLoading ? "animate-spin" : ""
+                }`}
+                aria-hidden="true"
+              >
+                autorenew
+              </span>
               {isLoading ? "Generando..." : "Generar Rutina"}
             </button>
           </div>

@@ -16,6 +16,8 @@ export async function generateRoutine(text: string): Promise<RoutineResponse> {
     throw new Error("Debes guardar tu perfil antes de generar una rutina.");
   }
 
+  console.log("Sending routine generation request with payload:", requestPayload);
+
   const response = await fetch(`${API_BASE_URL}/api/routines/generate`, {
     method: "POST",
     headers: {
