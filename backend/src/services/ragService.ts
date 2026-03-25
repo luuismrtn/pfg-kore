@@ -35,8 +35,8 @@ export class RagService {
       apiKey,
       defaultHeaders: {
         "HTTP-Referer":
-          process.env.OPENROUTER_SITE_URL || "http://localhost:5173",
-        "X-Title": process.env.OPENROUTER_APP_NAME || "pfg-kore",
+          process.env.OPENROUTER_SITE_URL || "",
+        "X-Title": process.env.OPENROUTER_APP_NAME || "",
       },
     });
 
@@ -205,14 +205,6 @@ export class RagService {
     } catch (error) {
       const e = error as { code?: string; message?: string };
       console.error("Error in RAG service:", e?.message || e);
-      if (
-        e?.code === "ECONNREFUSED" ||
-        (e?.message && e.message.includes("ECONNREFUSED"))
-      ) {
-        throw new Error(
-          `Could not connect to OpenRouter. Verify OPENROUTER_BASE_URL and your internet connection. ("${process.env.OPENROUTER_BASE_URL}")`,
-        );
-      }
 
       throw new Error("Failed to generate routine with AI.");
     } finally {
