@@ -1,4 +1,5 @@
 import type { RoutineExercise } from "@/features/routine/types";
+import { RefreshCw } from "lucide-react";
 
 const badgeClassByLabel: Record<string, string> = {
   Pecho: "bg-primary/10 text-primary border border-primary/20",
@@ -55,14 +56,12 @@ function ExerciseCard({
           className="inline-flex items-center gap-1 rounded-lg border border-border bg-surface-900/70 px-2 py-1 text-[11px] font-semibold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary/50 hover:text-primary transition-colors"
           aria-busy={isChangingExercise}
         >
-          <span
-            className={`material-symbols-outlined text-[14px] leading-none ${
-              isChangingExercise ? "animate-spin" : ""
-            }`}
+          <RefreshCw
+            className={isChangingExercise ? "animate-spin" : ""}
+            size={14}
+            strokeWidth={2.5}
             aria-hidden="true"
-          >
-            sync
-          </span>
+          />
           {isChangingExercise ? "Cambiando..." : "Cambiar"}
         </button>
       </div>

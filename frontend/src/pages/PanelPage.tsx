@@ -2,6 +2,7 @@ import { useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
 import type { RoutineDay, RoutineResponse } from "@/features/routine/types";
+import { CalendarDays, RefreshCw } from "lucide-react";
 import {
   changeRoutineDay,
   changeRoutineExercise,
@@ -142,14 +143,12 @@ function PanelPage() {
             disabled={isLoading}
             aria-busy={isLoading}
           >
-            <span
-              className={`material-symbols-outlined text-base leading-none ${
-                isLoading ? "animate-spin" : ""
-              }`}
+            <RefreshCw
+              className={isLoading ? "animate-spin" : ""}
+              size={20}
+              strokeWidth={2.5}
               aria-hidden="true"
-            >
-              autorenew
-            </span>
+            />
             {isLoading ? "Generando..." : "Generar Nueva Rutina"}
           </button>
         }
@@ -159,9 +158,7 @@ function PanelPage() {
         {panelSchedule.length <= 0 ? (
           <div className="flex flex-col items-center justify-center gap-4 h-full text-center">
             <div className="size-16 rounded-full bg-surface-800 flex items-center justify-center text-muted">
-              <span className="material-symbols-outlined text-[32px]">
-                calendar_month
-              </span>
+              <CalendarDays size={32} strokeWidth={2} aria-hidden="true" />
             </div>
             <h2 className="text-white font-bold text-lg">
               No hay rutina generada
@@ -180,14 +177,12 @@ function PanelPage() {
               disabled={isLoading}
               aria-busy={isLoading}
             >
-              <span
-                className={`material-symbols-outlined text-base leading-none ${
-                  isLoading ? "animate-spin" : ""
-                }`}
+              <RefreshCw
+                className={isLoading ? "animate-spin" : ""}
+                size={20}
+                strokeWidth={2.5}
                 aria-hidden="true"
-              >
-                autorenew
-              </span>
+              />
               {isLoading ? "Generando..." : "Generar Rutina"}
             </button>
           </div>

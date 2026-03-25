@@ -8,6 +8,7 @@ import {
 import HeaderBar from "@/components/layout/HeaderBar";
 import { generateRoutine } from "@/services/api/routinesApi";
 import type { ChatMessage } from "@/features/chat/types";
+import { Bot, MessageCircle, SendHorizontal, Trash2, User } from "lucide-react";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -173,9 +174,7 @@ function ChatPage() {
                   >
                     {!isUser ? (
                       <div className="flex size-10 items-center justify-center rounded-full bg-primary/15 text-primary border border-primary/30">
-                        <span className="material-symbols-outlined">
-                          smart_toy
-                        </span>
+                        <Bot size={18} strokeWidth={2} aria-hidden="true" />
                       </div>
                     ) : null}
 
@@ -191,9 +190,7 @@ function ChatPage() {
 
                     {isUser ? (
                       <div className="flex size-10 items-center justify-center rounded-full bg-surface-800 text-white border border-border">
-                        <span className="material-symbols-outlined icon-filled">
-                          person
-                        </span>
+                        <User size={18} strokeWidth={2} aria-hidden="true" />
                       </div>
                     ) : null}
                   </div>
@@ -215,9 +212,12 @@ function ChatPage() {
           >
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3 text-xs text-muted">
-                <span className="material-symbols-outlined text-base text-primary">
-                  chat
-                </span>
+                <MessageCircle
+                  className="text-primary"
+                  size={16}
+                  strokeWidth={2}
+                  aria-hidden="true"
+                />
                 Escribe tu mensaje. Pulsa Enter para enviar o Shift+Enter para
                 saltos de linea.
               </div>
@@ -239,7 +239,11 @@ function ChatPage() {
                     className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-(--shadow-primary-20-strong) hover:-translate-y-px transition-transform"
                     aria-label="Enviar mensaje"
                   >
-                    <span className="material-symbols-outlined">send</span>
+                    <SendHorizontal
+                      size={18}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                    />
                   </button>
 
                   <button
@@ -250,9 +254,7 @@ function ChatPage() {
                     aria-label="Nueva conversacion"
                     title="Nueva conversacion"
                   >
-                    <span className="material-symbols-outlined">
-                      delete_sweep
-                    </span>
+                    <Trash2 size={18} strokeWidth={2} aria-hidden="true" />
                   </button>
                 </div>
               </div>

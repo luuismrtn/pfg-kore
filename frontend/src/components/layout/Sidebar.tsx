@@ -1,9 +1,16 @@
 import type { PageKey } from "@/features/navigation/types";
+import {
+  Bot,
+  LayoutDashboard,
+  Settings,
+  type LucideIcon,
+  UserPen,
+} from "lucide-react";
 
 type NavItem = {
   key: PageKey;
   label: string;
-  icon: string;
+  icon: LucideIcon;
 };
 
 type SidebarProps = {
@@ -12,9 +19,9 @@ type SidebarProps = {
 };
 
 const navItems: NavItem[] = [
-  { key: "profile", label: "Perfil", icon: "person_edit" },
-  { key: "chat", label: "Chat IA", icon: "smart_toy" },
-  { key: "panel", label: "Panel", icon: "dashboard" },
+  { key: "profile", label: "Perfil", icon: UserPen },
+  { key: "chat", label: "Chat IA", icon: Bot },
+  { key: "panel", label: "Panel", icon: LayoutDashboard },
 ];
 
 function Sidebar({ activeKey, onSelect }: SidebarProps) {
@@ -41,6 +48,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
       <nav className="flex flex-col gap-2 px-4 flex-1">
         {navItems.map((item) => {
           const isActive = item.key === activeKey;
+          const Icon = item.icon;
           return (
             <button
               key={item.key}
@@ -52,13 +60,12 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
               }`}
               type="button"
             >
-              <span
-                className={`material-symbols-outlined ${
-                  isActive ? "icon-filled" : ""
-                }`}
-              >
-                {item.icon}
-              </span>
+              <Icon
+                className={isActive ? "text-primary" : "text-current"}
+                size={20}
+                strokeWidth={2}
+                aria-hidden="true"
+              />
               <div className="flex items-center justify_between w-full">
                 <p
                   className={`text-sm ${
@@ -83,13 +90,14 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           onClick={() => onSelect("settings")}
           type="button"
         >
-          <span
-            className={`material-symbols-outlined ${
-              activeKey === "settings" ? "icon-filled" : ""
-            }`}
-          >
-            settings
-          </span>
+          <Settings
+            className={
+              activeKey === "settings" ? "text-primary" : "text-current"
+            }
+            size={20}
+            strokeWidth={2}
+            aria-hidden="true"
+          />
           <p className="text-sm font-medium">Ajustes</p>
         </button>
 

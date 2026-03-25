@@ -1,5 +1,6 @@
 import ExerciseCard from "./ExerciseCard";
 import type { RoutineDay } from "@/features/routine/types";
+import { RefreshCw } from "lucide-react";
 
 type DayColumnCardProps = RoutineDay & {
   onRegenerateDay?: (day: string) => void;
@@ -28,14 +29,12 @@ function DayColumnCard({
             className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface-900/70 px-3 py-1.5 text-xs font-semibold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed hover:border-primary/50 hover:text-primary transition-colors"
             aria-busy={isRegeneratingDay}
           >
-            <span
-              className={`material-symbols-outlined text-sm leading-none ${
-                isRegeneratingDay ? "animate-spin" : ""
-              }`}
+            <RefreshCw
+              className={isRegeneratingDay ? "animate-spin" : ""}
+              size={14}
+              strokeWidth={2.5}
               aria-hidden="true"
-            >
-              autorenew
-            </span>
+            />
             {isRegeneratingDay ? "Regenerando..." : "Cambiar rutina del dia"}
           </button>
         </div>
