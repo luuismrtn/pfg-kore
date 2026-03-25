@@ -19,7 +19,6 @@ app.get("/api/health", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Backend server listening on http://localhost:${PORT}`);
-  console.log("Remember to keep Ollama running locally for AI generation.");
 });
 
 export default app;

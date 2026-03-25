@@ -58,6 +58,7 @@ function PanelPage() {
   const handleGenerateRoutine = async () => {
     setIsLoading(true);
     try {
+      setPanelSchedule([]);
       const routine = await generateRoutine("");
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
       setPanelSchedule(routine.routine);
@@ -167,10 +168,10 @@ function PanelPage() {
             </h2>
             <p className="text-muted text-sm max-w-md">
               Genera tu rutina personalizada en la sección de Chat IA para verla
-              aquí.
+              aquí
             </p>
             <p className="text-muted text-sm max-w-md">
-              O haz click en este botón.
+              o haz click en este botón.
             </p>
             <button
               type="button"

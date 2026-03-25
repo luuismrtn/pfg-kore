@@ -17,14 +17,27 @@ const __dirname = path.dirname(__filename);
 export class RagService {
   private openai: OpenAI;
   private exercisesDb: ExerciseRecord[];
+  private model: string;
 
   constructor() {
-    const baseURL = "http://127.0.0.1:11434/v1";
-    const apiKey = "ollama";
+    const baseURL = process.env.OPENROUTER_BASE_URL || "";
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    this.model = process.env.OPENROUTER_MODEL || "";
+
+    if (!apiKey) {
+      throw new Error(
+        "Missing OPENROUTER_API_KEY. Add it to backend/.env to use OpenRouter.",
+      );
+    }
 
     this.openai = new OpenAI({
       baseURL,
       apiKey,
+      defaultHeaders: {
+        "HTTP-Referer":
+          process.env.OPENROUTER_SITE_URL || "http://localhost:5173",
+        "X-Title": process.env.OPENROUTER_APP_NAME || "pfg-kore",
+      },
     });
 
     const dataPath = path.join(__dirname, "../data/musculacion.json");
@@ -168,11 +181,10 @@ export class RagService {
     console.log("SystemPrompt: ", systemPrompt);
     console.log("userPrompt: ", userPrompt);
 
-    /*
     try {
-      console.log("Connecting to local LLM (Ollama)...");
+      console.log(`Connecting to OpenRouter with model: ${this.model}`);
       const response = await this.openai.chat.completions.create({
-        model: "llama3.1",
+        model: this.model,
         response_format: { type: "json_object" },
         temperature: 0.7,
         messages: [
@@ -198,15 +210,14 @@ export class RagService {
         (e?.message && e.message.includes("ECONNREFUSED"))
       ) {
         throw new Error(
-          `Could not connect to the configured LLM URL. Verify Ollama is running and OLLAMA_BASE_URL is correct. (${process.env.OLLAMA_BASE_URL || process.env.OLLAMA_URL || "http://127.0.0.1:11434/v1"})`,
+          `Could not connect to OpenRouter. Verify OPENROUTER_BASE_URL and your internet connection. ("${process.env.OPENROUTER_BASE_URL}")`,
         );
       }
 
       throw new Error("Failed to generate routine with AI.");
+    } finally {
+      console.log("Finished AI generation attempt.");
     }
-    */
-
-    throw new Error("AI model integration is not enabled yet.");
   }
 
   private resolveDayIndex(
@@ -310,6 +321,7 @@ export class RagService {
     \n2. La rutina debe ser de ${normalizedRequest.availableDays} días. El objetivo es cubrir todo el cuerpo de manera equilibrada, pero puedes enfocarte más en las preferencias del usuario si las hay. Cada día debe tener un enfoque claro (ej. "Día 1 - Pecho y Tríceps").
     \n3. Devuelve ÚNICAMENTE código JSON válido, sin texto adicional antes o después.
     \n4. El tiempo medio de entrenamiento por día debe ser de aproximadamente ${normalizedRequest.averageDurationMinutes} minutos. Ajusta el número de ejercicios, series y repeticiones (si puede ser un número exacto de repeticiones mejor o también es válido poner como repeticiones "FALLO" para que el usuario haga el máximo de repeticiones) para cumplir con este tiempo.
+    \n5. Es obligatorio que pongas por lo menos 1 badge de grupo muscular en cada ejercicio, para facilitar la navegación en la app.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -337,7 +349,7 @@ export class RagService {
 
     const response = await this.generateJsonFromModel(
       systemPrompt,
-      `Generate a routine for this user profile: ${JSON.stringify(normalizedRequest)}. Additional user request: "${normalizedRequest.text}".`,
+      `Additional user request: "${normalizedRequest.text}".`,
     );
 
     return response as unknown as RoutineResponse;
