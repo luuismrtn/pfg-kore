@@ -10,13 +10,13 @@ import type { UserProfileForm } from "@/features/profile/types";
 
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 
-const sportOptions = ["Musculacion", "Running", "Calistenia"];
+const sportOptions = ["Musculación", "Running", "Calistenia"];
 
 const equipmentOptions = [
   "Mancuernas y Pesas Libres",
   "Barras y Discos",
   "Banco de musculacion",
-  "Maquinas de gimnasio",
+  "Máquinas de gimnasio",
   "Estructuras de Calistenia",
   "Accesorios",
 ];
@@ -24,7 +24,7 @@ const equipmentOptions = [
 const injuryOptions = [
   "Hombro",
   "Codo",
-  "Muneca",
+  "Muñeca",
   "Cervical",
   "Espalda baja",
   "Cadera",
@@ -74,7 +74,7 @@ const defaultProfile: UserProfileForm = {
   name: "",
   weightKg: "",
   heightCm: "",
-  sport: "Musculacion",
+  sport: "Musculación",
   equipment: [],
   injuries: [],
   availableDays: 3,
@@ -109,7 +109,7 @@ function toValidProfile(value: unknown): UserProfileForm | null {
     sport:
       typeof candidate.sport === "string" && candidate.sport.length > 0
         ? candidate.sport
-        : "Musculacion",
+        : "Musculación",
     equipment: equipment || [],
     injuries: injuries || [],
     level:
