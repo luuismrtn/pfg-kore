@@ -19,7 +19,7 @@ function resolvePageFromPath(pathname: string): PageKey | null {
   const normalizedPath = pathname.replace(/\/+$/, "") || "/";
 
   if (normalizedPath === "/") {
-    return "panel";
+    return "profile";
   }
 
   const matched = (Object.entries(pageRoutes) as Array<[PageKey, string]>).find(

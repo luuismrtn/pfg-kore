@@ -7,6 +7,7 @@ import {
   changeRoutineDay,
   changeRoutineExercise,
   generateRoutine,
+  getRoutineGenerationProfileError,
 } from "@/services/api/routinesApi";
 
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
@@ -44,6 +45,7 @@ function PanelPage() {
   );
 
   const [isLoading, setIsLoading] = useState(false);
+  const [generationError, setGenerationError] = useState<string | null>(null);
   const [isRegeneratingDay, setIsRegeneratingDay] = useState(false);
   const [changingExerciseRef, setChangingExerciseRef] = useState<string | null>(
     null,
@@ -53,10 +55,18 @@ function PanelPage() {
   );
 
   const [selectedDay, setSelectedDay] = useState("");
+  const profileError = getRoutineGenerationProfileError();
+  const generateRoutineErrorMessage = profileError ?? generationError;
+  const isGenerateRoutineDisabled = isLoading || Boolean(profileError);
   const activeDay =
     panelSchedule.find((day) => day.day === selectedDay) ?? panelSchedule[0];
 
   const handleGenerateRoutine = async () => {
+    if (isGenerateRoutineDisabled) {
+      return;
+    }
+
+    setGenerationError(null);
     setIsLoading(true);
     try {
       setPanelSchedule([]);
@@ -65,6 +75,9 @@ function PanelPage() {
       setPanelSchedule(routine.routine);
       setSelectedDay(routine.routine[0]?.day ?? "");
     } catch (err) {
+      setGenerationError(
+        err instanceof Error ? err.message : "No se pudo generar la rutina.",
+      );
       console.error("Error generando rutina:", err);
     } finally {
       setIsLoading(false);
@@ -140,7 +153,7 @@ function PanelPage() {
             type="button"
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleGenerateRoutine}
-            disabled={isLoading}
+            disabled={isGenerateRoutineDisabled}
             aria-busy={isLoading}
           >
             <RefreshCw
@@ -174,7 +187,7 @@ function PanelPage() {
               type="button"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleGenerateRoutine}
-              disabled={isLoading}
+              disabled={isGenerateRoutineDisabled}
               aria-busy={isLoading}
             >
               <RefreshCw
@@ -185,6 +198,11 @@ function PanelPage() {
               />
               {isLoading ? "Generando..." : "Generar Rutina"}
             </button>
+            {generateRoutineErrorMessage ? (
+              <p className="mb-4 text-sm text-red-300">
+                {generateRoutineErrorMessage}
+              </p>
+            ) : null}
           </div>
         ) : (
           <>

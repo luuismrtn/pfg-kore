@@ -119,8 +119,8 @@ function ChatPage() {
         role: "assistant",
         content:
           error instanceof Error
-            ? `Error al conectar con el backend: ${error.message}`
-            : "Error al conectar con el backend.",
+            ? error.message
+            : "No se pudo generar la rutina.",
       };
       if (requestVersionRef.current === requestVersion) {
         setMessages((prev) => [...prev, assistantMessage]);
