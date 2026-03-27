@@ -42,3 +42,41 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
+
+.profile-step-anim {
+  animation-duration: 260ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-step-enter-right {
+  animation-name: profile-step-enter-right;
+}
+
+.profile-step-enter-left {
+  animation-name: profile-step-enter-left;
+}
+
+@keyframes profile-step-enter-right {
+  from {
+    opacity: 0;
+    transform: translateX(38px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes profile-step-enter-left {
+  from {
+    opacity: 0;
+    transform: translateX(-38px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

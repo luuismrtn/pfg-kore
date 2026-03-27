@@ -204,7 +204,7 @@ export class RagService {
       return JSON.parse(modelOutput) as Record<string, unknown>;
     } catch (error) {
       const e = error as { code?: string; message?: string };
-      console.error("Error in RAG service:", e?.message || e);
+      console.error(`Error during AI generation: ${e.code} - ${e.message}`);
 
       throw new Error("Failed to generate routine with AI.");
     } finally {
