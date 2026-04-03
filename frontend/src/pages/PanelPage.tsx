@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
 import type { RoutineDay, RoutineResponse } from "@/features/routine/types";
@@ -11,6 +11,56 @@ import {
 } from "@/services/api/routinesApi";
 
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
+const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
+const MIN_AVAILABLE_DAYS = 1;
+const MAX_AVAILABLE_DAYS = 7;
+const DEFAULT_AVAILABLE_DAYS = 0;
+
+function clampAvailableDays(value: number): number {
+  return Math.min(Math.max(value, MIN_AVAILABLE_DAYS), MAX_AVAILABLE_DAYS);
+}
+
+function readProfileAvailableDays(): number {
+  const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+  if (!raw) {
+    return DEFAULT_AVAILABLE_DAYS;
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as { availableDays?: unknown };
+    if (typeof parsed.availableDays !== "number") {
+      return DEFAULT_AVAILABLE_DAYS;
+    }
+
+    return clampAvailableDays(parsed.availableDays);
+  } catch {
+    return DEFAULT_AVAILABLE_DAYS;
+  }
+}
+
+function normalizePanelScheduleDays(routineDays: RoutineDay[]): RoutineDay[] {
+  const targetDays = readProfileAvailableDays();
+  const normalized = routineDays.slice(0, targetDays).map((day, index) => ({
+    day:
+      typeof day.day === "string" && day.day.trim().length > 0
+        ? day.day
+        : `Día ${index + 1}`,
+    exercises: Array.isArray(day.exercises) ? day.exercises : [],
+  }));
+
+  for (
+    let dayIndex = normalized.length + 1;
+    dayIndex <= targetDays;
+    dayIndex += 1
+  ) {
+    normalized.push({
+      day: `Día ${dayIndex}`,
+      exercises: [],
+    });
+  }
+
+  return normalized;
+}
 
 function isRoutineResponse(value: unknown): value is RoutineResponse {
   if (typeof value !== "object" || value === null) {
@@ -24,18 +74,18 @@ function isRoutineResponse(value: unknown): value is RoutineResponse {
 function readPanelSchedule(): RoutineDay[] {
   const raw = localStorage.getItem(ROUTINE_STORAGE_KEY);
   if (!raw) {
-    return [];
+    return normalizePanelScheduleDays([]);
   }
 
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!isRoutineResponse(parsed)) {
-      return [];
+      return normalizePanelScheduleDays([]);
     }
 
-    return parsed.routine.length > 0 ? parsed.routine : [];
+    return normalizePanelScheduleDays(parsed.routine);
   } catch {
-    return [];
+    return normalizePanelScheduleDays([]);
   }
 }
 
@@ -61,6 +111,13 @@ function PanelPage() {
   const activeDay =
     panelSchedule.find((day) => day.day === selectedDay) ?? panelSchedule[0];
 
+  useEffect(() => {
+    setSelectedDay((currentDay) => {
+      const exists = panelSchedule.some((day) => day.day === currentDay);
+      return exists ? currentDay : (panelSchedule[0]?.day ?? "");
+    });
+  }, [panelSchedule]);
+
   const handleGenerateRoutine = async () => {
     if (isGenerateRoutineDisabled) {
       return;
@@ -71,9 +128,10 @@ function PanelPage() {
     try {
       setPanelSchedule([]);
       const routine = await generateRoutine("");
+      const normalizedRoutine = normalizePanelScheduleDays(routine.routine);
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
-      setPanelSchedule(routine.routine);
-      setSelectedDay(routine.routine[0]?.day ?? "");
+      setPanelSchedule(normalizedRoutine);
+      setSelectedDay(normalizedRoutine[0]?.day ?? "");
     } catch (err) {
       setGenerationError(
         err instanceof Error ? err.message : "No se pudo generar la rutina.",
@@ -96,13 +154,15 @@ function PanelPage() {
         dayToChange,
       );
 
+      const normalizedRoutine = normalizePanelScheduleDays(
+        updatedRoutine.routine,
+      );
+
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
-      setPanelSchedule(updatedRoutine.routine);
+      setPanelSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
-        const exists = updatedRoutine.routine.some(
-          (day) => day.day === currentDay,
-        );
-        return exists ? currentDay : (updatedRoutine.routine[0]?.day ?? "");
+        const exists = normalizedRoutine.some((day) => day.day === currentDay);
+        return exists ? currentDay : (normalizedRoutine[0]?.day ?? "");
       });
     } catch (err) {
       console.error("Error regenerando dia de rutina:", err);
@@ -128,13 +188,15 @@ function PanelPage() {
         exerciseToChange,
       );
 
+      const normalizedRoutine = normalizePanelScheduleDays(
+        updatedRoutine.routine,
+      );
+
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
-      setPanelSchedule(updatedRoutine.routine);
+      setPanelSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
-        const exists = updatedRoutine.routine.some(
-          (day) => day.day === currentDay,
-        );
-        return exists ? currentDay : (updatedRoutine.routine[0]?.day ?? "");
+        const exists = normalizedRoutine.some((day) => day.day === currentDay);
+        return exists ? currentDay : (normalizedRoutine[0]?.day ?? "");
       });
     } catch (err) {
       console.error("Error cambiando ejercicio de rutina:", err);
@@ -250,7 +312,7 @@ function PanelPage() {
                 </div>
               </aside>
               <section className="flex flex-col gap-4 h-full min-h-0 overflow-hidden">
-                {activeDay ? (
+                {activeDay && activeDay.exercises.length > 0 ? (
                   <DayColumnCard
                     day={activeDay.day}
                     exercises={activeDay.exercises}
@@ -263,6 +325,46 @@ function PanelPage() {
                         : null
                     }
                   />
+                ) : activeDay && activeDay.exercises.length == 0 ? (
+                  <div className="flex flex-col items-center justify-center gap-4 h-full text-center">
+                    <div className="size-16 rounded-full bg-surface-800 flex items-center justify-center text-muted">
+                      <CalendarDays
+                        size={32}
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <h2 className="text-white font-bold text-lg">
+                      No hay ejercicios para este día
+                    </h2>
+                    <p className="text-muted text-sm max-w-md">
+                      Puedes regenerar este día para obtener nuevos ejercicios o
+                      cambiar ejercicios específicos usando los botones
+                      correspondientes.
+                    </p>
+                    <button
+                      type="button"
+                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => {
+                        if (!activeDay) return;
+                        void handleRegenerateDay(activeDay.day);
+                      }}
+                      disabled={
+                        isGenerateRoutineDisabled ||
+                        isRegeneratingDay ||
+                        !activeDay
+                      }
+                      aria-busy={isRegeneratingDay}
+                    >
+                      <RefreshCw
+                        className={isRegeneratingDay ? "animate-spin" : ""}
+                        size={20}
+                        strokeWidth={2.5}
+                        aria-hidden="true"
+                      />
+                      {isRegeneratingDay ? "Generando..." : "Generar Nuevo Día"}
+                    </button>
+                  </div>
                 ) : null}
               </section>
             </div>
