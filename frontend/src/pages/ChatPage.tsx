@@ -300,7 +300,7 @@ function ChatPage() {
               {isResponding ? (
                 <div className="flex items-center gap-2 text-sm text-muted">
                   <div className="size-2 animate-pulse rounded-full bg-primary" />
-                  Escribiendo...
+                  Generando respuesta...
                 </div>
               ) : null}
             </div>
@@ -336,7 +336,7 @@ function ChatPage() {
                   <button
                     type="submit"
                     disabled={!draft.trim() || isResponding}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed shadow-(--shadow-primary-20-strong) hover:-translate-y-px transition-transform"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
                     aria-label="Enviar mensaje"
                   >
                     <SendHorizontal

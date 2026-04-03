@@ -806,9 +806,9 @@ function ProfilePage() {
               </div>
 
               <fieldset className="md:col-span-2 rounded-2xl border border-border bg-surface-800/65 p-4">
-                <legend className="px-1 text-xs font-semibold tracking-[0.12em] text-muted uppercase">
+                <p className="px-1 text-xs font-semibold tracking-[0.12em] text-muted uppercase">
                   Equipamiento disponible
-                </legend>
+                </p>
                 <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
                   {equipmentOptions.map((item) => {
                     const checked = form.equipment.includes(item);
@@ -831,9 +831,9 @@ function ProfilePage() {
               </fieldset>
 
               <fieldset className="md:col-span-2 rounded-2xl border border-border bg-surface-800/65 p-4">
-                <legend className="px-1 text-xs font-semibold tracking-[0.12em] text-muted uppercase">
+                <p className="px-1 text-xs font-semibold tracking-[0.12em] text-muted uppercase">
                   Lesiones
-                </legend>
+                </p>
                 <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
                   {injuryOptions.map((part) => {
                     const checked = form.injuries.includes(part);
@@ -873,7 +873,7 @@ function ProfilePage() {
           </section>
 
           <aside className="h-fit rounded-2xl border border-border bg-surface-900/65 p-6 shadow-(--shadow-primary-15-weak) backdrop-blur-md">
-            <h3 className="text-lg font-bold text-white">Resumen rapido</h3>
+            <h3 className="text-lg font-bold text-white">Resumen rápido</h3>
             <div className="mt-4 space-y-3 text-sm">
               <div className="rounded-xl border border-border bg-surface-800/70 px-4 py-3">
                 <p className="text-muted">Nombre</p>
