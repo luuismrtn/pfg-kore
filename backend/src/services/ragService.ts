@@ -4,6 +4,10 @@ import path from "path";
 import { fileURLToPath } from "url";
 import type { ExerciseRecord, FilteredExercise } from "@backend/types/exercise";
 import type {
+  AddRoutineDayRequest,
+  ChatIntentAction,
+  ChatIntentRequest,
+  ChatIntentResponse,
   ChangeRoutineExerciseRequest,
   ChangeRoutineDayRequest,
   RoutineDay,
@@ -34,8 +38,7 @@ export class RagService {
       baseURL,
       apiKey,
       defaultHeaders: {
-        "HTTP-Referer":
-          process.env.OPENROUTER_SITE_URL || "",
+        "HTTP-Referer": process.env.OPENROUTER_SITE_URL || "",
         "X-Title": process.env.OPENROUTER_APP_NAME || "",
       },
     });
@@ -267,6 +270,69 @@ export class RagService {
     };
   }
 
+  private resolveChatIntentAction(rawAction: unknown): ChatIntentAction {
+    if (typeof rawAction !== "string") {
+      return "question";
+    }
+
+    const normalizedAction = this.normalizeText(rawAction).replace(/\s+/g, "_");
+
+    if (
+      ["create_routine", "crear_rutina", "generate_routine"].includes(
+        normalizedAction,
+      )
+    ) {
+      return "create_routine";
+    }
+
+    if (["change_exercise", "cambiar_ejercicio"].includes(normalizedAction)) {
+      return "change_exercise";
+    }
+
+    if (
+      ["change_day", "cambiar_dia", "cambiar_dia_completo"].includes(
+        normalizedAction,
+      )
+    ) {
+      return "change_day";
+    }
+
+    if (["add_day", "anadir_dia", "agregar_dia"].includes(normalizedAction)) {
+      return "add_day";
+    }
+
+    return "question";
+  }
+
+  private pickOptionalText(value: unknown): string | undefined {
+    if (typeof value !== "string") {
+      return undefined;
+    }
+
+    const trimmed = value.trim();
+    return trimmed.length > 0 ? trimmed : undefined;
+  }
+
+  private getDefaultChatResponse(action: ChatIntentAction): string {
+    if (action === "create_routine") {
+      return "Perfecto, voy a crear tu rutina desde cero.";
+    }
+
+    if (action === "change_exercise") {
+      return "He entendido que quieres cambiar un ejercicio concreto.";
+    }
+
+    if (action === "change_day") {
+      return "He entendido que quieres cambiar un día completo de tu rutina.";
+    }
+
+    if (action === "add_day") {
+      return "He entendido que quieres añadir un día más a tu rutina.";
+    }
+
+    return "Te ayudo con tu duda. Si quieres modificar tu rutina, dímelo en detalle.";
+  }
+
   private extractRoutineResponse(
     modelResponse: Record<string, unknown>,
   ): RoutineResponse {
@@ -278,6 +344,70 @@ export class RagService {
     return {
       routine: routine as RoutineResponse["routine"],
     };
+  }
+
+  public async interpretChatIntent(
+    request: ChatIntentRequest,
+  ): Promise<ChatIntentResponse> {
+    const normalizedText = request?.text?.trim();
+    if (!normalizedText) {
+      throw new Error("Missing chat text to interpret.");
+    }
+
+    const routineContext = request.routine
+      ? JSON.stringify(request.routine)
+      : "No hay una rutina cargada actualmente.";
+
+    const systemPrompt = `
+    \nEres un asistente de fitness que clasifica la intención del usuario y responde SOLO en JSON válido.
+    \nDebes devolver SIEMPRE este formato:
+    \n{
+    \n  "action": "create_routine|change_exercise|change_day|add_day|question",
+    \n  "dayToChange": "string opcional",
+    \n  "exerciseToChange": "string opcional",
+    \n  "responseText": "respuesta corta en español"
+    \n}
+
+    \nReglas:
+    \n1. create_routine: si pide crear/generar rutina completa desde cero.
+    \n2. change_exercise: si pide cambiar un ejercicio concreto de un día.
+    \n3. change_day: si pide cambiar/rehacer un día completo.
+    \n4. add_day: si pide añadir un día adicional a la rutina actual.
+    \n5. question: si solo es duda o consulta sin pedir cambios estructurales de la rutina.
+    \n6. Si action es question, responseText debe contestar directamente la duda del usuario en español.
+    \n7. Si action NO es question, responseText debe ser una confirmación breve de la acción detectada.
+    \n8. dayToChange y exerciseToChange deben ir vacíos si no aplican.
+    \n9. Si el usuario habla de "día 2" o "ejercicio 3", devuelve esos valores como texto ("2", "3").
+    \n`;
+
+    const modelResponse = await this.generateJsonFromModel(
+      systemPrompt,
+      `Mensaje del usuario: "${normalizedText}". Rutina actual disponible para contexto: ${routineContext}`,
+    );
+
+    const action = this.resolveChatIntentAction(modelResponse.action);
+    const dayToChange = this.pickOptionalText(modelResponse.dayToChange);
+    const exerciseToChange = this.pickOptionalText(
+      modelResponse.exerciseToChange,
+    );
+    const responseText =
+      this.pickOptionalText(modelResponse.responseText) ??
+      this.getDefaultChatResponse(action);
+
+    const intentResponse: ChatIntentResponse = {
+      action,
+      responseText,
+    };
+
+    if (dayToChange) {
+      intentResponse.dayToChange = dayToChange;
+    }
+
+    if (exerciseToChange) {
+      intentResponse.exerciseToChange = exerciseToChange;
+    }
+
+    return intentResponse;
   }
 
   public async generateRoutine(
@@ -344,7 +474,7 @@ export class RagService {
       `Additional user request: "${normalizedRequest.text}".`,
     );
 
-    return response as unknown as RoutineResponse;
+    return this.extractRoutineResponse(response);
   }
 
   public async changeRoutineDay(
@@ -416,6 +546,79 @@ export class RagService {
     );
 
     return this.extractRoutineResponse(modelResponse);
+  }
+
+  public async addRoutineDay(
+    request: AddRoutineDayRequest,
+  ): Promise<RoutineResponse> {
+    const currentRoutine = request.routine;
+
+    if (
+      !Array.isArray(currentRoutine?.routine) ||
+      currentRoutine.routine.length === 0
+    ) {
+      throw new Error("A current routine is required to add a new day.");
+    }
+
+    const normalizedProfile = request.profile
+      ? this.normalizeProfile(request.profile)
+      : undefined;
+
+    const validExercises = normalizedProfile
+      ? this.filterExercises(normalizedProfile)
+      : this.mapToFilteredExercises(this.exercisesDb);
+
+    const exerciseContext = JSON.stringify(validExercises);
+    const changeText = request.changeRequest ?? "";
+
+    const systemPrompt = `
+    \nEres un entrenador personal experto en ciencias del deporte.
+    \nTu tarea es regenerar la rutina completa añadiendo EXACTAMENTE un día nuevo adicional.
+
+    \n\nREGLAS ESTRICTAS (HARD CONSTRAINTS):
+    \n1. SOLO PUEDES ELEGIR ejercicios de la siguiente lista de ejercicios válidos.
+    \n2. Debes devolver SIEMPRE la rutina COMPLETA en formato {"routine":[...]}.
+    \n3. Debe mantenerse la coherencia de recuperación muscular entre todos los días.
+    \n4. La rutina resultante debe tener exactamente un día más que la rutina original.
+    \n5. Devuelve UNICAMENTE JSON válido, sin texto adicional.
+
+    \n\nLISTA DE EJERCICIOS VALIDOS PARA ESTE USUARIO:
+    \n${exerciseContext}
+
+    \n\nFORMATO JSON REQUERIDO:
+    \n{
+    \n  "routine": [
+    \n    {
+    \n      "day": "Día 1 - Pecho y Tríceps",
+    \n      "exercises": [
+    \n        {
+    \n          "exerciseId": "musc_001",
+    \n          "name": "Press de Banca",
+    \n          "sets": 3,
+    \n          "reps": "10",
+    \n          "restSeconds": 90,
+    \n          "note": "Controlar excéntrica",
+    \n          "badges": ["Pecho", "Hombro"]
+    \n        }
+    \n      ]
+    \n    }
+    \n  ]
+    \n}
+    \n`;
+
+    const modelResponse = await this.generateJsonFromModel(
+      systemPrompt,
+      `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada con exactamente un día nuevo añadido.`,
+    );
+
+    const updatedRoutine = this.extractRoutineResponse(modelResponse);
+    if (updatedRoutine.routine.length !== currentRoutine.routine.length + 1) {
+      throw new Error(
+        "The AI response must contain exactly one additional day.",
+      );
+    }
+
+    return updatedRoutine;
   }
 
   public async changeRoutineExercise(

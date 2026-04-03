@@ -1,5 +1,6 @@
 import type { RoutineResponse } from "@/features/routine/types";
 import type { UserProfileForm } from "@/features/profile/types";
+import type { ChatIntentResponse } from "@/features/chat/types";
 
 type ApiErrorBody = {
   error?: string;
@@ -9,6 +10,7 @@ type ChangeRoutineDayPayload = {
   routine: RoutineResponse;
   dayToChange: string;
   profile?: ReturnType<typeof buildRoutineRequestPayload>;
+  changeRequest?: string;
 };
 
 type ChangeRoutineExercisePayload = {
@@ -16,6 +18,18 @@ type ChangeRoutineExercisePayload = {
   dayToChange: string;
   exerciseToChange: string;
   profile?: ReturnType<typeof buildRoutineRequestPayload>;
+  changeRequest?: string;
+};
+
+type AddRoutineDayPayload = {
+  routine: RoutineResponse;
+  profile?: ReturnType<typeof buildRoutineRequestPayload>;
+  changeRequest?: string;
+};
+
+type ChatIntentPayload = {
+  text: string;
+  routine?: RoutineResponse;
 };
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
@@ -165,6 +179,7 @@ export async function generateRoutine(text: string): Promise<RoutineResponse> {
 export async function changeRoutineDay(
   routine: RoutineResponse,
   dayToChange: string,
+  changeRequest = "",
 ): Promise<RoutineResponse> {
   const profile = getProfile();
   const profilePayload = buildRoutineRequestPayload(profile, "");
@@ -173,6 +188,7 @@ export async function changeRoutineDay(
     routine,
     dayToChange,
     profile: profilePayload ?? undefined,
+    changeRequest: changeRequest.trim() || undefined,
   };
 
   const response = await fetch(`${API_BASE_URL}/api/routines/change-day`, {
@@ -205,6 +221,7 @@ export async function changeRoutineExercise(
   routine: RoutineResponse,
   dayToChange: string,
   exerciseToChange: string,
+  changeRequest = "",
 ): Promise<RoutineResponse> {
   const profile = getProfile();
   const profilePayload = buildRoutineRequestPayload(profile, "");
@@ -214,6 +231,7 @@ export async function changeRoutineExercise(
     dayToChange,
     exerciseToChange,
     profile: profilePayload ?? undefined,
+    changeRequest: changeRequest.trim() || undefined,
   };
 
   const response = await fetch(
@@ -243,6 +261,80 @@ export async function changeRoutineExercise(
   }
 
   return (await response.json()) as RoutineResponse;
+}
+
+export async function addRoutineDay(
+  routine: RoutineResponse,
+  changeRequest = "",
+): Promise<RoutineResponse> {
+  const profile = getProfile();
+  const profilePayload = buildRoutineRequestPayload(profile, "");
+
+  const requestPayload: AddRoutineDayPayload = {
+    routine,
+    profile: profilePayload ?? undefined,
+    changeRequest: changeRequest.trim() || undefined,
+  };
+
+  const response = await fetch(`${API_BASE_URL}/api/routines/add-day`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestPayload),
+  });
+
+  if (!response.ok) {
+    let backendError = "No se pudo añadir un día más a la rutina.";
+
+    try {
+      const errorBody = (await response.json()) as ApiErrorBody;
+      if (errorBody.error) {
+        backendError = errorBody.error;
+      }
+    } catch {
+      // Keep generic message when backend does not return valid JSON.
+    }
+
+    throw new Error(backendError);
+  }
+
+  return (await response.json()) as RoutineResponse;
+}
+
+export async function interpretChatIntent(
+  text: string,
+  routine?: RoutineResponse,
+): Promise<ChatIntentResponse> {
+  const payload: ChatIntentPayload = {
+    text,
+    routine,
+  };
+
+  const response = await fetch(`${API_BASE_URL}/api/routines/chat-intent`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    let backendError = "No se pudo interpretar tu mensaje.";
+
+    try {
+      const errorBody = (await response.json()) as ApiErrorBody;
+      if (errorBody.error) {
+        backendError = errorBody.error;
+      }
+    } catch {
+      // Keep generic message when backend does not return valid JSON.
+    }
+
+    throw new Error(backendError);
+  }
+
+  return (await response.json()) as ChatIntentResponse;
 }
 
 function buildRoutineRequestPayload(

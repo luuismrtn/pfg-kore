@@ -44,3 +44,28 @@ export interface ChangeRoutineExerciseRequest {
   profile?: Partial<RoutineRequest>;
   changeRequest?: string;
 }
+
+export interface AddRoutineDayRequest {
+  routine: RoutineResponse;
+  profile?: Partial<RoutineRequest>;
+  changeRequest?: string;
+}
+
+export type ChatIntentAction =
+  | "create_routine"
+  | "change_exercise"
+  | "change_day"
+  | "add_day"
+  | "question";
+
+export interface ChatIntentRequest {
+  text: string;
+  routine?: RoutineResponse;
+}
+
+export interface ChatIntentResponse {
+  action: ChatIntentAction;
+  responseText: string;
+  dayToChange?: string;
+  exerciseToChange?: string;
+}

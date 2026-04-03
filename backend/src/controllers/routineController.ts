@@ -1,6 +1,8 @@
 import type { Request, Response } from "express";
 import { RagService } from "@backend/services/ragService";
 import type {
+  AddRoutineDayRequest,
+  ChatIntentRequest,
   ChangeRoutineExerciseRequest,
   ChangeRoutineDayRequest,
   RoutineRequest,
@@ -83,6 +85,58 @@ export const changeRoutineExercise = async (
     console.error("Error in changeRoutineExercise controller:", error);
     res.status(500).json({
       error: "Internal server error while changing one routine exercise.",
+    });
+  }
+};
+
+export const addRoutineDay = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const request: AddRoutineDayRequest = req.body;
+
+    if (!request?.routine) {
+      res.status(400).json({
+        error: "Missing required data: routine is required.",
+      });
+      return;
+    }
+
+    const ragService = new RagService();
+    const updatedRoutine = await ragService.addRoutineDay(request);
+
+    res.status(200).json(updatedRoutine);
+  } catch (error) {
+    console.error("Error in addRoutineDay controller:", error);
+    res.status(500).json({
+      error: "Internal server error while adding one routine day.",
+    });
+  }
+};
+
+export const interpretChatIntent = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const request: ChatIntentRequest = req.body;
+
+    if (!request?.text || !request.text.trim()) {
+      res.status(400).json({
+        error: "Missing required data: text is required.",
+      });
+      return;
+    }
+
+    const ragService = new RagService();
+    const intentResult = await ragService.interpretChatIntent(request);
+
+    res.status(200).json(intentResult);
+  } catch (error) {
+    console.error("Error in interpretChatIntent controller:", error);
+    res.status(500).json({
+      error: "Internal server error while interpreting chat intent.",
     });
   }
 };
