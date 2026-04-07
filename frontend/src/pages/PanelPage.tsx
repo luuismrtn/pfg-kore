@@ -89,6 +89,14 @@ function readPanelSchedule(): RoutineDay[] {
   }
 }
 
+function dayHasExercises(day: RoutineDay): boolean {
+  return Array.isArray(day.exercises) && day.exercises.length > 0;
+}
+
+function getPreferredSelectedDay(schedule: RoutineDay[]): string {
+  return schedule.find(dayHasExercises)?.day ?? schedule[0]?.day ?? "";
+}
+
 function PanelPage() {
   const [panelSchedule, setPanelSchedule] = useState<RoutineDay[]>(() =>
     readPanelSchedule(),
@@ -108,13 +116,16 @@ function PanelPage() {
   const profileError = getRoutineGenerationProfileError();
   const generateRoutineErrorMessage = profileError ?? generationError;
   const isGenerateRoutineDisabled = isLoading || Boolean(profileError);
+  const hasAnyDayWithExercises = panelSchedule.some(dayHasExercises);
   const activeDay =
-    panelSchedule.find((day) => day.day === selectedDay) ?? panelSchedule[0];
+    panelSchedule.find((day) => day.day === selectedDay) ??
+    panelSchedule.find(dayHasExercises) ??
+    panelSchedule[0];
 
   useEffect(() => {
     setSelectedDay((currentDay) => {
       const exists = panelSchedule.some((day) => day.day === currentDay);
-      return exists ? currentDay : (panelSchedule[0]?.day ?? "");
+      return exists ? currentDay : getPreferredSelectedDay(panelSchedule);
     });
   }, [panelSchedule]);
 
@@ -131,7 +142,7 @@ function PanelPage() {
       const normalizedRoutine = normalizePanelScheduleDays(routine.routine);
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
       setPanelSchedule(normalizedRoutine);
-      setSelectedDay(normalizedRoutine[0]?.day ?? "");
+      setSelectedDay(getPreferredSelectedDay(normalizedRoutine));
     } catch (err) {
       setGenerationError(
         err instanceof Error ? err.message : "No se pudo generar la rutina.",
@@ -162,7 +173,7 @@ function PanelPage() {
       setPanelSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
-        return exists ? currentDay : (normalizedRoutine[0]?.day ?? "");
+        return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
       });
     } catch (err) {
       console.error("Error regenerando dia de rutina:", err);
@@ -196,7 +207,7 @@ function PanelPage() {
       setPanelSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
-        return exists ? currentDay : (normalizedRoutine[0]?.day ?? "");
+        return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
       });
     } catch (err) {
       console.error("Error cambiando ejercicio de rutina:", err);
@@ -230,7 +241,7 @@ function PanelPage() {
       />
 
       <div className="flex-1 overflow-hidden p-8">
-        {panelSchedule.length <= 0 ? (
+        {!hasAnyDayWithExercises ? (
           <div className="flex flex-col items-center justify-center gap-4 h-full text-center">
             <div className="size-16 rounded-full bg-surface-800 flex items-center justify-center text-muted">
               <CalendarDays size={32} strokeWidth={2} aria-hidden="true" />
