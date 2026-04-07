@@ -8,12 +8,27 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import type { PageKey } from "@/features/navigation/types";
 
+const THEME_STORAGE_KEY = "kore.theme.v1";
+
+type ThemeMode = "dark" | "light";
+
 const pageRoutes: Record<PageKey, string> = {
   profile: "/profile",
   panel: "/panel",
   chat: "/chat",
   settings: "/settings",
 };
+
+function readStoredTheme(): ThemeMode {
+  const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+  return storedTheme === "light" ? "light" : "dark";
+}
+
+function applyTheme(theme: ThemeMode): void {
+  const root = document.documentElement;
+  root.classList.toggle("dark", theme === "dark");
+  root.style.colorScheme = theme;
+}
 
 function resolvePageFromPath(pathname: string): PageKey | null {
   const normalizedPath = pathname.replace(/\/+$/, "") || "/";
@@ -33,7 +48,9 @@ function App() {
   const [activePage, setActivePage] = useState<PageKey | null>(null);
 
   useEffect(() => {
-    document.documentElement.classList.add("dark");
+    const initialTheme = readStoredTheme();
+    localStorage.setItem(THEME_STORAGE_KEY, initialTheme);
+    applyTheme(initialTheme);
 
     const syncFromLocation = () => {
       setActivePage(resolvePageFromPath(window.location.pathname));
