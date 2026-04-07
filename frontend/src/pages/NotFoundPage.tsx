@@ -30,7 +30,7 @@ function NotFoundPage({ onGoHome }: NotFoundPageProps) {
           <button
             type="button"
             onClick={onGoHome}
-            className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-contrast transition hover:-translate-y-0.5 hover:brightness-105 cursor-pointer"
+            className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-black transition hover:-translate-y-0.5 hover:brightness-105 cursor-pointer"
           >
             Ir al panel
           </button>

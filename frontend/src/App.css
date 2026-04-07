@@ -1,7 +1,3 @@
-:root {
-  color-scheme: dark;
-}
-
 body {
   font-family:
     "Montserrat",
@@ -41,6 +37,65 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
+}
+
+.kore-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  --range-progress: 0%;
+}
+
+.kore-range::-webkit-slider-runnable-track {
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: linear-gradient(
+    to right,
+    var(--color-primary) 0,
+    var(--color-primary) var(--range-progress),
+    var(--color-surface-800) var(--range-progress),
+    var(--color-surface-800) 100%
+  );
+}
+
+.kore-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -0.35rem;
+  height: 1.15rem;
+  width: 1.15rem;
+  border-radius: 9999px;
+  border: 2px solid var(--color-surface-900);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 1px rgb(var(--color-primary-rgb) / 0.25);
+}
+
+.kore-range::-moz-range-track {
+  height: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-800);
+}
+
+.kore-range::-moz-range-progress {
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+}
+
+.kore-range::-moz-range-thumb {
+  height: 1.15rem;
+  width: 1.15rem;
+  border-radius: 9999px;
+  border: 2px solid var(--color-surface-900);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 1px rgb(var(--color-primary-rgb) / 0.25);
 }
 
 .profile-step-anim {

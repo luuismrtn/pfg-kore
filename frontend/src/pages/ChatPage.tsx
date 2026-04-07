@@ -281,7 +281,7 @@ function ChatPage() {
                     <div
                       className={`max-w-[70%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm whitespace-pre-wrap wrap-break-word ${
                         isUser
-                          ? "bg-primary text-contrast shadow-(--shadow-primary-20-strong)"
+                          ? "bg-primary text-black shadow-(--shadow-primary-20-strong)"
                           : "bg-surface-800/80 text-white border border-border"
                       }`}
                     >
@@ -336,7 +336,7 @@ function ChatPage() {
                   <button
                     type="submit"
                     disabled={!draft.trim() || isResponding}
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-contrast font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-black font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
                     aria-label="Enviar mensaje"
                   >
                     <SendHorizontal

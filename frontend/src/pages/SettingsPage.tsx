@@ -30,7 +30,7 @@ function SettingsPage() {
 
   const handleClearAllData = () => {
     const shouldDelete = window.confirm(
-      "Se eliminaran todos los datos locales de la app. Esta accion no se puede deshacer. ¿Quieres continuar?",
+      "Se eliminaran todos los datos locales de la app. Esta acción no se puede deshacer. ¿Quieres continuar?",
     );
 
     if (!shouldDelete) {

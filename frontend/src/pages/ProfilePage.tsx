@@ -1,4 +1,5 @@
 import {
+  type CSSProperties,
   type ChangeEvent,
   type FormEvent,
   useEffect,
@@ -192,6 +193,21 @@ function ProfilePage() {
 
     return (form.weightKg / (heightMeters * heightMeters)).toFixed(1);
   }, [form.heightCm, form.weightKg]);
+
+  const getRangeProgressStyle = (
+    value: number,
+    min: number,
+    max: number,
+  ): CSSProperties => {
+    const range = max - min;
+    if (range <= 0) {
+      return { "--range-progress": "0%" } as CSSProperties;
+    }
+
+    const rawProgress = ((value - min) / range) * 100;
+    const progress = Math.min(100, Math.max(0, rawProgress));
+    return { "--range-progress": `${progress}%` } as CSSProperties;
+  };
 
   const currentStep = wizardSteps[stepIndex];
   const progressPercentage =
@@ -423,6 +439,7 @@ function ProfilePage() {
                 max={7}
                 step={1}
                 value={form.availableDays}
+                style={getRangeProgressStyle(form.availableDays, 1, 7)}
                 onChange={(event) => {
                   setSaved(false);
                   setForm((prev) => ({
@@ -430,7 +447,7 @@ function ProfilePage() {
                     availableDays: Number(event.target.value),
                   }));
                 }}
-                className="accent-primary cursor-pointer"
+                className="kore-range accent-primary cursor-pointer"
               />
               <span className="text-sm text-white">
                 {form.availableDays} dias disponibles
@@ -447,6 +464,11 @@ function ProfilePage() {
                 max={240}
                 step={5}
                 value={form.averageDurationMinutes}
+                style={getRangeProgressStyle(
+                  form.averageDurationMinutes,
+                  20,
+                  240,
+                )}
                 onChange={(event) => {
                   setSaved(false);
                   setForm((prev) => ({
@@ -454,7 +476,7 @@ function ProfilePage() {
                     averageDurationMinutes: Number(event.target.value),
                   }));
                 }}
-                className="accent-primary cursor-pointer"
+                className="kore-range accent-primary cursor-pointer"
               />
               <span className="text-sm text-white">
                 {form.averageDurationMinutes} minutos
@@ -583,7 +605,7 @@ function ProfilePage() {
                     type="button"
                     onClick={() => goToStep(stepIndex + 1)}
                     disabled={!canProceed}
-                    className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-contrast transition disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                    className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-black transition disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                   >
                     Siguiente
                   </button>
@@ -592,7 +614,7 @@ function ProfilePage() {
                     type="button"
                     onClick={handleSaveProfile}
                     disabled={!canProceed}
-                    className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-contrast transition disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+                    className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-black transition disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
                   >
                     Finalizar y guardar
                   </button>
@@ -768,6 +790,7 @@ function ProfilePage() {
                       max={7}
                       step={1}
                       value={form.availableDays}
+                      style={getRangeProgressStyle(form.availableDays, 1, 7)}
                       onChange={(event) => {
                         setSaved(false);
                         setForm((prev) => ({
@@ -775,7 +798,7 @@ function ProfilePage() {
                           availableDays: Number(event.target.value),
                         }));
                       }}
-                      className="accent-primary cursor-pointer"
+                      className="kore-range accent-primary cursor-pointer"
                     />
                     <span className="inline-flex w-fit rounded-full border border-primary/35 bg-primary/18 px-3 py-1 text-xs font-semibold text-primary">
                       {form.availableDays} dias
@@ -858,7 +881,7 @@ function ProfilePage() {
               <div className="md:col-span-2 mt-1 flex flex-wrap items-center gap-3 pt-2">
                 <button
                   type="submit"
-                  className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-contrast  transition hover:brightness-105 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-black transition hover:brightness-105 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!isProfileValidForSave}
                 >
                   Guardar perfil

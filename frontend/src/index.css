@@ -1,9 +1,31 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #22d96b;
   --color-primary-rgb: 34 217 107;
 
+  --color-surface-900: #f9fcfb;
+  --color-surface-800: #edf4f1;
+  --color-border: #d4e0db;
+  --color-muted: #5e726b;
+
+  --color-canvas: #f2f8f5;
+  --color-deep: #e7efec;
+  --color-contrast: #12201b;
+
+  --shadow-primary-15-weak: 0 0 15px rgb(var(--color-primary-rgb) / 0.1);
+  --shadow-primary-15-strong: 0 0 15px rgb(var(--color-primary-rgb) / 0.4);
+  --shadow-primary-20-strong: 0 0 20px rgb(var(--color-primary-rgb) / 0.4);
+  --shadow-primary-20-soft: 0 0 20px rgb(var(--color-primary-rgb) / 0.05);
+}
+
+:root {
+  color-scheme: light;
+}
+
+:root.dark {
   --color-surface-900: #0e1414;
   --color-surface-800: #161f1f;
   --color-border: #1f2a2a;
@@ -11,10 +33,27 @@
 
   --color-canvas: #0b1010;
   --color-deep: #070a0a;
-  --color-contrast: #0b0f0f;
+  --color-contrast: #f5faf8;
 
-  --shadow-primary-15-weak: 0 0 15px rgb(var(--color-primary-rgb) / 0.1);
-  --shadow-primary-15-strong: 0 0 15px rgb(var(--color-primary-rgb) / 0.4);
-  --shadow-primary-20-strong: 0 0 20px rgb(var(--color-primary-rgb) / 0.4);
-  --shadow-primary-20-soft: 0 0 20px rgb(var(--color-primary-rgb) / 0.05);
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-contrast);
+}
+
+:root:not(.dark) .text-white,
+:root:not(.dark) .text-white\/90,
+:root:not(.dark) .text-slate-100,
+:root:not(.dark) .hover\:text-white:hover {
+  color: var(--color-contrast);
+}
+
+:root:not(.dark) .text-red-200 {
+  color: #b42318;
+}
+
+:root:not(.dark) .text-green-300 {
+  color: #166534;
 }

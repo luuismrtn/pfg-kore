@@ -224,7 +224,7 @@ function PanelPage() {
         action={
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed dark:text-black text-white"
             onClick={handleGenerateRoutine}
             disabled={isGenerateRoutineDisabled}
             aria-busy={isLoading}
@@ -258,7 +258,7 @@ function PanelPage() {
             </p>
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleGenerateRoutine}
               disabled={isGenerateRoutineDisabled}
               aria-busy={isLoading}
@@ -311,7 +311,7 @@ function PanelPage() {
                         <span
                           className={`min-w-12 text-center text-xs font-bold px-2 py-1 rounded-full ${
                             isActive
-                              ? "bg-primary text-contrast"
+                              ? "bg-primary dark:text-black"
                               : "bg-surface-900 text-muted"
                           }`}
                         >
@@ -355,7 +355,7 @@ function PanelPage() {
                     </p>
                     <button
                       type="button"
-                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-contrast cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-black cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       onClick={() => {
                         if (!activeDay) return;
                         void handleRegenerateDay(activeDay.day);
