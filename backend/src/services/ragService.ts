@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { ExerciseVectorStore } from "@backend/services/exerciseVectorStore";
 import type { ExerciseRecord, FilteredExercise } from "@backend/types/exercise";
 import type {
   AddRoutineDayRequest,
@@ -22,6 +23,11 @@ export class RagService {
   private openai: OpenAI;
   private exercisesDb: ExerciseRecord[];
   private model: string;
+  private vectorStore: ExerciseVectorStore;
+  private semanticCandidatesLimit: number;
+  private finalExercisePoolLimit: number;
+  private maxSemanticCandidatesLimit: number;
+  private maxFinalExercisePoolLimit: number;
 
   constructor() {
     const baseURL = process.env.OPENROUTER_BASE_URL || "";
@@ -39,7 +45,7 @@ export class RagService {
       apiKey,
       defaultHeaders: {
         "HTTP-Referer": process.env.OPENROUTER_SITE_URL || "",
-        "X-Title": process.env.OPENROUTER_APP_NAME || "",
+        "X-OpenRouter-Title": process.env.OPENROUTER_APP_NAME || "",
       },
     });
 
@@ -51,6 +57,48 @@ export class RagService {
       console.error("Error loading strength training dataset:", error);
       this.exercisesDb = [];
     }
+
+    this.semanticCandidatesLimit = this.parsePositiveInteger(
+      process.env.RAG_SEMANTIC_TOP_K,
+      20,
+    );
+    this.finalExercisePoolLimit = this.parsePositiveInteger(
+      process.env.RAG_FINAL_EXERCISE_POOL_SIZE,
+      10,
+    );
+    this.maxSemanticCandidatesLimit = this.parsePositiveInteger(
+      process.env.RAG_MAX_SEMANTIC_TOP_K,
+      120,
+    );
+    this.maxFinalExercisePoolLimit = this.parsePositiveInteger(
+      process.env.RAG_MAX_FINAL_EXERCISE_POOL_SIZE,
+      48,
+    );
+
+    this.vectorStore = new ExerciseVectorStore(this.exercisesDb, {
+      openaiClient: this.openai,
+      model: process.env.OPENROUTER_EMBED_MODEL ?? "",
+      cacheFilePath: path.join(
+        __dirname,
+        "../data/musculacion.embeddings.cache.json",
+      ),
+    });
+
+    void this.vectorStore.initialize().catch((error) => {
+      console.warn(
+        "Could not prebuild exercise vector index. The service will fallback to classic filtering.",
+        error,
+      );
+    });
+  }
+
+  private parsePositiveInteger(rawValue: string | undefined, fallback: number) {
+    const parsed = Number(rawValue);
+    if (!Number.isInteger(parsed) || parsed <= 0) {
+      return fallback;
+    }
+
+    return parsed;
   }
 
   private normalizeText(value: string): string {
@@ -136,19 +184,27 @@ export class RagService {
     });
   }
 
-  private filterExercises(request: RoutineRequest): FilteredExercise[] {
-    const exercises = this.exercisesDb;
-
-    const levelFiltered = this.filterByLevel(exercises, request.level);
+  private filterExerciseRecords(
+    request: RoutineRequest,
+    sourceExercises: ExerciseRecord[] = this.exercisesDb,
+  ): ExerciseRecord[] {
+    const levelFiltered = this.filterByLevel(sourceExercises, request.level);
     const injuryFiltered = this.filterByInjuries(
       levelFiltered,
       request.injuries,
     );
-    const validExercises = this.filterByEquipment(
+    return this.filterByEquipment(
       injuryFiltered,
       request.equipment,
       request.weightKg as number,
     );
+  }
+
+  private filterExercises(
+    request: RoutineRequest,
+    sourceExercises: ExerciseRecord[] = this.exercisesDb,
+  ): FilteredExercise[] {
+    const validExercises = this.filterExerciseRecords(request, sourceExercises);
 
     return validExercises.map((exercise) => ({
       id: exercise.id,
@@ -175,6 +231,179 @@ export class RagService {
       movementPattern:
         exercise.atributos_especificos?.patron_movimiento || "Sin especificar",
     }));
+  }
+
+  private dedupeExercises(exercises: ExerciseRecord[]): ExerciseRecord[] {
+    const used = new Set<string>();
+    const deduped: ExerciseRecord[] = [];
+
+    for (const exercise of exercises) {
+      if (used.has(exercise.id)) {
+        continue;
+      }
+
+      used.add(exercise.id);
+      deduped.push(exercise);
+    }
+
+    return deduped;
+  }
+
+  private mergeExercisePools(
+    primaryPool: ExerciseRecord[],
+    fallbackPool: ExerciseRecord[],
+    limit: number,
+  ): ExerciseRecord[] {
+    const merged = this.dedupeExercises([...primaryPool, ...fallbackPool]);
+    return merged.slice(0, limit);
+  }
+
+  private buildSemanticQuery(
+    profile: Partial<RoutineRequest> | undefined,
+    userText: string,
+    operationContext: string,
+  ): string {
+    const segments = [
+      userText,
+      operationContext,
+      profile?.sport ? `deporte: ${profile.sport}` : "",
+      profile?.level ? `nivel: ${profile.level}` : "",
+      profile?.availableDays
+        ? `dias de entrenamiento: ${profile.availableDays}`
+        : "",
+      profile?.averageDurationMinutes
+        ? `duracion aproximada por dia: ${profile.averageDurationMinutes} minutos`
+        : "",
+      Array.isArray(profile?.equipment) && profile.equipment.length > 0
+        ? `equipamiento disponible: ${profile.equipment.join(", ")}`
+        : "",
+      Array.isArray(profile?.injuries) && profile.injuries.length > 0
+        ? `lesiones o molestias: ${profile.injuries.join(", ")}`
+        : "",
+    ].filter(Boolean);
+
+    if (segments.length === 0) {
+      return "rutina de musculacion equilibrada";
+    }
+
+    return segments.join(". ");
+  }
+
+  private estimateExercisesPerDay(averageDurationMinutes: number): number {
+    if (averageDurationMinutes <= 40) {
+      return 4;
+    }
+
+    if (averageDurationMinutes <= 55) {
+      return 5;
+    }
+
+    if (averageDurationMinutes <= 75) {
+      return 6;
+    }
+
+    if (averageDurationMinutes <= 95) {
+      return 7;
+    }
+
+    return 8;
+  }
+
+  private resolveTargetExercisePoolSize(profile?: RoutineRequest): number {
+    if (!profile) {
+      return this.finalExercisePoolLimit;
+    }
+
+    const days = Math.max(1, Number(profile.availableDays) || 1);
+    const minutes = Math.max(20, Number(profile.averageDurationMinutes) || 60);
+    const exercisesPerDay = this.estimateExercisesPerDay(minutes);
+    const volumeTarget = days * exercisesPerDay;
+    const safetyBuffer = Math.max(2, Math.ceil(days * 1.5));
+    const requestedPool = volumeTarget + safetyBuffer;
+
+    const boundedPool = Math.min(
+      Math.max(this.finalExercisePoolLimit, requestedPool),
+      this.maxFinalExercisePoolLimit,
+    );
+
+    return boundedPool;
+  }
+
+  private resolveSemanticTopK(targetPoolSize: number): number {
+    const requested = Math.max(
+      this.semanticCandidatesLimit,
+      targetPoolSize * 3,
+    );
+    const bounded = Math.min(requested, this.maxSemanticCandidatesLimit);
+    return Math.min(bounded, this.exercisesDb.length);
+  }
+
+  private async retrieveSemanticCandidates(
+    semanticQuery: string,
+    topK: number,
+  ): Promise<ExerciseRecord[]> {
+    const normalizedQuery = semanticQuery.trim();
+    if (!normalizedQuery) {
+      return this.exercisesDb.slice(0, topK);
+    }
+
+    try {
+      const results = await this.vectorStore.search(normalizedQuery, topK);
+
+      if (results.length === 0) {
+        return this.exercisesDb.slice(0, topK);
+      }
+
+      return results.map((result) => result.exercise);
+    } catch (error) {
+      console.warn(
+        "Vector search unavailable. Falling back to classic pool selection.",
+        error,
+      );
+      return this.exercisesDb.slice(0, topK);
+    }
+  }
+
+  private async buildPromptExercisePool(options: {
+    profile?: RoutineRequest | undefined;
+    semanticQuery: string;
+  }): Promise<FilteredExercise[]> {
+    const targetPoolSize = this.resolveTargetExercisePoolSize(options.profile);
+    const semanticTopK = this.resolveSemanticTopK(targetPoolSize);
+
+    const semanticCandidates = await this.retrieveSemanticCandidates(
+      options.semanticQuery,
+      semanticTopK,
+    );
+
+    if (!options.profile) {
+      const rawPool = this.mergeExercisePools(
+        semanticCandidates,
+        this.exercisesDb,
+        targetPoolSize,
+      );
+      return this.mapToFilteredExercises(rawPool);
+    }
+
+    const hardFilteredOnSemantic = this.filterExerciseRecords(
+      options.profile,
+      semanticCandidates,
+    );
+    const hardFilteredFullDb = this.filterExerciseRecords(options.profile);
+
+    const mergedPool = this.mergeExercisePools(
+      hardFilteredOnSemantic,
+      hardFilteredFullDb,
+      targetPoolSize,
+    );
+
+    if (mergedPool.length < targetPoolSize) {
+      console.warn(
+        `Limited exercise pool after hard filters (${mergedPool.length}/${targetPoolSize}). Consider expanding dataset coverage for this profile.`,
+      );
+    }
+
+    return this.mapToFilteredExercises(mergedPool);
   }
 
   private async generateJsonFromModel(
@@ -428,10 +657,22 @@ export class RagService {
       level: request?.level ?? "Principiante",
     };
 
-    const validExercises = this.filterExercises(normalizedRequest);
+    const semanticQuery = this.buildSemanticQuery(
+      normalizedRequest,
+      normalizedRequest.text,
+      `crea una rutina de ${normalizedRequest.sport}`,
+    );
+
+    const validExercises = await this.buildPromptExercisePool({
+      profile: normalizedRequest,
+      semanticQuery,
+    });
     const exerciseContext = JSON.stringify(validExercises);
 
-    console.log("Valid exercises for this user:", validExercises);
+    console.log(
+      "Valid exercises for this user after semantic retrieval + hard filters:",
+      validExercises,
+    );
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
@@ -489,21 +730,28 @@ export class RagService {
       );
     }
 
-    const normalizedProfile = request.profile
-      ? this.normalizeProfile(request.profile)
-      : undefined;
-
-    const validExercises = normalizedProfile
-      ? this.filterExercises(normalizedProfile)
-      : this.mapToFilteredExercises(this.exercisesDb);
-
-    const exerciseContext = JSON.stringify(validExercises);
     const targetDay = currentRoutine.routine[dayIndex];
     if (!targetDay) {
       throw new Error("Could not resolve the target day to replace.");
     }
 
+    const normalizedProfile = request.profile
+      ? this.normalizeProfile(request.profile)
+      : undefined;
+
     const changeText = request.changeRequest ?? "";
+    const semanticQuery = this.buildSemanticQuery(
+      normalizedProfile,
+      changeText,
+      `regenerar ${targetDay.day} manteniendo coherencia con ${targetDay.exercises.map((exercise) => exercise.name).join(", ")}`,
+    );
+
+    const validExercises = await this.buildPromptExercisePool({
+      profile: normalizedProfile,
+      semanticQuery,
+    });
+
+    const exerciseContext = JSON.stringify(validExercises);
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
@@ -563,13 +811,21 @@ export class RagService {
     const normalizedProfile = request.profile
       ? this.normalizeProfile(request.profile)
       : undefined;
+    const changeText = request.changeRequest ?? "";
+    const semanticQuery = this.buildSemanticQuery(
+      normalizedProfile,
+      changeText,
+      `anadir un nuevo dia coherente con los dias actuales: ${currentRoutine.routine
+        .map((day) => day.day)
+        .join(", ")}`,
+    );
 
-    const validExercises = normalizedProfile
-      ? this.filterExercises(normalizedProfile)
-      : this.mapToFilteredExercises(this.exercisesDb);
+    const validExercises = await this.buildPromptExercisePool({
+      profile: normalizedProfile,
+      semanticQuery,
+    });
 
     const exerciseContext = JSON.stringify(validExercises);
-    const changeText = request.changeRequest ?? "";
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
@@ -656,13 +912,19 @@ export class RagService {
     const normalizedProfile = request.profile
       ? this.normalizeProfile(request.profile)
       : undefined;
+    const changeText = request.changeRequest ?? "";
+    const semanticQuery = this.buildSemanticQuery(
+      normalizedProfile,
+      changeText,
+      `reemplazar ${targetExercise.name} dentro de ${targetDay.day} con un ejercicio equivalente`,
+    );
 
-    const validExercises = normalizedProfile
-      ? this.filterExercises(normalizedProfile)
-      : this.mapToFilteredExercises(this.exercisesDb);
+    const validExercises = await this.buildPromptExercisePool({
+      profile: normalizedProfile,
+      semanticQuery,
+    });
 
     const exerciseContext = JSON.stringify(validExercises);
-    const changeText = request.changeRequest ?? "";
 
     const systemPrompt = `
     \nEres un entrenador personal experto en ciencias del deporte.
