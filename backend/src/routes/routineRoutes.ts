@@ -5,7 +5,7 @@ import {
   changeRoutineDay,
   generateRoutine,
   interpretChatIntent,
-} from "@backend/controllers/routineController";
+} from "@backend/controllers/routines";
 
 const router = Router();
 

@@ -23,6 +23,8 @@ export class RagService {
   private openai: OpenAI;
   private exercisesDb: ExerciseRecord[];
   private model: string;
+  private readonly modelFallbacks: string[];
+  private readonly modelRequestTimeoutMs: number;
   private vectorStore: ExerciseVectorStore;
   private semanticCandidatesLimit: number;
   private finalExercisePoolLimit: number;
@@ -33,6 +35,14 @@ export class RagService {
     const baseURL = process.env.OPENROUTER_BASE_URL || "";
     const apiKey = process.env.OPENROUTER_API_KEY;
     this.model = process.env.OPENROUTER_MODEL || "";
+    this.modelFallbacks = [
+      "liquid/lfm-2.5-1.2b-instruct:free",
+      "openai/gpt-oss-20b:free",
+    ];
+    this.modelRequestTimeoutMs = this.parsePositiveInteger(
+      process.env.OPENROUTER_MODEL_TIMEOUT_MS,
+      45000,
+    );
 
     if (!apiKey) {
       throw new Error(
@@ -413,35 +423,213 @@ export class RagService {
     console.log("SystemPrompt: ", systemPrompt);
     console.log("userPrompt: ", userPrompt);
 
-    try {
-      console.log(`Connecting to OpenRouter with model: ${this.model}`);
-      const response = await this.openai.chat.completions.create({
-        model: this.model,
-        response_format: { type: "json_object" },
-        temperature: 0.7,
-        messages: [
-          { role: "system", content: systemPrompt },
-          {
-            role: "user",
-            content: userPrompt,
-          },
-        ],
-      });
+    const modelsToTry = [this.model, ...this.modelFallbacks].filter(
+      (model, index, models) =>
+        Boolean(model) && models.indexOf(model) === index,
+    );
 
-      const modelOutput = response.choices[0]?.message?.content;
+    let lastError: unknown;
+
+    for (const model of modelsToTry) {
+      try {
+        return await this.generateJsonWithModel(
+          model,
+          systemPrompt,
+          userPrompt,
+          true,
+        );
+      } catch (error) {
+        lastError = error;
+        const details = this.getModelErrorDetails(error);
+        console.warn(
+          `OpenRouter model attempt failed (${model}): ${details.code ?? "unknown"} - ${details.message ?? "unknown"}`,
+        );
+
+        if (this.shouldRetryWithoutResponseFormat(details.message)) {
+          try {
+            return await this.generateJsonWithModel(
+              model,
+              systemPrompt,
+              userPrompt,
+              false,
+            );
+          } catch (retryError) {
+            lastError = retryError;
+            const retryDetails = this.getModelErrorDetails(retryError);
+            console.warn(
+              `OpenRouter retry without JSON mode failed (${model}): ${retryDetails.code ?? "unknown"} - ${retryDetails.message ?? "unknown"}`,
+            );
+          }
+        }
+      }
+    }
+
+    const finalDetails = this.getModelErrorDetails(lastError);
+    console.error(
+      `Error during AI generation after fallback attempts: ${finalDetails.code ?? "unknown"} - ${finalDetails.message ?? "unknown"}`,
+    );
+
+    throw new Error("Failed to generate routine with AI.");
+  }
+
+  private async generateJsonWithModel(
+    model: string,
+    systemPrompt: string,
+    userPrompt: string,
+    useJsonMode: boolean,
+  ): Promise<Record<string, unknown>> {
+    console.log(
+      `Connecting to OpenRouter with model: ${model}${useJsonMode ? "" : " (fallback without response_format)"}`,
+    );
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(
+      () => controller.abort(),
+      this.modelRequestTimeoutMs,
+    );
+
+    try {
+      const response = await this.openai.chat.completions.create(
+        {
+          model,
+          ...(useJsonMode
+            ? { response_format: { type: "json_object" as const } }
+            : {}),
+          temperature: 0.7,
+          messages: [
+            { role: "system", content: systemPrompt },
+            {
+              role: "user",
+              content: userPrompt,
+            },
+          ],
+        },
+        { signal: controller.signal },
+      );
+
+      const modelOutput = this.extractModelOutput(response);
       if (!modelOutput) {
         throw new Error("Empty response from AI model.");
       }
 
-      return JSON.parse(modelOutput) as Record<string, unknown>;
-    } catch (error) {
-      const e = error as { code?: string; message?: string };
-      console.error(`Error during AI generation: ${e.code} - ${e.message}`);
-
-      throw new Error("Failed to generate routine with AI.");
+      return this.parseJsonOutput(modelOutput);
     } finally {
+      clearTimeout(timeoutId);
       console.log("Finished AI generation attempt.");
     }
+  }
+
+  private extractModelOutput(response: unknown): string | undefined {
+    if (!response || typeof response !== "object") {
+      return undefined;
+    }
+
+    const candidateResponse = response as {
+      choices?: Array<{
+        message?: {
+          content?: unknown;
+        };
+      }>;
+    };
+
+    const content = candidateResponse.choices?.[0]?.message?.content;
+    if (typeof content === "string") {
+      return content;
+    }
+
+    if (Array.isArray(content)) {
+      return content
+        .map((part) => {
+          if (typeof part === "string") {
+            return part;
+          }
+
+          if (part && typeof part === "object" && "text" in part) {
+            return String((part as { text?: unknown }).text ?? "");
+          }
+
+          return "";
+        })
+        .join("");
+    }
+
+    return undefined;
+  }
+
+  private parseJsonOutput(content: string): Record<string, unknown> {
+    const trimmed = content.trim();
+
+    const direct = this.tryParseJson(trimmed);
+    if (direct) {
+      return direct;
+    }
+
+    const fencedMatch = trimmed.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (fencedMatch?.[1]) {
+      const fencedJson = this.tryParseJson(fencedMatch[1].trim());
+      if (fencedJson) {
+        return fencedJson;
+      }
+    }
+
+    const firstBrace = trimmed.indexOf("{");
+    const lastBrace = trimmed.lastIndexOf("}");
+    if (firstBrace >= 0 && lastBrace > firstBrace) {
+      const slicedJson = this.tryParseJson(
+        trimmed.slice(firstBrace, lastBrace + 1),
+      );
+      if (slicedJson) {
+        return slicedJson;
+      }
+    }
+
+    throw new Error("Model response is not valid JSON.");
+  }
+
+  private tryParseJson(value: string): Record<string, unknown> | undefined {
+    try {
+      return JSON.parse(value) as Record<string, unknown>;
+    } catch {
+      return undefined;
+    }
+  }
+
+  private getModelErrorDetails(error: unknown): {
+    code?: string | number;
+    message?: string;
+  } {
+    const candidateError = error as {
+      code?: string | number;
+      status?: number;
+      message?: string;
+      error?: { message?: string };
+    };
+
+    const details: { code?: string | number; message?: string } = {};
+
+    if (candidateError?.code !== undefined) {
+      details.code = candidateError.code;
+    } else if (candidateError?.status !== undefined) {
+      details.code = candidateError.status;
+    }
+
+    const message = candidateError?.message ?? candidateError?.error?.message;
+    if (message !== undefined) {
+      details.message = message;
+    }
+
+    return details;
+  }
+
+  private shouldRetryWithoutResponseFormat(message?: string): boolean {
+    const normalizedMessage = (message ?? "").toLowerCase();
+
+    return (
+      normalizedMessage.includes("response_format") ||
+      normalizedMessage.includes("json_object") ||
+      normalizedMessage.includes("structured output") ||
+      normalizedMessage.includes("structured_outputs")
+    );
   }
 
   private resolveDayIndex(

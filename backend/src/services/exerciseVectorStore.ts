@@ -267,9 +267,10 @@ export class ExerciseVectorStore {
     const response = await this.openai.embeddings.create({
       model: this.model,
       input: text,
+      encoding_format: "float",
     });
 
-    const embedding = response.data[0]?.embedding;
+    const embedding = this.extractEmbedding(response);
     if (!this.isNumberArray(embedding)) {
       throw new Error("Embedding response does not include a valid vector.");
     }
@@ -277,7 +278,77 @@ export class ExerciseVectorStore {
     return embedding;
   }
 
+  private extractEmbedding(response: unknown): number[] | undefined {
+    const candidates: unknown[] = [];
+
+    if (response && typeof response === "object") {
+      const maybeResponse = response as { data?: unknown; embedding?: unknown };
+      candidates.push(maybeResponse.data, maybeResponse.embedding);
+    }
+
+    candidates.push(response);
+
+    for (const candidate of candidates) {
+      if (Array.isArray(candidate) && candidate.length > 0) {
+        const firstItem = candidate[0] as {
+          embedding?: unknown;
+          vector?: unknown;
+        };
+
+        if (this.isNumberArray(firstItem?.embedding)) {
+          return firstItem.embedding;
+        }
+
+        if (this.isNumberArray(firstItem?.vector)) {
+          return firstItem.vector;
+        }
+
+        if (this.isNumberArray(firstItem)) {
+          return firstItem;
+        }
+      }
+
+      if (this.isNumberArray(candidate)) {
+        return candidate;
+      }
+
+      if (candidate && typeof candidate === "object") {
+        const objectCandidate = candidate as {
+          embeddings?: unknown;
+          embedding?: unknown;
+        };
+
+        if (this.isNumberArray(objectCandidate.embedding)) {
+          return objectCandidate.embedding;
+        }
+
+        if (
+          Array.isArray(objectCandidate.embeddings) &&
+          objectCandidate.embeddings.length > 0
+        ) {
+          const firstEmbedding = objectCandidate.embeddings[0] as {
+            embedding?: unknown;
+          };
+
+          if (this.isNumberArray(firstEmbedding?.embedding)) {
+            return firstEmbedding.embedding;
+          }
+        }
+      }
+    }
+
+    return undefined;
+  }
+
   private isNumberArray(value: unknown): value is number[] {
+    if (ArrayBuffer.isView(value) && !(value instanceof DataView)) {
+      const vector = value as unknown as ArrayLike<number>;
+      return (
+        vector.length > 0 &&
+        Array.from(vector).every((item) => Number.isFinite(item))
+      );
+    }
+
     return (
       Array.isArray(value) &&
       value.length > 0 &&
