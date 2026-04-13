@@ -138,6 +138,21 @@ export async function postJson<TResponse>(
   return (await response.json()) as TResponse;
 }
 
+export async function getJson<TResponse>(
+  path: string,
+  fallbackError: string,
+): Promise<TResponse> {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error(await getApiErrorMessage(response, fallbackError));
+  }
+
+  return (await response.json()) as TResponse;
+}
+
 export function buildRoutineRequestPayload(
   profile: UserProfileForm | undefined,
   text: string,

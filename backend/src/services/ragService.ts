@@ -51,7 +51,7 @@ export class RagService {
       const fileData = fs.readFileSync(dataPath, "utf-8");
       this.exercisesDb = JSON.parse(fileData);
     } catch (error) {
-      console.error("Error loading strength training dataset:", error);
+      console.error("Error loading exercise dataset:", error);
       this.exercisesDb = [];
     }
 
@@ -79,7 +79,7 @@ export class RagService {
         "../data/musculacion.embeddings.cache.json",
       ),
       ...(DEFAULT_GOOGLE_EMBEDDING_MODEL
-        ? {DEFAULT_GOOGLE_EMBEDDING_MODEL }
+        ? { DEFAULT_GOOGLE_EMBEDDING_MODEL }
         : {}),
     };
 
@@ -213,6 +213,7 @@ export class RagService {
     return validExercises.map((exercise) => ({
       id: exercise.id,
       name: exercise.nombre,
+      modalidad: exercise.modalidad ?? "Sin especificar",
       muscleGroup:
         exercise.atributos_especificos?.grupo_muscular || "Sin especificar",
       mechanicType:
@@ -228,6 +229,7 @@ export class RagService {
     return exercises.map((exercise) => ({
       id: exercise.id,
       name: exercise.nombre,
+      modalidad: exercise.modalidad ?? "Sin especificar",
       muscleGroup:
         exercise.atributos_especificos?.grupo_muscular || "Sin especificar",
       mechanicType:
@@ -287,7 +289,7 @@ export class RagService {
     ].filter(Boolean);
 
     if (segments.length === 0) {
-      return "rutina de musculacion equilibrada";
+      return "rutina de entrenamiento equilibrada";
     }
 
     return segments.join(". ");

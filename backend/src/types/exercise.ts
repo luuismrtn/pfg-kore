@@ -1,6 +1,7 @@
 export interface FilteredExercise {
   id: string;
   name: string;
+  modalidad?: string;
   muscleGroup: string;
   mechanicType: string;
   movementPattern: string;
@@ -9,6 +10,7 @@ export interface FilteredExercise {
 export interface ExerciseRecord {
   id: string;
   nombre: string;
+  modalidad?: string;
   nivel_dificultad?: string;
   equipamiento?: string[];
   lesiones_prohibidas?: string[];

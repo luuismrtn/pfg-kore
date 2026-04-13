@@ -57,9 +57,7 @@ export class ExerciseVectorStore {
     this.enabled =
       options?.enabled ?? process.env.RAG_USE_VECTOR_SEARCH !== "false";
 
-    this.model =
-      options?.model ??
-      DEFAULT_GOOGLE_EMBEDDING_MODEL;
+    this.model = options?.model ?? DEFAULT_GOOGLE_EMBEDDING_MODEL;
 
     const apiKey = options?.apiKey;
 
@@ -240,6 +238,10 @@ export class ExerciseVectorStore {
     text: string,
     taskType: "RETRIEVAL_DOCUMENT" | "RETRIEVAL_QUERY",
   ): Promise<number[]> {
+    console.log(
+      `[Embedding] Iniciando petición (${taskType}) con modelo ${this.model}.`,
+    );
+
     const response = await this.googleAi.models.embedContent({
       model: this.model,
       contents: text,

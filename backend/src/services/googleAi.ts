@@ -5,7 +5,7 @@ export const DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS = [
   "gemini-3-flash-preview",
   "gemini-2.5-pro",
 ];
-export const DEFAULT_GOOGLE_EMBEDDING_MODEL = "text-embedding-001";
+export const DEFAULT_GOOGLE_EMBEDDING_MODEL = "gemini-embedding-2-preview";
 export const DEFAULT_GOOGLE_MODEL_TIMEOUT_MS = 45000;
 
 export function createGoogleAiClient(

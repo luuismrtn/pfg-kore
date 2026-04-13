@@ -8,10 +8,17 @@ import {
 } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import type { UserProfileForm } from "@/features/profile/types";
+import { getAvailableSportOptions } from "@/services/api/routines";
 
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 
-const sportOptions = ["Musculación", "Running", "Calistenia"];
+const DEFAULT_SPORT_OPTIONS = [
+  "Musculación",
+  "Calistenia",
+  "Running",
+  "Movilidad",
+  "Cardio Funcional",
+];
 
 const equipmentOptions = [
   "Mancuernas y Pesas Libres",
@@ -171,11 +178,41 @@ function ProfilePage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [showWizard, setShowWizard] = useState(false);
+  const [sportOptions, setSportOptions] = useState(DEFAULT_SPORT_OPTIONS);
 
   useEffect(() => {
     const profile = getProfile();
     setForm(profile);
     setShowWizard(!hasCompleteProfileData(profile));
+  }, []);
+
+  useEffect(() => {
+    let isActive = true;
+
+    void getAvailableSportOptions().then((options: string[]) => {
+      if (!isActive) {
+        return;
+      }
+
+      const nextOptions = options.length > 0 ? options : DEFAULT_SPORT_OPTIONS;
+
+      setSportOptions(nextOptions);
+      setForm((current) => {
+        const currentSport = current.sport.trim();
+        if (currentSport.length > 0 && nextOptions.includes(currentSport)) {
+          return current;
+        }
+
+        return {
+          ...current,
+          sport: nextOptions[0] ?? current.sport,
+        };
+      });
+    });
+
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const bmi = useMemo(() => {
