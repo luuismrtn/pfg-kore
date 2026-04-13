@@ -129,7 +129,10 @@ export function useChatConversation() {
 
     try {
       const currentRoutine = readStoredRoutine();
-      const intent = await interpretChatIntent(text, currentRoutine ?? undefined);
+      const intent = await interpretChatIntent(
+        text,
+        currentRoutine ?? undefined,
+      );
 
       let routine: RoutineResponse | null = null;
       let assistantReply = intent.responseText;
@@ -151,7 +154,11 @@ export function useChatConversation() {
           );
         }
 
-        routine = await changeRoutineDay(currentRoutine, intent.dayToChange, text);
+        routine = await changeRoutineDay(
+          currentRoutine,
+          intent.dayToChange,
+          text,
+        );
         assistantReply =
           "He cambiado el día que me pediste. Puedes ver la rutina actualizada en el panel.";
       } else if (intent.action === "change_exercise") {
@@ -211,7 +218,9 @@ export function useChatConversation() {
         id: crypto.randomUUID(),
         role: "assistant",
         content:
-          error instanceof Error ? error.message : "No se pudo generar la rutina.",
+          error instanceof Error
+            ? error.message
+            : "No se pudo generar la rutina.",
       };
 
       if (requestVersionRef.current === requestVersion) {

@@ -1,8 +1,16 @@
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { ExerciseVectorStore } from "@backend/services/exerciseVectorStore";
+import {
+  createGoogleAiClient,
+  DEFAULT_GOOGLE_CHAT_MODEL,
+  DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS,
+  DEFAULT_GOOGLE_MODEL_TIMEOUT_MS,
+  DEFAULT_GOOGLE_EMBEDDING_MODEL,
+  resolveUniqueModels,
+} from "@backend/services/googleAi";
 import type { ExerciseRecord, FilteredExercise } from "@backend/types/exercise";
 import type {
   AddRoutineDayRequest,
@@ -12,6 +20,7 @@ import type {
   ChangeRoutineExerciseRequest,
   ChangeRoutineDayRequest,
   RoutineDay,
+  RoutineExercise,
   RoutineRequest,
   RoutineResponse,
 } from "@backend/types/routine";
@@ -20,7 +29,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export class RagService {
-  private openai: OpenAI;
+  private googleAi: GoogleGenAI;
   private exercisesDb: ExerciseRecord[];
   private model: string;
   private readonly modelFallbacks: string[];
@@ -32,32 +41,10 @@ export class RagService {
   private maxFinalExercisePoolLimit: number;
 
   constructor() {
-    const baseURL = process.env.OPENROUTER_BASE_URL || "";
-    const apiKey = process.env.OPENROUTER_API_KEY;
-    this.model = process.env.OPENROUTER_MODEL || "";
-    this.modelFallbacks = [
-      "liquid/lfm-2.5-1.2b-instruct:free",
-      "openai/gpt-oss-20b:free",
-    ];
-    this.modelRequestTimeoutMs = this.parsePositiveInteger(
-      process.env.OPENROUTER_MODEL_TIMEOUT_MS,
-      45000,
-    );
-
-    if (!apiKey) {
-      throw new Error(
-        "Missing OPENROUTER_API_KEY. Add it to backend/.env to use OpenRouter.",
-      );
-    }
-
-    this.openai = new OpenAI({
-      baseURL,
-      apiKey,
-      defaultHeaders: {
-        "HTTP-Referer": process.env.OPENROUTER_SITE_URL || "",
-        "X-OpenRouter-Title": process.env.OPENROUTER_APP_NAME || "",
-      },
-    });
+    this.googleAi = createGoogleAiClient();
+    this.model = DEFAULT_GOOGLE_CHAT_MODEL;
+    this.modelFallbacks = DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS;
+    this.modelRequestTimeoutMs = DEFAULT_GOOGLE_MODEL_TIMEOUT_MS;
 
     const dataPath = path.join(__dirname, "../data/musculacion.json");
     try {
@@ -85,14 +72,21 @@ export class RagService {
       48,
     );
 
-    this.vectorStore = new ExerciseVectorStore(this.exercisesDb, {
-      openaiClient: this.openai,
-      model: process.env.OPENROUTER_EMBED_MODEL ?? "",
+    const vectorStoreOptions = {
+      googleClient: this.googleAi,
       cacheFilePath: path.join(
         __dirname,
         "../data/musculacion.embeddings.cache.json",
       ),
-    });
+      ...(DEFAULT_GOOGLE_EMBEDDING_MODEL
+        ? {DEFAULT_GOOGLE_EMBEDDING_MODEL }
+        : {}),
+    };
+
+    this.vectorStore = new ExerciseVectorStore(
+      this.exercisesDb,
+      vectorStoreOptions,
+    );
 
     void this.vectorStore.initialize().catch((error) => {
       console.warn(
@@ -423,10 +417,7 @@ export class RagService {
     console.log("SystemPrompt: ", systemPrompt);
     console.log("userPrompt: ", userPrompt);
 
-    const modelsToTry = [this.model, ...this.modelFallbacks].filter(
-      (model, index, models) =>
-        Boolean(model) && models.indexOf(model) === index,
-    );
+    const modelsToTry = resolveUniqueModels(this.model, this.modelFallbacks);
 
     let lastError: unknown;
 
@@ -442,7 +433,7 @@ export class RagService {
         lastError = error;
         const details = this.getModelErrorDetails(error);
         console.warn(
-          `OpenRouter model attempt failed (${model}): ${details.code ?? "unknown"} - ${details.message ?? "unknown"}`,
+          `Google AI model attempt failed (${model}): ${details.code ?? "unknown"} - ${details.message ?? "unknown"}`,
         );
 
         if (this.shouldRetryWithoutResponseFormat(details.message)) {
@@ -457,7 +448,7 @@ export class RagService {
             lastError = retryError;
             const retryDetails = this.getModelErrorDetails(retryError);
             console.warn(
-              `OpenRouter retry without JSON mode failed (${model}): ${retryDetails.code ?? "unknown"} - ${retryDetails.message ?? "unknown"}`,
+              `Google AI retry without JSON mode failed (${model}): ${retryDetails.code ?? "unknown"} - ${retryDetails.message ?? "unknown"}`,
             );
           }
         }
@@ -479,7 +470,7 @@ export class RagService {
     useJsonMode: boolean,
   ): Promise<Record<string, unknown>> {
     console.log(
-      `Connecting to OpenRouter with model: ${model}${useJsonMode ? "" : " (fallback without response_format)"}`,
+      `Connecting to Google AI with model: ${model}${useJsonMode ? "" : " (fallback without responseMimeType)"}`,
     );
 
     const controller = new AbortController();
@@ -489,23 +480,16 @@ export class RagService {
     );
 
     try {
-      const response = await this.openai.chat.completions.create(
-        {
-          model,
-          ...(useJsonMode
-            ? { response_format: { type: "json_object" as const } }
-            : {}),
+      const response = await this.googleAi.models.generateContent({
+        model,
+        contents: userPrompt,
+        config: {
+          systemInstruction: systemPrompt,
           temperature: 0.7,
-          messages: [
-            { role: "system", content: systemPrompt },
-            {
-              role: "user",
-              content: userPrompt,
-            },
-          ],
+          ...(useJsonMode ? { responseMimeType: "application/json" } : {}),
+          abortSignal: controller.signal,
         },
-        { signal: controller.signal },
-      );
+      });
 
       const modelOutput = this.extractModelOutput(response);
       if (!modelOutput) {
@@ -525,12 +509,17 @@ export class RagService {
     }
 
     const candidateResponse = response as {
+      text?: unknown;
       choices?: Array<{
         message?: {
           content?: unknown;
         };
       }>;
     };
+
+    if (typeof candidateResponse.text === "string") {
+      return candidateResponse.text;
+    }
 
     const content = candidateResponse.choices?.[0]?.message?.content;
     if (typeof content === "string") {
@@ -626,6 +615,8 @@ export class RagService {
 
     return (
       normalizedMessage.includes("response_format") ||
+      normalizedMessage.includes("responsemimetype") ||
+      normalizedMessage.includes("application/json") ||
       normalizedMessage.includes("json_object") ||
       normalizedMessage.includes("structured output") ||
       normalizedMessage.includes("structured_outputs")
@@ -758,9 +749,274 @@ export class RagService {
       throw new Error("AI response does not contain a valid routine array.");
     }
 
+    const normalizedRoutine = routine.map((day) => this.toRoutineDay(day));
+    if (normalizedRoutine.some((day) => day === null)) {
+      throw new Error("AI response contains an invalid routine day.");
+    }
+
     return {
-      routine: routine as RoutineResponse["routine"],
+      routine: normalizedRoutine as RoutineResponse["routine"],
     };
+  }
+
+  private isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null;
+  }
+
+  private toRoutineExercise(value: unknown): RoutineExercise | null {
+    if (!this.isRecord(value)) {
+      return null;
+    }
+
+    const exerciseId =
+      typeof value.exerciseId === "string" ? value.exerciseId.trim() : "";
+    const name = typeof value.name === "string" ? value.name.trim() : "";
+    const sets = Number(value.sets);
+    const repsValue = value.reps;
+    const reps =
+      typeof repsValue === "string"
+        ? repsValue.trim()
+        : typeof repsValue === "number" && Number.isFinite(repsValue)
+          ? String(repsValue)
+          : "";
+    const restSeconds = Number(value.restSeconds);
+
+    if (
+      !exerciseId ||
+      !name ||
+      !Number.isFinite(sets) ||
+      sets <= 0 ||
+      !reps ||
+      !Number.isFinite(restSeconds) ||
+      restSeconds < 0
+    ) {
+      return null;
+    }
+
+    const exercise: RoutineExercise = {
+      exerciseId,
+      name,
+      sets,
+      reps,
+      restSeconds,
+    };
+
+    const note = typeof value.note === "string" ? value.note.trim() : "";
+    if (note.length > 0) {
+      exercise.note = note;
+    }
+
+    if (Array.isArray(value.badges)) {
+      const badges = value.badges
+        .filter((badge): badge is string => typeof badge === "string")
+        .map((badge) => badge.trim())
+        .filter((badge) => badge.length > 0);
+
+      if (badges.length > 0) {
+        exercise.badges = badges;
+      }
+    }
+
+    return exercise;
+  }
+
+  private toRoutineDay(value: unknown): RoutineDay | null {
+    if (!this.isRecord(value)) {
+      return null;
+    }
+
+    const day = typeof value.day === "string" ? value.day.trim() : "";
+    if (!day || !Array.isArray(value.exercises)) {
+      return null;
+    }
+
+    const exercises = value.exercises.map((exercise) =>
+      this.toRoutineExercise(exercise),
+    );
+
+    if (exercises.some((exercise) => exercise === null)) {
+      return null;
+    }
+
+    return {
+      day,
+      exercises: exercises as RoutineExercise[],
+    };
+  }
+
+  private tryExtractRoutineResponse(
+    modelResponse: Record<string, unknown>,
+  ): RoutineResponse | null {
+    const routine = modelResponse.routine;
+    if (!Array.isArray(routine)) {
+      return null;
+    }
+
+    const normalizedRoutine = routine.map((day) => this.toRoutineDay(day));
+    if (normalizedRoutine.some((day) => day === null)) {
+      return null;
+    }
+
+    return {
+      routine: normalizedRoutine as RoutineResponse["routine"],
+    };
+  }
+
+  private tryExtractDayFragment(
+    modelResponse: Record<string, unknown>,
+  ): RoutineDay | null {
+    const directDay = this.toRoutineDay(modelResponse);
+    if (directDay) {
+      return directDay;
+    }
+
+    const routine = modelResponse.routine;
+    if (Array.isArray(routine) && routine.length === 1) {
+      return this.toRoutineDay(routine[0]);
+    }
+
+    return null;
+  }
+
+  private tryExtractExerciseFragment(
+    modelResponse: Record<string, unknown>,
+  ): RoutineExercise | null {
+    const directExercise = this.toRoutineExercise(modelResponse);
+    if (directExercise) {
+      return directExercise;
+    }
+
+    if (this.isRecord(modelResponse) && "exercise" in modelResponse) {
+      const nestedExercise = this.toRoutineExercise(modelResponse.exercise);
+      if (nestedExercise) {
+        return nestedExercise;
+      }
+    }
+
+    if (
+      this.isRecord(modelResponse) &&
+      Array.isArray(modelResponse.exercises) &&
+      modelResponse.exercises.length === 1
+    ) {
+      return this.toRoutineExercise(modelResponse.exercises[0]);
+    }
+
+    const routine = modelResponse.routine;
+    if (Array.isArray(routine) && routine.length === 1) {
+      const singleDay = this.toRoutineDay(routine[0]);
+      if (singleDay?.exercises.length === 1) {
+        return singleDay.exercises[0] ?? null;
+      }
+    }
+
+    return null;
+  }
+
+  private replaceRoutineDay(
+    currentRoutine: RoutineResponse,
+    dayIndex: number,
+    nextDay: RoutineDay,
+  ): RoutineResponse {
+    return {
+      routine: currentRoutine.routine.map((day, index) =>
+        index === dayIndex ? nextDay : day,
+      ),
+    };
+  }
+
+  private replaceRoutineExercise(
+    currentRoutine: RoutineResponse,
+    dayIndex: number,
+    exerciseIndex: number,
+    nextExercise: RoutineExercise,
+  ): RoutineResponse {
+    return {
+      routine: currentRoutine.routine.map((day, index) => {
+        if (index !== dayIndex) {
+          return day;
+        }
+
+        return {
+          ...day,
+          exercises: day.exercises.map((exercise, currentIndex) =>
+            currentIndex === exerciseIndex ? nextExercise : exercise,
+          ),
+        };
+      }),
+    };
+  }
+
+  private appendRoutineDay(
+    currentRoutine: RoutineResponse,
+    nextDay: RoutineDay,
+  ): RoutineResponse {
+    return {
+      routine: [...currentRoutine.routine, nextDay],
+    };
+  }
+
+  private buildDayUpdatedRoutine(
+    currentRoutine: RoutineResponse,
+    dayIndex: number,
+    modelResponse: Record<string, unknown>,
+  ): RoutineResponse {
+    const fullRoutine = this.tryExtractRoutineResponse(modelResponse);
+    if (fullRoutine?.routine.length === currentRoutine.routine.length) {
+      return fullRoutine;
+    }
+
+    const dayFragment = this.tryExtractDayFragment(modelResponse);
+    if (dayFragment) {
+      return this.replaceRoutineDay(currentRoutine, dayIndex, dayFragment);
+    }
+
+    throw new Error("AI response does not contain a valid day update.");
+  }
+
+  private buildExerciseUpdatedRoutine(
+    currentRoutine: RoutineResponse,
+    dayIndex: number,
+    exerciseIndex: number,
+    modelResponse: Record<string, unknown>,
+  ): RoutineResponse {
+    const fullRoutine = this.tryExtractRoutineResponse(modelResponse);
+    if (fullRoutine?.routine.length === currentRoutine.routine.length) {
+      return fullRoutine;
+    }
+
+    const dayFragment = this.tryExtractDayFragment(modelResponse);
+    if (dayFragment) {
+      return this.replaceRoutineDay(currentRoutine, dayIndex, dayFragment);
+    }
+
+    const exerciseFragment = this.tryExtractExerciseFragment(modelResponse);
+    if (exerciseFragment) {
+      return this.replaceRoutineExercise(
+        currentRoutine,
+        dayIndex,
+        exerciseIndex,
+        exerciseFragment,
+      );
+    }
+
+    throw new Error("AI response does not contain a valid exercise update.");
+  }
+
+  private buildAddedDayRoutine(
+    currentRoutine: RoutineResponse,
+    modelResponse: Record<string, unknown>,
+  ): RoutineResponse {
+    const fullRoutine = this.tryExtractRoutineResponse(modelResponse);
+    if (fullRoutine?.routine.length === currentRoutine.routine.length + 1) {
+      return fullRoutine;
+    }
+
+    const dayFragment = this.tryExtractDayFragment(modelResponse);
+    if (dayFragment) {
+      return this.appendRoutineDay(currentRoutine, dayFragment);
+    }
+
+    throw new Error("AI response does not contain a valid added day.");
   }
 
   public async interpretChatIntent(
@@ -981,7 +1237,7 @@ export class RagService {
       `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia a reemplazar: "${targetDay.day}". Indice del dia (1-based): ${dayIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese dia.`,
     );
 
-    return this.extractRoutineResponse(modelResponse);
+    return this.buildDayUpdatedRoutine(currentRoutine, dayIndex, modelResponse);
   }
 
   public async addRoutineDay(
@@ -1055,7 +1311,10 @@ export class RagService {
       `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada con exactamente un día nuevo añadido.`,
     );
 
-    const updatedRoutine = this.extractRoutineResponse(modelResponse);
+    const updatedRoutine = this.buildAddedDayRoutine(
+      currentRoutine,
+      modelResponse,
+    );
     if (updatedRoutine.routine.length !== currentRoutine.routine.length + 1) {
       throw new Error(
         "The AI response must contain exactly one additional day.",
@@ -1154,6 +1413,11 @@ export class RagService {
       `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia objetivo: "${targetDay.day}". Ejercicio a reemplazar: ${JSON.stringify(targetExercise)}. Indice del ejercicio en el dia (1-based): ${exerciseIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese ejercicio.`,
     );
 
-    return this.extractRoutineResponse(modelResponse);
+    return this.buildExerciseUpdatedRoutine(
+      currentRoutine,
+      dayIndex,
+      exerciseIndex,
+      modelResponse,
+    );
   }
 }

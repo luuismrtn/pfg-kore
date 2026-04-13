@@ -36,7 +36,7 @@ function readProfileAvailableDays(): number {
 }
 
 function normalizePanelScheduleDays(routineDays: RoutineDay[]): RoutineDay[] {
-  const targetDays = readProfileAvailableDays();
+  const targetDays = Math.max(readProfileAvailableDays(), routineDays.length);
   const normalized = routineDays.slice(0, targetDays).map((day, index) => ({
     day:
       typeof day.day === "string" && day.day.trim().length > 0
@@ -142,7 +142,9 @@ export function usePanelRoutine() {
       setSelectedDay(getPreferredSelectedDay(normalizedRoutine));
     } catch (error) {
       setGenerationError(
-        error instanceof Error ? error.message : "No se pudo generar la rutina.",
+        error instanceof Error
+          ? error.message
+          : "No se pudo generar la rutina.",
       );
       console.error("Error generando rutina:", error);
     } finally {

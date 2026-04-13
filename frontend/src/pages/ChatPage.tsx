@@ -1,4 +1,7 @@
-import { useChatConversation, MAX_USER_CHARS } from "@/features/chat/hooks/useChatConversation";
+import {
+  useChatConversation,
+  MAX_USER_CHARS,
+} from "@/features/chat/hooks/useChatConversation";
 import HeaderBar from "@/components/layout/HeaderBar";
 import { Bot, MessageCircle, SendHorizontal, Trash2, User } from "lucide-react";
 

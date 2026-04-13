@@ -1,7 +1,11 @@
 import crypto from "crypto";
 import fs from "fs";
-import OpenAI from "openai";
+import { GoogleGenAI } from "@google/genai";
 import type { ExerciseRecord } from "@backend/types/exercise";
+import {
+  createGoogleAiClient,
+  DEFAULT_GOOGLE_EMBEDDING_MODEL,
+} from "@backend/services/googleAi";
 
 interface CachedEmbeddingRow {
   id: string;
@@ -21,12 +25,9 @@ export interface ScoredExercise {
 }
 
 export interface ExerciseVectorStoreOptions {
-  openaiClient?: OpenAI;
-  baseUrl?: string;
+  googleClient?: GoogleGenAI;
   model?: string;
   apiKey?: string;
-  siteUrl?: string;
-  appName?: string;
   cacheFilePath?: string;
   enabled?: boolean;
 }
@@ -39,8 +40,7 @@ interface VectorRow {
 
 export class ExerciseVectorStore {
   private readonly exercises: ExerciseRecord[];
-  private readonly openai: OpenAI;
-  private readonly baseUrl: string;
+  private readonly googleAi: GoogleGenAI;
   private readonly model: string;
   private readonly cacheFilePath: string | undefined;
   private readonly enabled: boolean;
@@ -57,42 +57,15 @@ export class ExerciseVectorStore {
     this.enabled =
       options?.enabled ?? process.env.RAG_USE_VECTOR_SEARCH !== "false";
 
-    this.baseUrl = (
-      options?.baseUrl ??
-      process.env.OPENROUTER_BASE_URL ??
-      "https://openrouter.ai/api/v1"
-    ).replace(/\/+$/, "");
-    this.model = options?.model ?? process.env.OPENROUTER_EMBED_MODEL ?? "";
+    this.model =
+      options?.model ??
+      DEFAULT_GOOGLE_EMBEDDING_MODEL;
 
-    const apiKey = options?.apiKey ?? process.env.OPENROUTER_API_KEY ?? "";
-    const hasExternalClient = Boolean(options?.openaiClient);
+    const apiKey = options?.apiKey;
 
-    this.openai =
-      options?.openaiClient ??
-      new OpenAI({
-        baseURL: this.baseUrl,
-        apiKey,
-        defaultHeaders: {
-          "HTTP-Referer":
-            options?.siteUrl ?? process.env.OPENROUTER_SITE_URL ?? "",
-          "X-OpenRouter-Title":
-            options?.appName ?? process.env.OPENROUTER_APP_NAME ?? "",
-        },
-      });
+    this.googleAi = options?.googleClient ?? createGoogleAiClient(apiKey);
 
     this.cacheFilePath = options?.cacheFilePath;
-
-    if (this.enabled && !this.model) {
-      throw new Error(
-        "Missing OPENROUTER_EMBED_MODEL. Set it in backend/.env to enable vector search.",
-      );
-    }
-
-    if (this.enabled && !hasExternalClient && !apiKey) {
-      throw new Error(
-        "Missing OPENROUTER_API_KEY. Set it in backend/.env to enable vector search.",
-      );
-    }
   }
 
   public async initialize(): Promise<void> {
@@ -158,7 +131,7 @@ export class ExerciseVectorStore {
         continue;
       }
 
-      const embedding = await this.requestEmbedding(text);
+      const embedding = await this.requestEmbedding(text, "RETRIEVAL_DOCUMENT");
       rows.push({
         exercise,
         signature,
@@ -258,86 +231,29 @@ export class ExerciseVectorStore {
       return cached;
     }
 
-    const embedding = await this.requestEmbedding(query);
+    const embedding = await this.requestEmbedding(query, "RETRIEVAL_QUERY");
     this.queryEmbeddingCache.set(query, embedding);
     return embedding;
   }
 
-  private async requestEmbedding(text: string): Promise<number[]> {
-    const response = await this.openai.embeddings.create({
+  private async requestEmbedding(
+    text: string,
+    taskType: "RETRIEVAL_DOCUMENT" | "RETRIEVAL_QUERY",
+  ): Promise<number[]> {
+    const response = await this.googleAi.models.embedContent({
       model: this.model,
-      input: text,
-      encoding_format: "float",
+      contents: text,
+      config: {
+        taskType,
+      },
     });
 
-    const embedding = this.extractEmbedding(response);
+    const embedding = response.embeddings?.[0]?.values;
     if (!this.isNumberArray(embedding)) {
       throw new Error("Embedding response does not include a valid vector.");
     }
 
     return embedding;
-  }
-
-  private extractEmbedding(response: unknown): number[] | undefined {
-    const candidates: unknown[] = [];
-
-    if (response && typeof response === "object") {
-      const maybeResponse = response as { data?: unknown; embedding?: unknown };
-      candidates.push(maybeResponse.data, maybeResponse.embedding);
-    }
-
-    candidates.push(response);
-
-    for (const candidate of candidates) {
-      if (Array.isArray(candidate) && candidate.length > 0) {
-        const firstItem = candidate[0] as {
-          embedding?: unknown;
-          vector?: unknown;
-        };
-
-        if (this.isNumberArray(firstItem?.embedding)) {
-          return firstItem.embedding;
-        }
-
-        if (this.isNumberArray(firstItem?.vector)) {
-          return firstItem.vector;
-        }
-
-        if (this.isNumberArray(firstItem)) {
-          return firstItem;
-        }
-      }
-
-      if (this.isNumberArray(candidate)) {
-        return candidate;
-      }
-
-      if (candidate && typeof candidate === "object") {
-        const objectCandidate = candidate as {
-          embeddings?: unknown;
-          embedding?: unknown;
-        };
-
-        if (this.isNumberArray(objectCandidate.embedding)) {
-          return objectCandidate.embedding;
-        }
-
-        if (
-          Array.isArray(objectCandidate.embeddings) &&
-          objectCandidate.embeddings.length > 0
-        ) {
-          const firstEmbedding = objectCandidate.embeddings[0] as {
-            embedding?: unknown;
-          };
-
-          if (this.isNumberArray(firstEmbedding?.embedding)) {
-            return firstEmbedding.embedding;
-          }
-        }
-      }
-    }
-
-    return undefined;
   }
 
   private isNumberArray(value: unknown): value is number[] {
