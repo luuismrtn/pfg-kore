@@ -1406,5 +1406,369 @@
       "tipo_mecanica": "Aislamiento",
       "patron_movimiento": "Abducción de Hombro"
     }
+  },
+  {
+    "id": "cal_001",
+    "nombre": "Flexiones de Diamante",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/cal_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_002",
+    "nombre": "Flexiones Inclinadas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/cal_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_003",
+    "nombre": "Dominadas Pronas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "cal_004",
+    "nombre": "Dominadas Supinas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "cal_005",
+    "nombre": "Fondos en Paralelas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_006",
+    "nombre": "Remo Invertido en Barra Baja",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cal_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "cal_007",
+    "nombre": "Pike Push-up",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_008",
+    "nombre": "Sentadilla Pistol Asistida",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/cal_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "cal_009",
+    "nombre": "Hollow Body Hold",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/cal_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "cal_010",
+    "nombre": "Plancha con Toque de Hombro",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "run_001",
+    "nombre": "Trote Suave Continuo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/run_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Carrera Continua"
+    }
+  },
+  {
+    "id": "run_002",
+    "nombre": "Rodaje Progresivo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Cambio de Ritmo"
+    }
+  },
+  {
+    "id": "run_003",
+    "nombre": "Series 6x400m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/run_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Intervalos"
+    }
+  },
+  {
+    "id": "run_004",
+    "nombre": "Series 10x200m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Velocidad"
+    }
+  },
+  {
+    "id": "run_005",
+    "nombre": "Fartlek Corto",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/run_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Cambio de Ritmo"
+    }
+  },
+  {
+    "id": "run_006",
+    "nombre": "Tempo Run",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Umbral Aeróbico"
+    }
+  },
+  {
+    "id": "run_007",
+    "nombre": "Cuestas Cortas",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/run_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Aceleración"
+    }
+  },
+  {
+    "id": "run_008",
+    "nombre": "Técnica de Carrera",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Técnica",
+      "patron_movimiento": "Técnica de Carrera"
+    }
+  },
+  {
+    "id": "mob_001",
+    "nombre": "Movilidad de Tobillos",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/mob_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Tobillo"
+    }
+  },
+  {
+    "id": "mob_002",
+    "nombre": "Movilidad de Cadera",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/mob_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Cadera"
+    }
+  },
+  {
+    "id": "mob_003",
+    "nombre": "Aperturas Torácicas",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/mob_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Rotación Torácica"
+    }
+  },
+  {
+    "id": "mob_004",
+    "nombre": "Rotaciones de Hombro con Banda",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/mob_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Rotación Externa de Hombro"
+    }
+  },
+  {
+    "id": "cardio_001",
+    "nombre": "Jumping Jacks",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/cardio_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Saltos"
+    }
+  },
+  {
+    "id": "cardio_002",
+    "nombre": "Mountain Climbers",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Rodillas al Pecho"
+    }
+  },
+  {
+    "id": "cardio_003",
+    "nombre": "Burpees",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Cuerpo Completo"
+    }
+  },
+  {
+    "id": "cardio_004",
+    "nombre": "Rodillas Altas",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/cardio_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Aceleración"
+    }
   }
 ]
