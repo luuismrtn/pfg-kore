@@ -6,6 +6,13 @@ import {
   generateRoutine,
   getRoutineGenerationProfileError,
 } from "@/services/api/routines";
+import {
+  getOperationErrorMessage,
+  notifyOperationError,
+  notifyRoutineDayGenerated,
+  notifyRoutineExerciseChanged,
+  notifyRoutineGenerated,
+} from "@/services/notifications/appNotifications";
 
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
@@ -130,21 +137,35 @@ export function usePanelRoutine() {
       return;
     }
 
+    const previousSchedule = panelSchedule;
+    const previousSelectedDay = selectedDay;
+
     setGenerationError(null);
     setIsLoading(true);
 
     try {
-      setPanelSchedule([]);
       const routine = await generateRoutine("");
       const normalizedRoutine = normalizePanelScheduleDays(routine.routine);
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
       setPanelSchedule(normalizedRoutine);
       setSelectedDay(getPreferredSelectedDay(normalizedRoutine));
+      notifyRoutineGenerated();
     } catch (error) {
-      setGenerationError(
-        error instanceof Error
-          ? error.message
-          : "No se pudo generar la rutina.",
+      const message = getOperationErrorMessage(
+        error,
+        "No se pudo generar la rutina.",
+      );
+
+      // Keep previous routine visible if full regeneration fails.
+      setPanelSchedule(previousSchedule);
+      setSelectedDay(
+        previousSelectedDay || getPreferredSelectedDay(previousSchedule),
+      );
+      setGenerationError(message);
+      notifyOperationError(
+        error,
+        "No se pudo generar la rutina.",
+        "No se pudo generar la rutina",
       );
       console.error("Error generando rutina:", error);
     } finally {
@@ -175,7 +196,13 @@ export function usePanelRoutine() {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
         return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
       });
+      notifyRoutineDayGenerated(dayToChange);
     } catch (error) {
+      notifyOperationError(
+        error,
+        "No se pudo generar un nuevo día.",
+        "No se pudo generar el día",
+      );
       console.error("Error regenerando dia de rutina:", error);
     } finally {
       setIsRegeneratingDay(false);
@@ -210,7 +237,13 @@ export function usePanelRoutine() {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
         return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
       });
+      notifyRoutineExerciseChanged(dayToChange);
     } catch (error) {
+      notifyOperationError(
+        error,
+        "No se pudo cambiar el ejercicio seleccionado.",
+        "No se pudo cambiar el ejercicio",
+      );
       console.error("Error cambiando ejercicio de rutina:", error);
     } finally {
       setChangingExerciseRef(null);

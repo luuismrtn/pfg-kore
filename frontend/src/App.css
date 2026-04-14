@@ -39,6 +39,10 @@ body {
   background: var(--color-primary);
 }
 
+[data-sileo-title] {
+  text-transform: none !important;
+}
+
 .kore-range {
   -webkit-appearance: none;
   appearance: none;

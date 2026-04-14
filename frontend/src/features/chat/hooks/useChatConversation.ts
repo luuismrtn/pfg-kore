@@ -14,6 +14,13 @@ import {
   generateRoutine,
   interpretChatIntent,
 } from "@/services/api/routines";
+import {
+  notifyOperationError,
+  notifyRoutineDayAdded,
+  notifyRoutineDayGenerated,
+  notifyRoutineExerciseChanged,
+  notifyRoutineGenerated,
+} from "@/services/notifications/appNotifications";
 
 const seedMessage: ChatMessage = {
   id: "intro",
@@ -25,6 +32,8 @@ const seedMessage: ChatMessage = {
 export const MAX_USER_CHARS = 1000;
 const CHAT_STORAGE_KEY = "pfg-kore:chat:messages";
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
+const CHAT_PENDING_STORAGE_KEY = "pfg-kore:chat:pending";
+const CHAT_SYNC_EVENT = "pfg-kore:chat:sync";
 
 function isChatMessage(value: unknown): value is ChatMessage {
   if (typeof value !== "object" || value === null) {
@@ -83,10 +92,49 @@ function readStoredMessages(): ChatMessage[] {
   return [seedMessage];
 }
 
+function appendStoredMessage(message: ChatMessage): void {
+  const messages = readStoredMessages();
+  const alreadyExists = messages.some((stored) => stored.id === message.id);
+
+  if (alreadyExists) {
+    return;
+  }
+
+  localStorage.setItem(
+    CHAT_STORAGE_KEY,
+    JSON.stringify([...messages, message]),
+  );
+}
+
+function readStoredPendingRequest(): boolean {
+  return localStorage.getItem(CHAT_PENDING_STORAGE_KEY) === "1";
+}
+
+function emitChatSync(sourceId?: string): void {
+  window.dispatchEvent(
+    new CustomEvent(CHAT_SYNC_EVENT, {
+      detail: { sourceId },
+    }),
+  );
+}
+
+function setStoredPendingRequest(isPending: boolean, sourceId?: string): void {
+  if (isPending) {
+    localStorage.setItem(CHAT_PENDING_STORAGE_KEY, "1");
+  } else {
+    localStorage.removeItem(CHAT_PENDING_STORAGE_KEY);
+  }
+
+  emitChatSync(sourceId);
+}
+
 export function useChatConversation() {
+  const instanceIdRef = useRef(crypto.randomUUID());
   const [messages, setMessages] = useState<ChatMessage[]>(readStoredMessages);
   const [draft, setDraft] = useState("");
-  const [isResponding, setIsResponding] = useState(false);
+  const [isResponding, setIsResponding] = useState(() =>
+    readStoredPendingRequest(),
+  );
   const scrollRef = useRef<HTMLDivElement>(null);
   const requestVersionRef = useRef(0);
 
@@ -100,6 +148,41 @@ export function useChatConversation() {
   useEffect(() => {
     localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
   }, [messages]);
+
+  useEffect(() => {
+    const syncFromStorage = () => {
+      setMessages(readStoredMessages());
+      setIsResponding(readStoredPendingRequest());
+    };
+
+    const handleStorage = (event: StorageEvent) => {
+      if (
+        event.key !== CHAT_STORAGE_KEY &&
+        event.key !== CHAT_PENDING_STORAGE_KEY
+      ) {
+        return;
+      }
+
+      syncFromStorage();
+    };
+
+    const handleSync = (event: Event) => {
+      const customEvent = event as CustomEvent<{ sourceId?: string }>;
+      if (customEvent.detail?.sourceId === instanceIdRef.current) {
+        return;
+      }
+
+      syncFromStorage();
+    };
+
+    window.addEventListener("storage", handleStorage);
+    window.addEventListener(CHAT_SYNC_EVENT, handleSync as EventListener);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener(CHAT_SYNC_EVENT, handleSync as EventListener);
+    };
+  }, []);
 
   const sendMessage = async (event?: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
@@ -123,8 +206,10 @@ export function useChatConversation() {
     const requestVersion = requestVersionRef.current + 1;
     requestVersionRef.current = requestVersion;
 
+    appendStoredMessage(userMessage);
     setMessages((prev) => [...prev, userMessage]);
     setDraft("");
+    setStoredPendingRequest(true, instanceIdRef.current);
     setIsResponding(true);
 
     try {
@@ -136,9 +221,11 @@ export function useChatConversation() {
 
       let routine: RoutineResponse | null = null;
       let assistantReply = intent.responseText;
+      let notifySuccess: (() => void) | null = null;
 
       if (intent.action === "create_routine") {
         routine = await generateRoutine(text);
+        notifySuccess = () => notifyRoutineGenerated();
         assistantReply =
           "¡Ya tienes tu rutina personalizada en tu panel! \nSi necesitas que te la ajuste o tienes alguna duda, no dudes en escribirme.";
       } else if (intent.action === "change_day") {
@@ -159,6 +246,7 @@ export function useChatConversation() {
           intent.dayToChange,
           text,
         );
+        notifySuccess = () => notifyRoutineDayGenerated(intent.dayToChange!);
         assistantReply =
           "He cambiado el día que me pediste. Puedes ver la rutina actualizada en el panel.";
       } else if (intent.action === "change_exercise") {
@@ -180,6 +268,7 @@ export function useChatConversation() {
           intent.exerciseToChange,
           text,
         );
+        notifySuccess = () => notifyRoutineExerciseChanged(intent.dayToChange!);
         assistantReply =
           "He cambiado el ejercicio que me pediste. Revisa el panel para ver la actualización.";
       } else if (intent.action === "add_day") {
@@ -190,6 +279,7 @@ export function useChatConversation() {
         }
 
         routine = await addRoutineDay(currentRoutine, text);
+        notifySuccess = () => notifyRoutineDayAdded();
         assistantReply =
           "He añadido un día más a tu rutina. Ya puedes verlo en tu panel.";
       } else {
@@ -202,6 +292,8 @@ export function useChatConversation() {
         if (routine) {
           localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
         }
+
+        notifySuccess?.();
       }
 
       const assistantMessage: ChatMessage = {
@@ -211,6 +303,7 @@ export function useChatConversation() {
       };
 
       if (requestVersionRef.current === requestVersion) {
+        appendStoredMessage(assistantMessage);
         setMessages((prev) => [...prev, assistantMessage]);
       }
     } catch (error) {
@@ -224,10 +317,17 @@ export function useChatConversation() {
       };
 
       if (requestVersionRef.current === requestVersion) {
+        appendStoredMessage(assistantMessage);
         setMessages((prev) => [...prev, assistantMessage]);
+        notifyOperationError(
+          error,
+          "No se pudo procesar tu solicitud con la IA.",
+          "No se pudo completar la solicitud",
+        );
       }
     } finally {
       if (requestVersionRef.current === requestVersion) {
+        setStoredPendingRequest(false, instanceIdRef.current);
         setIsResponding(false);
       }
     }
@@ -239,6 +339,7 @@ export function useChatConversation() {
     setDraft("");
     setIsResponding(false);
     localStorage.removeItem(CHAT_STORAGE_KEY);
+    setStoredPendingRequest(false, instanceIdRef.current);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {

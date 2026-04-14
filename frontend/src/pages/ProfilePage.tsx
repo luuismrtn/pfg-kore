@@ -9,6 +9,7 @@ import {
 import HeaderBar from "@/components/layout/HeaderBar";
 import type { UserProfileForm } from "@/features/profile/types";
 import { getAvailableSportOptions } from "@/services/api/routines";
+import { notifyProfileUpdated } from "@/services/notifications/appNotifications";
 
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 
@@ -174,7 +175,6 @@ function hasCompleteProfileData(profile: UserProfileForm): boolean {
 
 function ProfilePage() {
   const [form, setForm] = useState<UserProfileForm>(defaultProfile);
-  const [saved, setSaved] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [showWizard, setShowWizard] = useState(false);
@@ -255,7 +255,6 @@ function ProfilePage() {
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
-    setSaved(false);
 
     if (value === "") {
       setForm((prev) => ({ ...prev, [field]: "" }));
@@ -274,7 +273,6 @@ function ProfilePage() {
   };
 
   const toggleSelection = (field: "equipment" | "injuries", value: string) => {
-    setSaved(false);
     setForm((prev) => {
       const values = prev[field];
       const hasValue = values.includes(value);
@@ -337,7 +335,8 @@ function ProfilePage() {
     }
 
     localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(form));
-    setSaved(true);
+
+    notifyProfileUpdated();
 
     if (showWizard) {
       setShowWizard(false);
@@ -362,7 +361,6 @@ function ProfilePage() {
                 type="text"
                 value={form.name}
                 onChange={(event) => {
-                  setSaved(false);
                   setForm((prev) => ({ ...prev, name: event.target.value }));
                 }}
                 placeholder="Ejemplo: Luis"
@@ -430,7 +428,6 @@ function ProfilePage() {
               <select
                 value={form.sport}
                 onChange={(event) => {
-                  setSaved(false);
                   setForm((prev) => ({ ...prev, sport: event.target.value }));
                 }}
                 className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
@@ -448,7 +445,6 @@ function ProfilePage() {
               <select
                 value={form.level}
                 onChange={(event) => {
-                  setSaved(false);
                   setForm((prev) => ({ ...prev, level: event.target.value }));
                 }}
                 className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
@@ -478,7 +474,6 @@ function ProfilePage() {
                 value={form.availableDays}
                 style={getRangeProgressStyle(form.availableDays, 1, 7)}
                 onChange={(event) => {
-                  setSaved(false);
                   setForm((prev) => ({
                     ...prev,
                     availableDays: Number(event.target.value),
@@ -507,7 +502,6 @@ function ProfilePage() {
                   240,
                 )}
                 onChange={(event) => {
-                  setSaved(false);
                   setForm((prev) => ({
                     ...prev,
                     averageDurationMinutes: Number(event.target.value),
@@ -681,7 +675,7 @@ function ProfilePage() {
                 Perfil deportivo
               </p>
               <h3 className="mt-2 text-2xl font-bold text-white">
-                Ajusta tu configuracion
+                Ajusta tu configuración
               </h3>
               <p className="mt-2 text-sm text-muted">
                 Cambia tus datos, disponibilidad y limitaciones para
@@ -706,7 +700,6 @@ function ProfilePage() {
                       type="text"
                       value={form.name}
                       onChange={(event) => {
-                        setSaved(false);
                         setForm((prev) => ({
                           ...prev,
                           name: event.target.value,
@@ -770,7 +763,6 @@ function ProfilePage() {
                   <select
                     value={form.sport}
                     onChange={(event) => {
-                      setSaved(false);
                       setForm((prev) => ({
                         ...prev,
                         sport: event.target.value,
@@ -795,7 +787,6 @@ function ProfilePage() {
                   <select
                     value={form.level}
                     onChange={(event) => {
-                      setSaved(false);
                       setForm((prev) => ({
                         ...prev,
                         level: event.target.value,
@@ -829,7 +820,6 @@ function ProfilePage() {
                       value={form.availableDays}
                       style={getRangeProgressStyle(form.availableDays, 1, 7)}
                       onChange={(event) => {
-                        setSaved(false);
                         setForm((prev) => ({
                           ...prev,
                           availableDays: Number(event.target.value),
@@ -853,7 +843,6 @@ function ProfilePage() {
                       step={5}
                       value={form.averageDurationMinutes}
                       onChange={(event) => {
-                        setSaved(false);
                         setForm((prev) => ({
                           ...prev,
                           averageDurationMinutes: Number(event.target.value),
@@ -973,15 +962,9 @@ function ProfilePage() {
               </div>
             </div>
 
-            {saved ? (
-              <div className="mt-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-300">
-                Perfil actualizado correctamente.
-              </div>
-            ) : (
-              <div className="mt-4 rounded-xl border border-border bg-surface-800/50 px-4 py-3 text-sm text-muted">
-                Edita cualquier dato y guarda cuando quieras.
-              </div>
-            )}
+            <div className="mt-4 rounded-xl border border-border bg-surface-800/50 px-4 py-3 text-sm text-muted">
+              Edita cualquier dato y guarda cuando quieras.
+            </div>
           </aside>
         </div>
       </div>

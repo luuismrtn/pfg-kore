@@ -5,6 +5,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
 const INCOMPLETE_PROFILE_ERROR_MESSAGE =
   "Completa los datos obligatorios del perfil para generar una rutina.";
+const AI_CONNECTION_ERROR_MESSAGE =
+  "No se pudo conectar con la IA. Revisa tu conexión e inténtalo de nuevo.";
 
 const DEFAULT_PROFILE: UserProfileForm = {
   name: "",
@@ -123,13 +125,19 @@ export async function postJson<TResponse>(
   payload: unknown,
   fallbackError: string,
 ): Promise<TResponse> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error(AI_CONNECTION_ERROR_MESSAGE);
+  }
 
   if (!response.ok) {
     throw new Error(await getApiErrorMessage(response, fallbackError));
@@ -142,9 +150,15 @@ export async function getJson<TResponse>(
   path: string,
   fallbackError: string,
 ): Promise<TResponse> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    method: "GET",
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      method: "GET",
+    });
+  } catch {
+    throw new Error(AI_CONNECTION_ERROR_MESSAGE);
+  }
 
   if (!response.ok) {
     throw new Error(await getApiErrorMessage(response, fallbackError));
