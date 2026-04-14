@@ -1,7 +1,80 @@
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
+import Skeleton from "@/components/ui/Skeleton";
 import { usePanelRoutine } from "@/features/routine/hooks/usePanelRoutine";
 import { CalendarDays, RefreshCw } from "lucide-react";
+
+function RoutinePanelSkeleton() {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 h-full">
+      <aside className="flex flex-col gap-4 bg-surface-900/60 border border-border rounded-2xl p-5 h-full backdrop-blur-md shadow-(--shadow-primary-20-soft)">
+        <Skeleton className="h-4 w-24 rounded-full" />
+
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-surface-800/40 px-4 py-3"
+            >
+              <div className="flex flex-col gap-2 flex-1">
+                <Skeleton className="h-4 w-24 rounded-full" />
+                <Skeleton className="h-3 w-16 rounded-full" />
+              </div>
+
+              <Skeleton className="h-6 w-10 rounded-full" />
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      <section className="flex flex-col gap-4 h-full min-h-0 overflow-hidden">
+        <div className="flex h-full min-h-0 flex-col rounded-2xl backdrop-blur-sm overflow-hidden shadow-(--shadow-primary-20-soft) border border-border bg-surface-900/60">
+          <div className="shrink-0 p-4 border-b border-border bg-surface-800/50 flex items-center justify-between">
+            <div className="flex flex-col gap-2">
+              <Skeleton className="h-5 w-40 rounded-full" />
+              <Skeleton className="h-3 w-24 rounded-full" />
+            </div>
+
+            <Skeleton className="h-9 w-32 rounded-xl" />
+          </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto">
+            <div className="p-3 pr-2 flex flex-col gap-3">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <article
+                  key={index}
+                  className="flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft)"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex flex-col gap-2 flex-1">
+                      <Skeleton className="h-3 w-1/2 rounded-full" />
+                    </div>
+
+                    <Skeleton className="h-7 w-20 rounded-lg" />
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                    <Skeleton className="h-5 w-20 rounded-full" />
+                    <Skeleton className="h-5 w-16 rounded-full" />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    {Array.from({ length: 3 }).map((_, metricIndex) => (
+                      <Skeleton key={metricIndex} className="h-16 rounded-lg" />
+                    ))}
+                  </div>
+
+                  <Skeleton className="h-16 rounded-lg" />
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
 
 function PanelPage() {
   const {
@@ -45,7 +118,9 @@ function PanelPage() {
       />
 
       <div className="flex-1 overflow-hidden p-8">
-        {!hasAnyDayWithExercises ? (
+        {isLoading ? (
+          <RoutinePanelSkeleton />
+        ) : !hasAnyDayWithExercises ? (
           <div className="flex flex-col items-center justify-center gap-4 h-full text-center">
             <div className="size-16 rounded-full bg-surface-800 flex items-center justify-center text-muted">
               <CalendarDays size={32} strokeWidth={2} aria-hidden="true" />

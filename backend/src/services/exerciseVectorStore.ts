@@ -229,6 +229,10 @@ export class ExerciseVectorStore {
       return cached;
     }
 
+    console.log(
+      `[Embedding] Iniciando petición con modelo ${this.model}.`,
+    );
+
     const embedding = await this.requestEmbedding(query, "RETRIEVAL_QUERY");
     this.queryEmbeddingCache.set(query, embedding);
     return embedding;
@@ -238,10 +242,6 @@ export class ExerciseVectorStore {
     text: string,
     taskType: "RETRIEVAL_DOCUMENT" | "RETRIEVAL_QUERY",
   ): Promise<number[]> {
-    console.log(
-      `[Embedding] Iniciando petición (${taskType}) con modelo ${this.model}.`,
-    );
-
     const response = await this.googleAi.models.embedContent({
       model: this.model,
       contents: text,

@@ -1,4 +1,4 @@
-import ExerciseCard from "./ExerciseCard";
+import ExerciseCard, { ExerciseCardSkeleton } from "./ExerciseCard";
 import type { RoutineDay } from "@/features/routine/types";
 import { RefreshCw } from "lucide-react";
 
@@ -42,22 +42,26 @@ function DayColumnCard({
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="p-3 pr-2 flex flex-col gap-3">
-          {exercises.map((exercise, index) => {
-            const exerciseRef = String(index + 1);
+          {isRegeneratingDay
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <ExerciseCardSkeleton key={index} />
+              ))
+            : exercises.map((exercise, index) => {
+                const exerciseRef = String(index + 1);
 
-            return (
-              <ExerciseCard
-                key={`${exercise.exerciseId}-${exercise.name}-${index}`}
-                exercise={exercise}
-                onChangeExercise={
-                  onChangeExercise
-                    ? () => onChangeExercise(day, exerciseRef)
-                    : undefined
-                }
-                isChangingExercise={changingExerciseRef === exerciseRef}
-              />
-            );
-          })}
+                return (
+                  <ExerciseCard
+                    key={`${exercise.exerciseId}-${exercise.name}-${index}`}
+                    exercise={exercise}
+                    onChangeExercise={
+                      onChangeExercise
+                        ? () => onChangeExercise(day, exerciseRef)
+                        : undefined
+                    }
+                    isChangingExercise={changingExerciseRef === exerciseRef}
+                  />
+                );
+              })}
         </div>
       </div>
     </div>

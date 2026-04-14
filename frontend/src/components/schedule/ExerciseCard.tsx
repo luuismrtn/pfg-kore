@@ -1,4 +1,5 @@
 import type { RoutineExercise } from "@/features/routine/types";
+import Skeleton from "@/components/ui/Skeleton";
 import { RefreshCw } from "lucide-react";
 
 const badgeClassByLabel: Record<string, string> = {
@@ -30,6 +31,34 @@ const getBadgeClassName = (label: string) => {
   return `px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${labelClass}`;
 };
 
+export function ExerciseCardSkeleton() {
+  return (
+    <article className="relative flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft)">
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex flex-col gap-2 flex-1">
+          <Skeleton className="h-4 w-2/3 rounded-full" />
+        </div>
+
+        <Skeleton className="h-7 w-20 rounded-lg" />
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Skeleton className="h-5 w-16 rounded-full" />
+        <Skeleton className="h-5 w-20 rounded-full" />
+        <Skeleton className="h-5 w-16 rounded-full" />
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Skeleton key={index} className="h-16 rounded-lg" />
+        ))}
+      </div>
+
+      <Skeleton className="h-16 rounded-lg" />
+    </article>
+  );
+}
+
 type ExerciseCardProps = {
   exercise: RoutineExercise;
   onChangeExercise?: () => void;
@@ -41,6 +70,10 @@ function ExerciseCard({
   onChangeExercise,
   isChangingExercise = false,
 }: ExerciseCardProps) {
+  if (isChangingExercise) {
+    return <ExerciseCardSkeleton />;
+  }
+
   return (
     <article className="relative flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft) transition-colors hover:border-primary/30">
       <div className="flex items-start justify-between gap-3">
