@@ -786,6 +786,7 @@ export class RagService {
           ? String(repsValue)
           : "";
     const restSeconds = Number(value.restSeconds);
+    const intensity = Number(value.intensity);
 
     if (
       !exerciseId ||
@@ -794,7 +795,10 @@ export class RagService {
       sets <= 0 ||
       !reps ||
       !Number.isFinite(restSeconds) ||
-      restSeconds < 0
+      restSeconds < 0 ||
+      !Number.isInteger(intensity) ||
+      intensity < 1 ||
+      intensity > 10
     ) {
       return null;
     }
@@ -805,6 +809,7 @@ export class RagService {
       sets,
       reps,
       restSeconds,
+      intensity,
     };
 
     const note = typeof value.note === "string" ? value.note.trim() : "";
@@ -1145,6 +1150,7 @@ export class RagService {
     \n4. El tiempo medio de entrenamiento por día debe ser de aproximadamente ${normalizedRequest.averageDurationMinutes} minutos. Ajusta el número de ejercicios, series y repeticiones (si puede ser un número exacto de repeticiones mejor o también es válido poner como repeticiones "FALLO" para que el usuario haga el máximo de repeticiones) para cumplir con este tiempo.
     \n5. Es obligatorio que pongas por lo menos 1 badge de grupo muscular en cada ejercicio, para facilitar la navegación en la app.
     \n6. Personaliza la rutina considerando los datos del perfil (edad, género, peso, altura, nivel y lesiones) sin romper las reglas anteriores.
+    \n7. Cada ejercicio DEBE incluir el campo "intensity" en escala entera del 1 al 10, donde 10 es fallo y 1 es esfuerzo muy bajo.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -1161,7 +1167,8 @@ export class RagService {
     \n          "sets": 3,
     \n          "reps": "10",
     \n          "restSeconds": 90,
-    \n          "note": "Controlar excéntrica"
+    \n          "intensity": 8,
+    \n          "note": "Controlar excéntrica",
     \n          "badges": ["Pecho", "Hombro"]
     \n        }
     \n      ]
@@ -1223,6 +1230,7 @@ export class RagService {
     \n3. Debes respetar la logica de recuperacion muscular frente al resto de dias ya existentes.
     \n4. Debes devolver SIEMPRE la rutina COMPLETA en formato {"routine":[...]}, no solo un dia.
     \n5. Devuelve UNICAMENTE JSON valido, sin texto adicional.
+    \n6. Cada ejercicio DEBE incluir el campo "intensity" en escala entera del 1 al 10, donde 10 fallo y 1 es esfuerzo muy bajo.
 
     \n\nLISTA DE EJERCICIOS VALIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -1239,7 +1247,8 @@ export class RagService {
     \n          "sets": 3,
     \n          "reps": "10",
     \n          "restSeconds": 90,
-    \n          "note": "Controlar excéntrica"
+    \n          "intensity": 8,
+    \n          "note": "Controlar excéntrica",
     \n          "badges": ["Pecho", "Hombro"]
     \n        }
     \n      ]
@@ -1297,6 +1306,7 @@ export class RagService {
     \n3. Debe mantenerse la coherencia de recuperación muscular entre todos los días.
     \n4. La rutina resultante debe tener exactamente un día más que la rutina original.
     \n5. Devuelve UNICAMENTE JSON válido, sin texto adicional.
+    \n6. Cada ejercicio DEBE incluir el campo "intensity" en escala entera del 1 al 10, donde 10 fallo y 1 es esfuerzo muy bajo.
 
     \n\nLISTA DE EJERCICIOS VALIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -1313,6 +1323,7 @@ export class RagService {
     \n          "sets": 3,
     \n          "reps": "10",
     \n          "restSeconds": 90,
+    \n          "intensity": 8,
     \n          "note": "Controlar excéntrica",
     \n          "badges": ["Pecho", "Hombro"]
     \n        }
@@ -1399,6 +1410,7 @@ export class RagService {
     \n3. El nuevo ejercicio debe encajar con el objetivo del dia y respetar la recuperacion muscular respecto al resto de dias.
     \n4. Evita devolver exactamente el mismo ejercicio que se quiere reemplazar, salvo que sea estrictamente necesario.
     \n5. Devuelve UNICAMENTE JSON valido, sin texto adicional.
+    \n6. Cada ejercicio DEBE incluir el campo "intensity" en escala entera del 1 al 10, donde 10 es fallo y 1 es esfuerzo muy bajo.
 
     \n\nLISTA DE EJERCICIOS VALIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -1415,7 +1427,8 @@ export class RagService {
     \n          "sets": 3,
     \n          "reps": "10",
     \n          "restSeconds": 90,
-    \n          "note": "Controlar excéntrica"
+    \n          "intensity": 8,
+    \n          "note": "Controlar excéntrica",
     \n          "badges": ["Pecho", "Hombro"]
     \n        }
     \n      ]

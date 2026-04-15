@@ -48,8 +48,8 @@ export function ExerciseCardSkeleton() {
         <Skeleton className="h-5 w-16 rounded-full" />
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
-        {Array.from({ length: 3 }).map((_, index) => (
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
           <Skeleton key={index} className="h-16 rounded-lg" />
         ))}
       </div>
@@ -65,6 +65,33 @@ type ExerciseCardProps = {
   isChangingExercise?: boolean;
 };
 
+type ExerciseMetricCardProps = {
+  label: string;
+  value: string;
+  tooltip: string;
+};
+
+function ExerciseMetricCard({
+  label,
+  value,
+  tooltip,
+}: ExerciseMetricCardProps) {
+  return (
+    <div
+      className="group relative rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center"
+      tabIndex={0}
+      aria-label={`${label}: ${value}. ${tooltip}`}
+    >
+      <div className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-44 -translate-x-1/2 rounded-md border border-border bg-surface-900 px-2 py-1 text-xs leading-tight text-muted opacity-0 shadow-(--shadow-primary-15-weak) transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100">
+        {tooltip}
+        <span className="absolute left-1/2 top-full -translate-x-1/2 border-x-4 border-t-4 border-x-transparent border-t-border" />
+      </div>
+      <p className="text-[10px] uppercase tracking-wide text-muted">{label}</p>
+      <p className="text-sm font-bold text-white">{value}</p>
+    </div>
+  );
+}
+
 function ExerciseCard({
   exercise,
   onChangeExercise,
@@ -73,6 +100,10 @@ function ExerciseCard({
   if (isChangingExercise) {
     return <ExerciseCardSkeleton />;
   }
+
+  const safeIntensity = Number.isFinite(exercise.intensity)
+    ? Math.min(Math.max(Math.round(exercise.intensity), 1), 10)
+    : 7;
 
   return (
     <article className="relative flex flex-col gap-3 rounded-xl bg-surface-800/90 border border-border p-4 shadow-(--shadow-primary-20-soft) transition-colors hover:border-primary/30">
@@ -112,25 +143,27 @@ function ExerciseCard({
         </div>
       ) : null}
 
-      <div className="grid grid-cols-3 gap-2">
-        <div className="rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-muted">
-            Series
-          </p>
-          <p className="text-sm font-bold text-white">{exercise.sets}</p>
-        </div>
-        <div className="rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-muted">Reps</p>
-          <p className="text-sm font-bold text-white">{exercise.reps}</p>
-        </div>
-        <div className="rounded-lg border border-border bg-surface-900/70 px-2 py-2 text-center">
-          <p className="text-[10px] uppercase tracking-wide text-muted">
-            Descanso
-          </p>
-          <p className="text-sm font-bold text-white">
-            {exercise.restSeconds}s
-          </p>
-        </div>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <ExerciseMetricCard
+          label="Series"
+          value={String(exercise.sets)}
+          tooltip="Bloques de trabajo total para este ejercicio."
+        />
+        <ExerciseMetricCard
+          label="Reps"
+          value={exercise.reps}
+          tooltip="Repeticiones por serie. Si pone FALLO, realiza las máximas posibles con buena técnica."
+        />
+        <ExerciseMetricCard
+          label="Descanso"
+          value={`${exercise.restSeconds}s`}
+          tooltip="Tiempo de descanso entre series antes de empezar la siguiente."
+        />
+        <ExerciseMetricCard
+          label="Intensidad"
+          value={`${safeIntensity}/10`}
+          tooltip="Escala de esfuerzo del 1 al 10: 10 es ir al fallo y 1 es esfuerzo muy suave."
+        />
       </div>
 
       {exercise.note ? (

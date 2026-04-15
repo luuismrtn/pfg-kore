@@ -21,6 +21,7 @@ export interface RoutineExercise {
   sets: number;
   reps: string;
   restSeconds: number;
+  intensity: number;
   note?: string;
   badges?: string[];
 }
