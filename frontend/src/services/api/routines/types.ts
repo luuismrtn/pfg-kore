@@ -1,3 +1,4 @@
+import type { UserGender } from "@/features/profile/types";
 import type { RoutineResponse } from "@/features/routine/types";
 
 export type ApiErrorBody = {
@@ -9,6 +10,8 @@ export type RoutineProfilePayload = {
   name: string;
   weightKg: number | "";
   heightCm: number | "";
+  age: number | "";
+  gender: UserGender;
   sport: string;
   availableDays: number;
   averageDurationMinutes: number;
@@ -41,4 +44,5 @@ export type AddRoutineDayPayload = {
 export type ChatIntentPayload = {
   text: string;
   routine?: RoutineResponse;
+  profile?: RoutineProfilePayload;
 };

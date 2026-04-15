@@ -274,6 +274,8 @@ export class RagService {
       operationContext,
       profile?.sport ? `deporte: ${profile.sport}` : "",
       profile?.level ? `nivel: ${profile.level}` : "",
+      typeof profile?.age === "number" ? `edad: ${profile.age} anos` : "",
+      profile?.gender ? `genero: ${profile.gender}` : "",
       profile?.availableDays
         ? `dias de entrenamiento: ${profile.availableDays}`
         : "",
@@ -671,6 +673,8 @@ export class RagService {
       name: profile?.name ?? "",
       weightKg: profile?.weightKg ?? "",
       heightCm: profile?.heightCm ?? "",
+      age: typeof profile?.age === "number" ? profile.age : "",
+      gender: profile?.gender ?? "prefiero no decirlo",
       sport: profile?.sport ?? "",
       availableDays: Number(profile?.availableDays) || 3,
       averageDurationMinutes: Number(profile?.averageDurationMinutes) || 60,
@@ -1029,9 +1033,16 @@ export class RagService {
       throw new Error("Missing chat text to interpret.");
     }
 
+    const normalizedProfile = request.profile
+      ? this.normalizeProfile(request.profile)
+      : undefined;
+
     const routineContext = request.routine
       ? JSON.stringify(request.routine)
       : "No hay una rutina cargada actualmente.";
+    const profileContext = normalizedProfile
+      ? JSON.stringify(normalizedProfile)
+      : "No hay perfil del usuario disponible.";
 
     const systemPrompt = `
     \nEres un asistente de fitness que clasifica la intención del usuario y responde SOLO en JSON válido.
@@ -1049,7 +1060,7 @@ export class RagService {
     \n3. change_day: si pide cambiar/rehacer un día completo.
     \n4. add_day: si pide añadir un día adicional a la rutina actual.
     \n5. question: si solo es duda o consulta sin pedir cambios estructurales de la rutina.
-    \n6. Si action es question, responseText debe contestar directamente la duda del usuario en español.
+    \n6. Si action es question, responseText debe contestar directamente la duda del usuario en español y personalizarse con el perfil cuando esté disponible (edad, género, nivel, lesiones y equipamiento).
     \n7. Si action NO es question, responseText debe ser una confirmación breve de la acción detectada.
     \n8. dayToChange y exerciseToChange deben ir vacíos si no aplican.
     \n9. Si el usuario habla de "día 2" o "ejercicio 3", devuelve esos valores como texto ("2", "3").
@@ -1057,7 +1068,7 @@ export class RagService {
 
     const modelResponse = await this.generateJsonFromModel(
       systemPrompt,
-      `Mensaje del usuario: "${normalizedText}". Rutina actual disponible para contexto: ${routineContext}`,
+      `Mensaje del usuario: "${normalizedText}". Perfil del usuario para contexto: ${profileContext}. Rutina actual disponible para contexto: ${routineContext}`,
     );
 
     const action = this.resolveChatIntentAction(modelResponse.action);
@@ -1095,6 +1106,8 @@ export class RagService {
       name: request?.name ?? "",
       weightKg: request?.weightKg ?? "",
       heightCm: request?.heightCm ?? "",
+      age: typeof request?.age === "number" ? request.age : "",
+      gender: request?.gender ?? "prefiero no decirlo",
       sport: request?.sport ?? "",
       availableDays: Number(request?.availableDays) || 3,
       averageDurationMinutes: Number(request?.averageDurationMinutes) || 60,
@@ -1131,6 +1144,7 @@ export class RagService {
     \n3. Devuelve ÚNICAMENTE código JSON válido, sin texto adicional antes o después.
     \n4. El tiempo medio de entrenamiento por día debe ser de aproximadamente ${normalizedRequest.averageDurationMinutes} minutos. Ajusta el número de ejercicios, series y repeticiones (si puede ser un número exacto de repeticiones mejor o también es válido poner como repeticiones "FALLO" para que el usuario haga el máximo de repeticiones) para cumplir con este tiempo.
     \n5. Es obligatorio que pongas por lo menos 1 badge de grupo muscular en cada ejercicio, para facilitar la navegación en la app.
+    \n6. Personaliza la rutina considerando los datos del perfil (edad, género, peso, altura, nivel y lesiones) sin romper las reglas anteriores.
     
     \n\nLISTA DE EJERCICIOS VÁLIDOS PARA ESTE USUARIO:
     \n${exerciseContext}
@@ -1158,7 +1172,7 @@ export class RagService {
 
     const response = await this.generateJsonFromModel(
       systemPrompt,
-      `Additional user request: "${normalizedRequest.text}".`,
+      `Perfil del usuario: ${JSON.stringify(normalizedRequest)}. Solicitud adicional del usuario: "${normalizedRequest.text}".`,
     );
 
     return this.extractRoutineResponse(response);
@@ -1236,7 +1250,7 @@ export class RagService {
 
     const modelResponse = await this.generateJsonFromModel(
       systemPrompt,
-      `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia a reemplazar: "${targetDay.day}". Indice del dia (1-based): ${dayIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese dia.`,
+      `Perfil del usuario: ${normalizedProfile ? JSON.stringify(normalizedProfile) : "No disponible"}. Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia a reemplazar: "${targetDay.day}". Indice del dia (1-based): ${dayIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese dia.`,
     );
 
     return this.buildDayUpdatedRoutine(currentRoutine, dayIndex, modelResponse);
@@ -1310,7 +1324,7 @@ export class RagService {
 
     const modelResponse = await this.generateJsonFromModel(
       systemPrompt,
-      `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada con exactamente un día nuevo añadido.`,
+      `Perfil del usuario: ${normalizedProfile ? JSON.stringify(normalizedProfile) : "No disponible"}. Rutina actual completa: ${JSON.stringify(currentRoutine)}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada con exactamente un día nuevo añadido.`,
     );
 
     const updatedRoutine = this.buildAddedDayRoutine(
@@ -1412,7 +1426,7 @@ export class RagService {
 
     const modelResponse = await this.generateJsonFromModel(
       systemPrompt,
-      `Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia objetivo: "${targetDay.day}". Ejercicio a reemplazar: ${JSON.stringify(targetExercise)}. Indice del ejercicio en el dia (1-based): ${exerciseIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese ejercicio.`,
+      `Perfil del usuario: ${normalizedProfile ? JSON.stringify(normalizedProfile) : "No disponible"}. Rutina actual completa: ${JSON.stringify(currentRoutine)}. Dia objetivo: "${targetDay.day}". Ejercicio a reemplazar: ${JSON.stringify(targetExercise)}. Indice del ejercicio en el dia (1-based): ${exerciseIndex + 1}. Solicitud adicional del usuario: "${changeText}". Devuelve la rutina completa actualizada cambiando ese ejercicio.`,
     );
 
     return this.buildExerciseUpdatedRoutine(

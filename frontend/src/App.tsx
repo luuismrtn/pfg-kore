@@ -8,7 +8,6 @@ import SettingsPage from "@/pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import type { PageKey } from "@/features/navigation/types";
-import { desc } from "framer-motion/client";
 
 const THEME_STORAGE_KEY = "kore.theme.v1";
 

@@ -90,6 +90,25 @@ function SettingsPage() {
             </div>
           </section>
 
+          <section className="rounded-2xl border border-border bg-surface-900/70 p-6 backdrop-blur-xl shadow-(--shadow-primary-15-weak)">
+            <div className="mb-3">
+              <h3 className="text-white text-lg font-bold">
+                Privacidad de datos
+              </h3>
+            </div>
+
+            <ul className="list-disc pl-5 text-sm text-muted space-y-2">
+              <li>
+                Tus datos no se almacenan en ningun servidor externo: solo se
+                guardan en este navegador (localStorage).
+              </li>
+              <li>
+                Si cambias de navegador o de dispositivo, esos datos no estarán
+                disponibles.
+              </li>
+            </ul>
+          </section>
+
           <section className="rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
             <div className="mb-5">
               <h3 className="text-white text-lg font-bold">Zona de peligro</h3>

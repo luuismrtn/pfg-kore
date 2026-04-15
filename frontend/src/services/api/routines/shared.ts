@@ -1,4 +1,4 @@
-import type { UserProfileForm } from "@/features/profile/types";
+import type { UserGender, UserProfileForm } from "@/features/profile/types";
 import type { ApiErrorBody, RoutineProfilePayload } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
@@ -7,11 +7,19 @@ const INCOMPLETE_PROFILE_ERROR_MESSAGE =
   "Completa los datos obligatorios del perfil para generar una rutina.";
 const AI_CONNECTION_ERROR_MESSAGE =
   "No se pudo conectar con la IA. Revisa tu conexión e inténtalo de nuevo.";
+const VALID_GENDERS: UserGender[] = [
+  "mujer",
+  "hombre",
+  "otro",
+  "prefiero no decirlo",
+];
 
 const DEFAULT_PROFILE: UserProfileForm = {
   name: "",
   weightKg: "",
   heightCm: "",
+  age: "",
+  gender: "prefiero no decirlo",
   sport: "Musculación",
   equipment: [],
   injuries: [],
@@ -19,6 +27,12 @@ const DEFAULT_PROFILE: UserProfileForm = {
   averageDurationMinutes: 60,
   level: "Principiante",
 };
+
+function isUserGender(value: unknown): value is UserGender {
+  return (
+    typeof value === "string" && VALID_GENDERS.includes(value as UserGender)
+  );
+}
 
 function toValidProfile(value: unknown): UserProfileForm | null {
   if (!value || typeof value !== "object") {
@@ -44,6 +58,13 @@ function toValidProfile(value: unknown): UserProfileForm | null {
       typeof candidate.heightCm === "number" || candidate.heightCm === ""
         ? candidate.heightCm
         : "",
+    age:
+      typeof candidate.age === "number" || candidate.age === ""
+        ? candidate.age
+        : "",
+    gender: isUserGender(candidate.gender)
+      ? candidate.gender
+      : "prefiero no decirlo",
     sport:
       typeof candidate.sport === "string" && candidate.sport.length > 0
         ? candidate.sport
@@ -108,6 +129,8 @@ export function getRoutineGenerationProfileError(
   const hasCompleteProfileData =
     isNumberInRange(profile.weightKg, 30, 250) &&
     isNumberInRange(profile.heightCm, 120, 230) &&
+    isNumberInRange(profile.age, 16, 100) &&
+    isUserGender(profile.gender) &&
     typeof profile.sport === "string" &&
     profile.sport.trim().length > 0 &&
     typeof profile.level === "string" &&
@@ -184,6 +207,8 @@ export function buildRoutineRequestPayload(
     name: profileClone.name,
     weightKg: profileClone.weightKg,
     heightCm: profileClone.heightCm,
+    age: profileClone.age,
+    gender: profileClone.gender,
     sport: profileClone.sport,
     availableDays: profileClone.availableDays,
     averageDurationMinutes: profileClone.averageDurationMinutes,

@@ -156,7 +156,6 @@ export function usePanelRoutine() {
         "No se pudo generar la rutina.",
       );
 
-      // Keep previous routine visible if full regeneration fails.
       setPanelSchedule(previousSchedule);
       setSelectedDay(
         previousSelectedDay || getPreferredSelectedDay(previousSchedule),

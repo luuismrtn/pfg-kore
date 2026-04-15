@@ -1,8 +1,12 @@
+export type UserGender = "mujer" | "hombre" | "otro" | "prefiero no decirlo";
+
 export interface RoutineRequest {
   text: string;
   name: string;
   weightKg: number | "";
   heightCm: number | "";
+  age: number | "";
+  gender: UserGender;
   sport: string;
   availableDays: number;
   averageDurationMinutes: number;
@@ -61,6 +65,7 @@ export type ChatIntentAction =
 export interface ChatIntentRequest {
   text: string;
   routine?: RoutineResponse;
+  profile?: Partial<RoutineRequest>;
 }
 
 export interface ChatIntentResponse {

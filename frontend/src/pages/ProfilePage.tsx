@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
-import type { UserProfileForm } from "@/features/profile/types";
+import type { UserGender, UserProfileForm } from "@/features/profile/types";
 import { getAvailableSportOptions } from "@/services/api/routines";
 import { notifyProfileUpdated } from "@/services/notifications/appNotifications";
 
@@ -42,6 +42,14 @@ const injuryOptions = [
 ];
 
 const levelOptions = ["Principiante", "Intermedio", "Avanzado"];
+const genderOptions: Array<{ value: UserGender; label: string }> = [
+  { value: "mujer", label: "Mujer" },
+  { value: "hombre", label: "Hombre" },
+  { value: "otro", label: "Otro" },
+  { value: "prefiero no decirlo", label: "Prefiero no decirlo" },
+];
+const MIN_AGE = 16;
+const MAX_AGE = 100;
 
 type WizardStepId = "name" | "body" | "training" | "schedule" | "limits";
 
@@ -60,7 +68,7 @@ const wizardSteps: WizardStep[] = [
   {
     id: "body",
     title: "Datos físicos",
-    subtitle: "Peso y altura para ajustar volumen e intensidad.",
+    subtitle: "Peso, altura, edad y género para personalizar mejor tu plan.",
   },
   {
     id: "training",
@@ -83,6 +91,8 @@ const defaultProfile: UserProfileForm = {
   name: "",
   weightKg: "",
   heightCm: "",
+  age: "",
+  gender: "prefiero no decirlo",
   sport: "Musculación",
   equipment: [],
   injuries: [],
@@ -90,6 +100,10 @@ const defaultProfile: UserProfileForm = {
   averageDurationMinutes: 60,
   level: "Principiante",
 };
+
+function isUserGender(value: unknown): value is UserGender {
+  return genderOptions.some((option) => option.value === value);
+}
 
 function toValidProfile(value: unknown): UserProfileForm | null {
   if (!value || typeof value !== "object") {
@@ -115,6 +129,13 @@ function toValidProfile(value: unknown): UserProfileForm | null {
       typeof candidate.heightCm === "number" || candidate.heightCm === ""
         ? candidate.heightCm
         : "",
+    age:
+      typeof candidate.age === "number" || candidate.age === ""
+        ? candidate.age
+        : "",
+    gender: isUserGender(candidate.gender)
+      ? candidate.gender
+      : "prefiero no decirlo",
     sport:
       typeof candidate.sport === "string" && candidate.sport.length > 0
         ? candidate.sport
@@ -158,6 +179,10 @@ function hasCompleteProfileData(profile: UserProfileForm): boolean {
     typeof profile.heightCm === "number" &&
     profile.heightCm >= 120 &&
     profile.heightCm <= 230 &&
+    typeof profile.age === "number" &&
+    profile.age >= MIN_AGE &&
+    profile.age <= MAX_AGE &&
+    isUserGender(profile.gender) &&
     typeof profile.sport === "string" &&
     profile.sport.trim().length > 0 &&
     typeof profile.level === "string" &&
@@ -251,7 +276,7 @@ function ProfilePage() {
     ((stepIndex + 1) / Math.max(wizardSteps.length, 1)) * 100;
 
   const handleNumberInput = (
-    field: "weightKg" | "heightCm",
+    field: "weightKg" | "heightCm" | "age",
     event: ChangeEvent<HTMLInputElement>,
   ) => {
     const value = event.target.value;
@@ -301,6 +326,10 @@ function ProfilePage() {
     typeof form.heightCm === "number" &&
     form.heightCm >= 120 &&
     form.heightCm <= 230 &&
+    typeof form.age === "number" &&
+    form.age >= MIN_AGE &&
+    form.age <= MAX_AGE &&
+    isUserGender(form.gender) &&
     form.availableDays >= 1 &&
     form.availableDays <= 7 &&
     form.averageDurationMinutes >= 20 &&
@@ -315,7 +344,10 @@ function ProfilePage() {
           form.weightKg <= 250 &&
           typeof form.heightCm === "number" &&
           form.heightCm >= 120 &&
-          form.heightCm <= 230
+          form.heightCm <= 230 &&
+          typeof form.age === "number" &&
+          form.age >= MIN_AGE &&
+          form.age <= MAX_AGE
         );
       case "schedule":
         return (
@@ -377,6 +409,46 @@ function ProfilePage() {
       case "body":
         return (
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <label className="flex flex-col gap-2">
+              <span className="text-sm font-medium text-white">
+                Edad (años)
+              </span>
+              <input
+                type="number"
+                min={MIN_AGE}
+                max={MAX_AGE}
+                step="1"
+                value={form.age}
+                onChange={(event) => handleNumberInput("age", event)}
+                placeholder="24"
+                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+              />
+              <span className="text-xs text-muted">
+                Por seguridad y cumplimiento legal, solo permitimos edad mayor o
+                igual a {MIN_AGE}.
+              </span>
+            </label>
+
+            <label className="flex flex-col gap-2">
+              <span className="text-sm font-medium text-white">Género</span>
+              <select
+                value={form.gender}
+                onChange={(event) => {
+                  setForm((prev) => ({
+                    ...prev,
+                    gender: event.target.value as UserGender,
+                  }));
+                }}
+                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+              >
+                {genderOptions.map((gender) => (
+                  <option key={gender.value} value={gender.value}>
+                    {gender.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-white">Peso (kg)</span>
               <input
@@ -692,7 +764,7 @@ function ProfilePage() {
                   Datos personales
                 </p>
                 <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <label className="flex flex-col gap-2 md:col-span-3">
+                  <label className="flex flex-col gap-2">
                     <span className="text-sm font-medium text-white">
                       Nombre (opcional)
                     </span>
@@ -708,6 +780,45 @@ function ProfilePage() {
                       placeholder="Ejemplo: Luis"
                       className="rounded-xl border border-border bg-surface-900 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
                     />
+                  </label>
+
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium text-white">
+                      Edad (años)
+                    </span>
+                    <input
+                      type="number"
+                      min={MIN_AGE}
+                      max={MAX_AGE}
+                      step="1"
+                      value={form.age}
+                      onChange={(event) => handleNumberInput("age", event)}
+                      placeholder="24"
+                      required
+                      className="rounded-xl border border-border bg-surface-900 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+                    />
+                  </label>
+
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium text-white">
+                      Género
+                    </span>
+                    <select
+                      value={form.gender}
+                      onChange={(event) => {
+                        setForm((prev) => ({
+                          ...prev,
+                          gender: event.target.value as UserGender,
+                        }));
+                      }}
+                      className="rounded-xl border border-border bg-surface-900 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+                    >
+                      {genderOptions.map((gender) => (
+                        <option key={gender.value} value={gender.value}>
+                          {gender.label}
+                        </option>
+                      ))}
+                    </select>
                   </label>
 
                   <label className="flex flex-col gap-2">
@@ -914,7 +1025,8 @@ function ProfilePage() {
                 </button>
                 {!isProfileValidForSave ? (
                   <span className="text-sm text-amber-300">
-                    Completa peso y altura con valores validos.
+                    Completa peso, altura y edad (mínimo {MIN_AGE}) con valores
+                    válidos.
                   </span>
                 ) : null}
               </div>
@@ -935,6 +1047,15 @@ function ProfilePage() {
                 <p className="text-muted">Deporte / Nivel</p>
                 <p className="mt-1 font-semibold text-white">
                   {form.sport} - {form.level}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-border bg-surface-800/70 px-4 py-3">
+                <p className="text-muted">Edad / Género</p>
+                <p className="mt-1 font-semibold text-white">
+                  {typeof form.age === "number" ? form.age : "-"} años -{" "}
+                  {genderOptions.find((item) => item.value === form.gender)
+                    ?.label ?? "Prefiero no decirlo"}
                 </p>
               </div>
 
