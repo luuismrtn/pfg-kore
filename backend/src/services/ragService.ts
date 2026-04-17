@@ -46,7 +46,7 @@ export class RagService {
     this.modelFallbacks = DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS;
     this.modelRequestTimeoutMs = DEFAULT_GOOGLE_MODEL_TIMEOUT_MS;
 
-    const dataPath = path.join(__dirname, "../data/musculacion.json");
+    const dataPath = path.join(__dirname, "../data/ejercicios.json");
     try {
       const fileData = fs.readFileSync(dataPath, "utf-8");
       this.exercisesDb = JSON.parse(fileData);
@@ -76,10 +76,10 @@ export class RagService {
       googleClient: this.googleAi,
       cacheFilePath: path.join(
         __dirname,
-        "../data/musculacion.embeddings.cache.json",
+        "../data/ejercicios.embeddings.cache.json",
       ),
       ...(DEFAULT_GOOGLE_EMBEDDING_MODEL
-        ? { DEFAULT_GOOGLE_EMBEDDING_MODEL }
+        ? { model: DEFAULT_GOOGLE_EMBEDDING_MODEL }
         : {}),
     };
 

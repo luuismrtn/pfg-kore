@@ -5,7 +5,7 @@ import type { Request, Response } from "express";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_PATH = path.join(__dirname, "../../data/musculacion.json");
+const DATA_PATH = path.join(__dirname, "../../data/ejercicios.json");
 
 type ExerciseCatalogEntry = {
   modalidad?: unknown;

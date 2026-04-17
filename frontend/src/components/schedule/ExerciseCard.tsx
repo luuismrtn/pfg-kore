@@ -24,6 +24,19 @@ const badgeClassByLabel: Record<string, string> = {
   Aislamiento: "bg-purple-700/10 text-purple-700 border border-purple-700/20",
   Estabilidad: "bg-indigo-700/10 text-indigo-700 border border-indigo-700/20",
   Flexores: "bg-pink-700/10 text-pink-700 border border-pink-700/20",
+  Pectoral: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
+  "Empuje Horizontal": "bg-green-500/10 text-green-400 border border-green-500/20",
+  "Pectoral Superior": "bg-blue-500/10 text-blue-400 border border-blue-500/20",
+  Tríceps: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
+  "Extensión de Codo": "bg-red-500/10 text-red-400 border border-red-500/20",
+  "Hombro Posterior": "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  "Tracción Horizontal": "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+  Calistenia: "bg-pink-500/10 text-pink-400 border border-pink-500/20",
+  "Dominante de Cadera": "bg-teal-500/10 text-teal-400 border border-teal-500/20",
+  "Empuje Vertical": "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+  "Flexión de Tronco": "bg-gray-500/10 text-gray-400 border border-gray-500/20",
+  "Zona Lumbar": "bg-yellow-700/10 text-yellow-700 border border-yellow-700/20",
+
 };
 
 const getBadgeClassName = (label: string) => {

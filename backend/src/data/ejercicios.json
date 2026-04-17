@@ -1,0 +1,3930 @@
+[
+  {
+    "id": "musc_001",
+    "nombre": "Press de Banca Plano con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_002",
+    "nombre": "Press de Banca Inclinado con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_003",
+    "nombre": "Aperturas con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_004",
+    "nombre": "Cruces en Polea Alta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Inferior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_005",
+    "nombre": "Flexiones de Pecho",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_006",
+    "nombre": "Dominadas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia", "Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_007",
+    "nombre": "Jalón al Pecho",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_008",
+    "nombre": "Remo con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_009",
+    "nombre": "Remo Gironda en Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_010",
+    "nombre": "Pullover en Polea Alta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Dorsal",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_011",
+    "nombre": "Sentadilla con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_011.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_012",
+    "nombre": "Prensa de Piernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_012.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_013",
+    "nombre": "Extensiones de Cuádriceps",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_013.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_014",
+    "nombre": "Peso Muerto Rumano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_014.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_015",
+    "nombre": "Curl de Isquiotibiales Tumbado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_015.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_016",
+    "nombre": "Hip Thrust con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_016.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_017",
+    "nombre": "Zancadas con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_017.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_018",
+    "nombre": "Elevación de Talones de Pie",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio", "Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_018.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_019",
+    "nombre": "Press Militar con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_019.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_020",
+    "nombre": "Press de Hombros Sentado con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_020.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_021",
+    "nombre": "Elevaciones Laterales con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_021.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_022",
+    "nombre": "Pájaros con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_022.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombro Posterior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_023",
+    "nombre": "Face Pull en Polea Alta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_023.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombro Posterior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_024",
+    "nombre": "Curl de Bíceps con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_024.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_025",
+    "nombre": "Curl Martillo con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_025.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_026",
+    "nombre": "Extensión de Tríceps en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_026.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_027",
+    "nombre": "Press Francés con Barra EZ",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_027.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_028",
+    "nombre": "Fondos en Paralelas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia", "Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_028.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_029",
+    "nombre": "Crunch Abdominal en Polea Alta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/musc_029.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_030",
+    "nombre": "Rueda Abdominal (Ab Wheel)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_030.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "musc_031",
+    "nombre": "Press de Banca Declinado con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_031.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Inferior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_032",
+    "nombre": "Máquina Pec Deck (Aperturas Sentado)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_032.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_033",
+    "nombre": "Pullover con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_033.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_034",
+    "nombre": "Press de Suelo (Floor Press) con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_034.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_035",
+    "nombre": "Press de Banca en Máquina Smith",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_035.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_036",
+    "nombre": "Flexiones Declinadas (Pies Elevados)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_036.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_037",
+    "nombre": "Dominadas Supinas (Chin-ups)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Estructuras de Calistenia", "Peso Corporal"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_037.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_038",
+    "nombre": "Remo en Barra T",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_038.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_039",
+    "nombre": "Remo con Mancuerna a Una Mano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_039.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_040",
+    "nombre": "Jalón al Pecho Agarre Supino",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_040.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_041",
+    "nombre": "Jalón Tras Nuca",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro", "Cervical"],
+    "media_url": "/assets/ejercicios/musc_041.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_042",
+    "nombre": "Remo en Máquina Sentado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_042.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_043",
+    "nombre": "Hiperextensiones en Banco",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_043.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Zona Lumbar",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_044",
+    "nombre": "Rack Pulls",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_044.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_045",
+    "nombre": "Sentadilla Búlgara con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_045.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_046",
+    "nombre": "Sentadilla Frontal con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Codo", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_046.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_047",
+    "nombre": "Sentadilla Hack en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_047.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_048",
+    "nombre": "Sentadilla Goblet con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_048.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_049",
+    "nombre": "Peso Muerto Sumo",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_049.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_050",
+    "nombre": "Peso Muerto Piernas Rígidas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_050.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_051",
+    "nombre": "Buenos Días con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/musc_051.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_052",
+    "nombre": "Sissy Squat",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal", "Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_052.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_053",
+    "nombre": "Curl Femoral Sentado en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_053.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_054",
+    "nombre": "Patada de Glúteo en Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio", "Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_054.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_055",
+    "nombre": "Máquina Abductora de Cadera",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/musc_055.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_056",
+    "nombre": "Máquina Aductora de Cadera",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/musc_056.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Aductores",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_057",
+    "nombre": "Zancadas Inversas con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_057.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_058",
+    "nombre": "Step-ups en Cajón con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Accesorios"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_058.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_059",
+    "nombre": "Elevación de Pelvis a Una Pierna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_059.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_060",
+    "nombre": "Elevación de Talones Sentado en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_060.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_061",
+    "nombre": "Prensa de Gemelos en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_061.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_062",
+    "nombre": "Elevación de Talones a Una Pierna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Peso Corporal"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_062.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_063",
+    "nombre": "Press Arnold con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_063.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_064",
+    "nombre": "Elevaciones Frontales con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_064.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_065",
+    "nombre": "Elevaciones Frontales con Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_065.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_066",
+    "nombre": "Remo al Mentón con Barra EZ",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_066.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_067",
+    "nombre": "Encogimientos de Hombros con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Cervical"],
+    "media_url": "/assets/ejercicios/musc_067.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Trapecios",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Elevación Escapular"
+    }
+  },
+  {
+    "id": "musc_068",
+    "nombre": "Encogimientos de Hombros con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Cervical", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_068.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Trapecios",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Elevación Escapular"
+    }
+  },
+  {
+    "id": "musc_069",
+    "nombre": "Elevaciones Laterales en Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_069.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_070",
+    "nombre": "Press Bradford",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Hombro", "Cervical", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_070.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_071",
+    "nombre": "Curl Predicador con Barra EZ",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_071.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_072",
+    "nombre": "Curl Araña con Mancuernas (Spider Curl)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_072.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_073",
+    "nombre": "Curl Concentrado con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_073.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_074",
+    "nombre": "Curl Inverso con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_074.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_075",
+    "nombre": "Curl en Polea Baja con Cuerda",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_075.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_076",
+    "nombre": "Curl Zottman con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_076.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_077",
+    "nombre": "Curl 21s con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_077.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_078",
+    "nombre": "Patada de Tríceps con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_078.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_079",
+    "nombre": "Press Francés con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_079.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_080",
+    "nombre": "Extensión de Tríceps Tras Nuca en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_080.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_081",
+    "nombre": "Extensión de Tríceps a Una Mano en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_081.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_082",
+    "nombre": "Press de Banca Agarre Estrecho",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_082.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_083",
+    "nombre": "Tate Press con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_083.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_084",
+    "nombre": "Extensión de Tríceps Tras Nuca con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_084.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_085",
+    "nombre": "Plancha Frontal (Plank)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_085.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "musc_086",
+    "nombre": "Plancha Lateral",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_086.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "musc_087",
+    "nombre": "Giros Rusos (Russian Twists)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_087.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Rotación de Tronco"
+    }
+  },
+  {
+    "id": "musc_088",
+    "nombre": "Elevación de Piernas Colgado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia", "Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_088.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Flexión de Cadera"
+    }
+  },
+  {
+    "id": "musc_089",
+    "nombre": "Crunch Inverso",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_089.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_090",
+    "nombre": "Leñador en Polea (Woodchopper)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_090.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Rotación de Tronco"
+    }
+  },
+  {
+    "id": "musc_091",
+    "nombre": "Bicho Muerto (Dead Bug)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_091.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "musc_092",
+    "nombre": "Bird Dog",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Rodilla", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_092.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "musc_093",
+    "nombre": "Paseo del Granjero (Farmer's Walk)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Tobillo", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_093.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Estabilización"
+    }
+  },
+  {
+    "id": "musc_094",
+    "nombre": "Press Pallof en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_094.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "musc_095",
+    "nombre": "Curl de Muñeca en Supinación",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [
+      "Barras y Discos",
+      "Mancuernas y Pesas Libres",
+      "Banco de Musculación"
+    ],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_095.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Muñeca"
+    }
+  },
+  {
+    "id": "musc_096",
+    "nombre": "Curl de Muñeca en Pronación",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [
+      "Barras y Discos",
+      "Mancuernas y Pesas Libres",
+      "Banco de Musculación"
+    ],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_096.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Muñeca"
+    }
+  },
+  {
+    "id": "musc_097",
+    "nombre": "Colgarse de la Barra (Dead Hang)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Estructuras de Calistenia", "Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_097.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Estabilización"
+    }
+  },
+  {
+    "id": "musc_098",
+    "nombre": "Sentadilla Zercher",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_098.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_099",
+    "nombre": "Paseo del Camarero (Waiter's Walk)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_099.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Estabilización"
+    }
+  },
+  {
+    "id": "musc_100",
+    "nombre": "Rotación Externa de Hombro en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_100.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Manguito Rotador",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_101",
+    "nombre": "Press Militar con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_101.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_102",
+    "nombre": "Curl de Bíceps en Banco Inclinado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_102.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_103",
+    "nombre": "Zancada Lateral con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Ingle"],
+    "media_url": "/assets/ejercicios/musc_103.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_104",
+    "nombre": "Press de Banca con Agarre Inverso",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_104.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_105",
+    "nombre": "Remo con Mancuerna en Banco Inclinado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_105.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_106",
+    "nombre": "Press de Banca con Agarre Estrecho en Smith",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_106.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_107",
+    "nombre": "Aperturas Inclinadas con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_107.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_108",
+    "nombre": "Cruce de Poleas Bajas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_108.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_109",
+    "nombre": "Remo con Mancuerna apoyado en Banco",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_109.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_110",
+    "nombre": "Jalón al Pecho Agarre Estrecho Neutro",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_110.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_111",
+    "nombre": "Remo con Barra Agarre Supino",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_111.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_112",
+    "nombre": "Sentadilla con Barra Trasera (Barra Alta)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_112.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_113",
+    "nombre": "Peso Muerto Convencional",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_113.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_114",
+    "nombre": "Prensa de Piernas a una Pierna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_114.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_115",
+    "nombre": "Curl Femoral de Pie en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_115.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_116",
+    "nombre": "Glute Ham Raise",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_116.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_117",
+    "nombre": "Abducción de Cadera con Banda",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/musc_117.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_118",
+    "nombre": "Press Militar con Mancuernas Sentado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_118.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_119",
+    "nombre": "Elevaciones Laterales en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_119.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "musc_120",
+    "nombre": "Face Pull con Banda",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_120.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombro Posterior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_121",
+    "nombre": "Curl de Bíceps con Polea Baja y Barra EZ",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_121.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_122",
+    "nombre": "Curl de Bíceps en Polea Alta (Doble Bíceps)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_122.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_123",
+    "nombre": "Press Francés con Mancuernas en Suelo",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_123.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_124",
+    "nombre": "Extensión de Tríceps sobre la Cabeza con Banda",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_124.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_125",
+    "nombre": "Crunch Abdominal en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_125.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_126",
+    "nombre": "Elevación de Rodillas en Banco",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_126.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_127",
+    "nombre": "Press de Banca con Mancuernas Agarre Neutro",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_127.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_128",
+    "nombre": "Remo con Barra T en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_128.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_129",
+    "nombre": "Sentadilla Goblet con Kettlebell",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_129.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_130",
+    "nombre": "Peso Muerto Rumano con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Isquiotibiales"],
+    "media_url": "/assets/ejercicios/musc_130.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_131",
+    "nombre": "Elevación de Gemelos en Prensa",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_131.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_132",
+    "nombre": "Curl de Bíceps con Mancuernas Alterno",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_132.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_133",
+    "nombre": "Extensión de Tríceps con Cuerda en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_133.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_134",
+    "nombre": "Press Pallof de Pie",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_134.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "musc_135",
+    "nombre": "Encogimientos en Máquina de Press de Hombros",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Cervical"],
+    "media_url": "/assets/ejercicios/musc_135.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Trapecios",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Elevación Escapular"
+    }
+  },
+  {
+    "id": "musc_136",
+    "nombre": "Sentadilla Sumo con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_136.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_137",
+    "nombre": "Flexiones de Brazos en Banco (Tríceps)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Banco de Musculación"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_137.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_138",
+    "nombre": "Remo con Mancuerna en Banco a dos manos",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_138.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_139",
+    "nombre": "Paseo del Granjero a una mano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_139.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Estabilización"
+    }
+  },
+  {
+    "id": "musc_140",
+    "nombre": "Abducción de Cadera en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/musc_140.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_141",
+    "nombre": "Press Militar en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_141.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_142",
+    "nombre": "Curl de Bíceps con Banda Elástica",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_142.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_143",
+    "nombre": "Remo con Banda Elástica Sentado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_143.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_144",
+    "nombre": "Peso Muerto con Kettlebell",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_144.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_145",
+    "nombre": "Zancadas con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_145.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_146",
+    "nombre": "Flexiones de Muñeca con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Muñeca"],
+    "media_url": "/assets/ejercicios/musc_146.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Muñeca"
+    }
+  },
+  {
+    "id": "musc_147",
+    "nombre": "Extensión de Muñeca con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Muñeca"],
+    "media_url": "/assets/ejercicios/musc_147.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Antebrazos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Muñeca"
+    }
+  },
+  {
+    "id": "musc_148",
+    "nombre": "Press de Hombros en Smith",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_148.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_149",
+    "nombre": "Jalón al Pecho con una mano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_149.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_150",
+    "nombre": "Curl de Bíceps en Polea Baja con una mano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_150.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_151",
+    "nombre": "Sentadilla con Pausa",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_151.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_152",
+    "nombre": "Peso Muerto con Pausa",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Isquiotibiales"],
+    "media_url": "/assets/ejercicios/musc_152.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_153",
+    "nombre": "Prensa de Gemelos de pie en Máquina",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_153.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_154",
+    "nombre": "Step-ups en Banco",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Banco de Musculación"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_154.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_155",
+    "nombre": "Curl de Bíceps con Barra en Banco Inclinado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_155.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_156",
+    "nombre": "Extensión de Tríceps con Barra EZ tumbado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_156.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_157",
+    "nombre": "Remo con Mancuerna a una mano apoyado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_157.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_158",
+    "nombre": "Press de Hombros en Máquina Hammer",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_158.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_159",
+    "nombre": "Curl de Bíceps con Kettlebell",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_159.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_160",
+    "nombre": "Elevación de Talones tipo Burro",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_160.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_161",
+    "nombre": "Peso Muerto Piernas Rígidas con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Isquiotibiales"],
+    "media_url": "/assets/ejercicios/musc_161.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Isquiotibiales",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_162",
+    "nombre": "Patada de Tríceps con Banda",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_162.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_163",
+    "nombre": "Press de Banca con Banda Elástica",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_163.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_164",
+    "nombre": "Zancadas hacia atrás con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_164.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_165",
+    "nombre": "Crunch Abdominal con Disco",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_165.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_166",
+    "nombre": "Remo con Barra Agarre Neutro",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_166.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_167",
+    "nombre": "Curl de Bíceps con Barra EZ de pie",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_167.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_168",
+    "nombre": "Extensión de Tríceps con Barra recta en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_168.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_169",
+    "nombre": "Sentadilla Búlgara con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja", "Equilibrio"],
+    "media_url": "/assets/ejercicios/musc_169.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_170",
+    "nombre": "Peso Muerto Sumo con Mancuerna",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_170.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_171",
+    "nombre": "Jalón al Pecho con Barra V",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_171.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "musc_172",
+    "nombre": "Aperturas con Polea en Banco Plano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_172.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_173",
+    "nombre": "Prensa de Piernas inclinada 45 grados",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_173.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_174",
+    "nombre": "Curl de Bíceps Concentration con Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_174.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_175",
+    "nombre": "Extensión de Tríceps con Barra V en Polea",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_175.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_176",
+    "nombre": "Ab Crunch con piernas elevadas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_176.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_177",
+    "nombre": "Zancadas con Kettlebell",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/musc_177.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_178",
+    "nombre": "Press de Banca Inclinado con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_178.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_179",
+    "nombre": "Remo con Mancuerna en Banco Inclinado (Pecho apoyado)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_179.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_180",
+    "nombre": "Sentadilla con Barra Frontal (Barra baja)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Muñeca", "Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_180.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_181",
+    "nombre": "Hip Thrust con Kettlebell",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_181.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_182",
+    "nombre": "Elevación de Gemelos sentado con Mancuernas",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/musc_182.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_183",
+    "nombre": "Curl de Bíceps con Barra EZ en Banco Predicador",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/musc_183.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_184",
+    "nombre": "Extensión de Tríceps con Mancuerna a una mano",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_184.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_185",
+    "nombre": "Rueda Abdominal con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_185.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "musc_186",
+    "nombre": "Elevación de Rodillas colgado con Giro",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_186.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Rotación de Tronco"
+    }
+  },
+  {
+    "id": "musc_187",
+    "nombre": "Face Pull en Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_187.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombro Posterior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_188",
+    "nombre": "Aperturas con Mancuernas en Banco Declinado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_188.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Inferior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_189",
+    "nombre": "Sentadilla Hack con Barra (detrás de piernas)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_189.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_190",
+    "nombre": "Peso Muerto con Barra Hexagonal",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_190.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuerpo Completo",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_191",
+    "nombre": "Zancadas Laterales con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla", "Cadera"],
+    "media_url": "/assets/ejercicios/musc_191.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_192",
+    "nombre": "Elevación de Gemelos a una pierna con Barra",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Tobillo", "Equilibrio"],
+    "media_url": "/assets/ejercicios/musc_192.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_193",
+    "nombre": "Curl de Bíceps con Barra EZ agarre estrecho",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_193.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_194",
+    "nombre": "Extensión de Tríceps tras nuca con Barra recta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/musc_194.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_195",
+    "nombre": "Plancha con extensión de brazos",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_195.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "musc_196",
+    "nombre": "Press Militar con Barra sentado",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_196.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "musc_197",
+    "nombre": "Aperturas en Polea Alta",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/musc_197.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Inferior",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "musc_198",
+    "nombre": "Sentadilla Sissy con Peso",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Barras y Discos"],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/musc_198.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "musc_199",
+    "nombre": "Hiperextensiones con Peso",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_199.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Zona Lumbar",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "musc_200",
+    "nombre": "Remo con Mancuernas en Banco Plano (alterno)",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Mancuernas y Pesas Libres", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_200.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "musc_201",
+    "nombre": "Curl de Bíceps Spider con Barra EZ",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Barras y Discos", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/musc_201.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Bíceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Codo"
+    }
+  },
+  {
+    "id": "musc_202",
+    "nombre": "Extensión de Tríceps en Polea con Agarre Inverso",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/musc_202.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Extensión de Codo"
+    }
+  },
+  {
+    "id": "musc_203",
+    "nombre": "Crunch Abdominal en Polea Baja",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_203.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión de Tronco"
+    }
+  },
+  {
+    "id": "musc_204",
+    "nombre": "Elevación de Gemelos en Máquina Smith",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Máquinas de Gimnasio"],
+    "lesiones_prohibidas": ["Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/musc_204.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Gemelos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Flexión Plantar"
+    }
+  },
+  {
+    "id": "musc_205",
+    "nombre": "Zancadas con Mancuernas sobre la cabeza",
+    "modalidad": "Musculación",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Mancuernas y Pesas Libres"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja", "Rodilla"],
+    "media_url": "/assets/ejercicios/musc_205.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "cal_001",
+    "nombre": "Flexiones de Diamante",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/cal_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_002",
+    "nombre": "Flexiones Inclinadas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/cal_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral Superior",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_003",
+    "nombre": "Dominadas Pronas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "cal_004",
+    "nombre": "Dominadas Supinas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "cal_005",
+    "nombre": "Fondos en Paralelas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_006",
+    "nombre": "Remo Invertido en Barra Baja",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cal_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Horizontal"
+    }
+  },
+  {
+    "id": "cal_007",
+    "nombre": "Pike Push-up",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_008",
+    "nombre": "Sentadilla Pistol Asistida",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/cal_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "cal_009",
+    "nombre": "Hollow Body Hold",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/cal_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "cal_010",
+    "nombre": "Plancha con Toque de Hombro",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Rotación"
+    }
+  },
+  {
+    "id": "cal_011",
+    "nombre": "Flexiones de Arquero",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_011.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_012",
+    "nombre": "Puente de Glúteo",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_012.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "cal_013",
+    "nombre": "L-Sit en Paralelas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_013.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Isométrico",
+      "patron_movimiento": "Flexión de Cadera"
+    }
+  },
+  {
+    "id": "cal_014",
+    "nombre": "Flexiones de Arquero en Suelo",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Codo"],
+    "media_url": "/assets/ejercicios/cal_014.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_015",
+    "nombre": "Dominadas con Agarre Neutro",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Estructuras de Calistenia"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_015.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Tracción Vertical"
+    }
+  },
+  {
+    "id": "cal_016",
+    "nombre": "Flexiones con manos juntas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Codo", "Hombro"],
+    "media_url": "/assets/ejercicios/cal_016.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_017",
+    "nombre": "Sentadilla Búlgara Peso Corporal",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal", "Accesorios"],
+    "lesiones_prohibidas": ["Rodilla", "Cadera"],
+    "media_url": "/assets/ejercicios/cal_017.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "cal_018",
+    "nombre": "Paso del Oso (Bear Crawl)",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca", "Cadera"],
+    "media_url": "/assets/ejercicios/cal_018.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Locomoción"
+    }
+  },
+  {
+    "id": "cal_019",
+    "nombre": "Hollow Body Rocks",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_019.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "cal_020",
+    "nombre": "Flexiones Explosivas",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cal_020.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_021",
+    "nombre": "Zancadas Caminando",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/cal_021.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuádriceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Dominante de Rodilla"
+    }
+  },
+  {
+    "id": "cal_022",
+    "nombre": "Plancha con Elevación de Pierna",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_022.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Estabilización"
+    }
+  },
+  {
+    "id": "cal_023",
+    "nombre": "Flexiones en Pica sobre Banco",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal", "Banco de Musculación"],
+    "lesiones_prohibidas": ["Hombro", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_023.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Hombros",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_024",
+    "nombre": "Dominadas Escapulares",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Estructuras de Calistenia"],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/cal_024.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Espalda",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Retracción Escapular"
+    }
+  },
+  {
+    "id": "cal_025",
+    "nombre": "Puente Glúteo a una Pierna",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Espalda baja", "Cadera"],
+    "media_url": "/assets/ejercicios/cal_025.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Glúteos",
+      "tipo_mecanica": "Aislamiento",
+      "patron_movimiento": "Dominante de Cadera"
+    }
+  },
+  {
+    "id": "cal_026",
+    "nombre": "Fondos en Banco",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cal_026.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Tríceps",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cal_027",
+    "nombre": "Flexiones con manos en puño",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cal_027.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Pectoral",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Horizontal"
+    }
+  },
+  {
+    "id": "cal_028",
+    "nombre": "Plancha con Desplazamiento de Brazos",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_028.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Anti-Extensión"
+    }
+  },
+  {
+    "id": "cal_029",
+    "nombre": "L-Sit en el suelo",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cal_029.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Isométrico",
+      "patron_movimiento": "Flexión de Cadera"
+    }
+  },
+  {
+    "id": "cal_030",
+    "nombre": "Skin the Cat",
+    "modalidad": "Calistenia",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": ["Estructuras de Calistenia"],
+    "lesiones_prohibidas": ["Hombro", "Codo", "Muñeca"],
+    "media_url": "/assets/ejercicios/cal_030.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuerpo Completo",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Rotación de Hombro"
+    }
+  },
+  {
+    "id": "run_001",
+    "nombre": "Trote Suave Continuo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/run_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Carrera Continua"
+    }
+  },
+  {
+    "id": "run_002",
+    "nombre": "Rodaje Progresivo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Cambio de Ritmo"
+    }
+  },
+  {
+    "id": "run_003",
+    "nombre": "Series 6x400m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/run_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Intervalos"
+    }
+  },
+  {
+    "id": "run_004",
+    "nombre": "Series 10x200m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Velocidad"
+    }
+  },
+  {
+    "id": "run_005",
+    "nombre": "Fartlek Corto",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Espalda baja"],
+    "media_url": "/assets/ejercicios/run_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Cambio de Ritmo"
+    }
+  },
+  {
+    "id": "run_006",
+    "nombre": "Tempo Run",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Umbral Aeróbico"
+    }
+  },
+  {
+    "id": "run_007",
+    "nombre": "Cuestas Cortas",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo", "Cadera"],
+    "media_url": "/assets/ejercicios/run_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Aceleración"
+    }
+  },
+  {
+    "id": "run_008",
+    "nombre": "Técnica de Carrera",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Técnica",
+      "patron_movimiento": "Técnica de Carrera"
+    }
+  },
+  {
+    "id": "run_009",
+    "nombre": "Sprints de 50 metros",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Isquiotibiales", "Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/run_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Velocidad"
+    }
+  },
+  {
+    "id": "run_010",
+    "nombre": "Carrera Lateral",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/run_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Técnica",
+      "patron_movimiento": "Desplazamiento Lateral"
+    }
+  },
+  {
+    "id": "run_011",
+    "nombre": "Sprint 100m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Isquiotibiales", "Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_011.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Velocidad"
+    }
+  },
+  {
+    "id": "run_012",
+    "nombre": "Cuestas Largas",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Cadera", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_012.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Umbral Aeróbico"
+    }
+  },
+  {
+    "id": "run_013",
+    "nombre": "Rodaje de Recuperación",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_013.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Carrera Continua"
+    }
+  },
+  {
+    "id": "run_014",
+    "nombre": "Técnica de Carrera: Skipping bajo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/run_014.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Técnica",
+      "patron_movimiento": "Técnica de Carrera"
+    }
+  },
+  {
+    "id": "run_015",
+    "nombre": "Técnica de Carrera: Talones al glúteo",
+    "modalidad": "Running",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/run_015.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Técnica",
+      "patron_movimiento": "Técnica de Carrera"
+    }
+  },
+  {
+    "id": "run_016",
+    "nombre": "Series 4x1000m",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Cadera"],
+    "media_url": "/assets/ejercicios/run_016.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Intervalos"
+    }
+  },
+  {
+    "id": "run_017",
+    "nombre": "Carrera con cambios de dirección",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/run_017.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Agilidad"
+    }
+  },
+  {
+    "id": "run_018",
+    "nombre": "Rodaje en Terreno Mixto",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/run_018.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Carrera Continua"
+    }
+  },
+  {
+    "id": "run_019",
+    "nombre": "Sprints de 30m en Subida",
+    "modalidad": "Running",
+    "nivel_dificultad": "Avanzado",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Isquiotibiales", "Gemelos"],
+    "media_url": "/assets/ejercicios/run_019.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Velocidad"
+    }
+  },
+  {
+    "id": "run_020",
+    "nombre": "Fartlek Piramidal",
+    "modalidad": "Running",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/run_020.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Cambio de Ritmo"
+    }
+  },
+  {
+    "id": "mob_001",
+    "nombre": "Movilidad de Tobillos",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo"],
+    "media_url": "/assets/ejercicios/mob_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Tobillo"
+    }
+  },
+  {
+    "id": "mob_002",
+    "nombre": "Movilidad de Cadera",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/mob_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Cadera"
+    }
+  },
+  {
+    "id": "mob_003",
+    "nombre": "Aperturas Torácicas",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Espalda baja", "Cervical"],
+    "media_url": "/assets/ejercicios/mob_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Rotación Torácica"
+    }
+  },
+  {
+    "id": "mob_004",
+    "nombre": "Rotaciones de Hombro con Banda",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/mob_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Rotación Externa de Hombro"
+    }
+  },
+  {
+    "id": "mob_005",
+    "nombre": "Gato-Camello (Cat-Camel)",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca"],
+    "media_url": "/assets/ejercicios/mob_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Flexión-Extensión Espinal"
+    }
+  },
+  {
+    "id": "mob_006",
+    "nombre": "Estiramiento del Piramidal",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla"],
+    "media_url": "/assets/ejercicios/mob_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Cadera"
+    }
+  },
+  {
+    "id": "mob_007",
+    "nombre": "Estiramiento Dinámico de Pectoral",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro"],
+    "media_url": "/assets/ejercicios/mob_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Abducción de Hombro"
+    }
+  },
+  {
+    "id": "mob_008",
+    "nombre": "Rotación de Cuello",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Cervical"],
+    "media_url": "/assets/ejercicios/mob_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Rotación Cervical"
+    }
+  },
+  {
+    "id": "mob_009",
+    "nombre": "Estiramiento de Isquiotibiales Dinámico",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Isquiotibiales", "Espalda baja"],
+    "media_url": "/assets/ejercicios/mob_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Flexión de Cadera"
+    }
+  },
+  {
+    "id": "mob_010",
+    "nombre": "Círculos de Cadera",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Cadera"],
+    "media_url": "/assets/ejercicios/mob_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Articulación de Cadera"
+    }
+  },
+  {
+    "id": "mob_011",
+    "nombre": "Estiramiento de Cobra",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Espalda baja"],
+    "media_url": "/assets/ejercicios/mob_011.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Extensión Espinal"
+    }
+  },
+  {
+    "id": "mob_012",
+    "nombre": "Movilidad de Muñecas en Suelo",
+    "modalidad": "Movilidad",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca"],
+    "media_url": "/assets/ejercicios/mob_012.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Movilidad",
+      "tipo_mecanica": "Movilidad",
+      "patron_movimiento": "Extensión de Muñeca"
+    }
+  },
+  {
+    "id": "cardio_001",
+    "nombre": "Jumping Jacks",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/cardio_001.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Saltos"
+    }
+  },
+  {
+    "id": "cardio_002",
+    "nombre": "Mountain Climbers",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_002.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Rodillas al Pecho"
+    }
+  },
+  {
+    "id": "cardio_003",
+    "nombre": "Burpees",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Rodilla", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_003.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Cuerpo Completo"
+    }
+  },
+  {
+    "id": "cardio_004",
+    "nombre": "Rodillas Altas",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/cardio_004.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Aceleración"
+    }
+  },
+  {
+    "id": "cardio_005",
+    "nombre": "Skating Jumps",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/cardio_005.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Saltos Laterales"
+    }
+  },
+  {
+    "id": "cardio_006",
+    "nombre": "Bear Crawl (Paso del Oso)",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Hombro", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_006.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Core",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Locomoción"
+    }
+  },
+  {
+    "id": "cardio_007",
+    "nombre": "Shadow Boxing",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": [],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cardio_007.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cardio_008",
+    "nombre": "Box Jumps",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Rodilla", "Tobillo"],
+    "media_url": "/assets/ejercicios/cardio_008.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Saltos"
+    }
+  },
+  {
+    "id": "cardio_009",
+    "nombre": "Salto de Comba",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Tobillo", "Rodilla"],
+    "media_url": "/assets/ejercicios/cardio_009.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Saltos"
+    }
+  },
+  {
+    "id": "cardio_010",
+    "nombre": "Battle Ropes",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Hombro", "Codo"],
+    "media_url": "/assets/ejercicios/cardio_010.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuerpo Completo",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Ondulación"
+    }
+  },
+  {
+    "id": "cardio_011",
+    "nombre": "Slam Ball",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Intermedio",
+    "equipamiento": ["Accesorios"],
+    "lesiones_prohibidas": ["Espalda baja", "Hombro"],
+    "media_url": "/assets/ejercicios/cardio_011.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cuerpo Completo",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Empuje Vertical"
+    }
+  },
+  {
+    "id": "cardio_012",
+    "nombre": "Sprawl",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Espalda baja"],
+    "media_url": "/assets/ejercicios/cardio_012.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Compuesto",
+      "patron_movimiento": "Cuerpo Completo"
+    }
+  },
+  {
+    "id": "cardio_013",
+    "nombre": "Escalador Lateral",
+    "modalidad": "Cardio Funcional",
+    "nivel_dificultad": "Principiante",
+    "equipamiento": ["Peso Corporal"],
+    "lesiones_prohibidas": ["Muñeca", "Rodilla"],
+    "media_url": "/assets/ejercicios/cardio_013.gif",
+    "atributos_especificos": {
+      "grupo_muscular": "Cardio",
+      "tipo_mecanica": "Condicionamiento",
+      "patron_movimiento": "Rodillas al Pecho"
+    }
+  }
+]
