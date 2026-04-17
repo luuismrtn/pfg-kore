@@ -46,3 +46,9 @@ export type ChatIntentPayload = {
   routine?: RoutineResponse;
   profile?: RoutineProfilePayload;
 };
+
+export type AiModelsResponse = {
+  responseModel: string;
+  responseModelFallbacks: string[];
+  embeddingModel: string;
+};

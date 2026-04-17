@@ -4,6 +4,7 @@ import {
   changeRoutineExercise,
   changeRoutineDay,
   generateRoutine,
+  getAiModels,
   getAvailableModalities,
   interpretChatIntent,
 } from "@backend/controllers/routines";
@@ -11,6 +12,7 @@ import {
 const router = Router();
 
 router.get("/modalidades", getAvailableModalities);
+router.get("/ai-models", getAiModels);
 router.post("/generate", generateRoutine);
 router.post("/change-day", changeRoutineDay);
 router.post("/cambiar-ejercicio-rutina", changeRoutineExercise);

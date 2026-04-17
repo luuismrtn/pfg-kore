@@ -2,6 +2,7 @@ export { addRoutineDay } from "./addRoutineDay";
 export { changeRoutineDay } from "./changeRoutineDay";
 export { changeRoutineExercise } from "./changeRoutineExercise";
 export { generateRoutine } from "./generateRoutine";
+export { getAiModels } from "./getAiModels";
 export { getAvailableSportOptions } from "./getAvailableSportOptions";
 export { interpretChatIntent } from "./interpretChatIntent";
 export {
@@ -14,6 +15,7 @@ export {
 export type {
   AddRoutineDayPayload,
   ApiErrorBody,
+  AiModelsResponse,
   ChatIntentPayload,
   ChangeRoutineDayPayload,
   ChangeRoutineExercisePayload,

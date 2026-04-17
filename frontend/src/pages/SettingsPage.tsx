@@ -1,6 +1,8 @@
 import { Moon, Sun, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
+import { getAiModels } from "@/services/api/routines";
+import type { AiModelsResponse } from "@/services/api/routines";
 
 const THEME_STORAGE_KEY = "kore.theme.v1";
 
@@ -20,6 +22,49 @@ function applyTheme(theme: ThemeMode): void {
 function SettingsPage() {
   const [theme, setTheme] = useState<ThemeMode>(readStoredTheme);
   const [clearMessage, setClearMessage] = useState<string | null>(null);
+  const [aiModels, setAiModels] = useState<AiModelsResponse | null>(null);
+  const [isLoadingAiModels, setIsLoadingAiModels] = useState<boolean>(true);
+  const [aiModelsError, setAiModelsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadAiModels = async () => {
+      setIsLoadingAiModels(true);
+
+      try {
+        const models = await getAiModels();
+
+        if (!isMounted) {
+          return;
+        }
+
+        setAiModels(models);
+        setAiModelsError(null);
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setAiModels(null);
+        setAiModelsError(
+          error instanceof Error
+            ? error.message
+            : "No se pudo cargar la configuración de modelos de IA.",
+        );
+      } finally {
+        if (isMounted) {
+          setIsLoadingAiModels(false);
+        }
+      }
+    };
+
+    void loadAiModels();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const handleThemeChange = (nextTheme: ThemeMode) => {
     setTheme(nextTheme);
@@ -88,6 +133,47 @@ function SettingsPage() {
                 </span>
               </button>
             </div>
+          </section>
+
+          <section className="rounded-2xl border border-border bg-surface-900/70 p-6 backdrop-blur-xl shadow-(--shadow-primary-15-weak)">
+            <div className="mb-5">
+              <h3 className="text-white text-lg font-bold">Modelos de IA</h3>
+              <p className="text-muted text-sm mt-1">
+                Modelos configurados en backend para respuestas y embeddings.
+              </p>
+            </div>
+
+            {isLoadingAiModels ? (
+              <p className="text-sm text-muted">Cargando modelos de IA...</p>
+            ) : aiModelsError ? (
+              <p className="text-sm text-red-300">{aiModelsError}</p>
+            ) : aiModels ? (
+              <div className="space-y-4 text-sm">
+                <div className="rounded-xl border border-border bg-surface-800/60 p-4">
+                  <p className="text-muted">Modelo para respuestas</p>
+                  <p className="mt-1 font-mono text-white break-all">
+                    {aiModels.responseModel}
+                  </p>
+                  <p className="mt-2 text-muted">
+                    Fallbacks:{" "}
+                    {aiModels.responseModelFallbacks.length > 0
+                      ? aiModels.responseModelFallbacks.join(", ")
+                      : "Ninguno"}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-surface-800/60 p-4">
+                  <p className="text-muted">Modelo para embeddings</p>
+                  <p className="mt-1 font-mono text-white break-all">
+                    {aiModels.embeddingModel}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-muted">
+                No hay información de modelos disponible.
+              </p>
+            )}
           </section>
 
           <section className="rounded-2xl border border-border bg-surface-900/70 p-6 backdrop-blur-xl shadow-(--shadow-primary-15-weak)">
