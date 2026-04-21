@@ -31,7 +31,7 @@ function ChatPage() {
         <div className="relative flex h-full flex-col gap-4 pt-4">
           <div
             ref={scrollRef}
-            className="flex-1 rounded-2xl border border-border/80 bg-surface-900/70 backdrop-blur-xl shadow-(--shadow-primary-15-weak) p-6 overflow-y-auto custom-scrollbar"
+            className="flex-1 rounded-2xl border border-border/80 bg-surface-900/70 backdrop-blur-xl p-6 overflow-y-auto custom-scrollbar"
           >
             <div className="space-y-4">
               {messages.map((message) => {
@@ -90,7 +90,8 @@ function ChatPage() {
                   aria-hidden="true"
                 />
                 Escribe tu mensaje. Pulsa Enter para enviar o Shift+Enter para
-                saltos de linea. Recuerdo los últimos {MAX_CHAT_MEMORY_MESSAGES} mensajes.
+                saltos de linea. Recuerdo los últimos {MAX_CHAT_MEMORY_MESSAGES}{" "}
+                mensajes.
               </div>
 
               <div className="flex gap-3">
