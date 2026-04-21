@@ -14,6 +14,7 @@ import {
 import type { ExerciseRecord, FilteredExercise } from "@backend/types/exercise";
 import type {
   AddRoutineDayRequest,
+  ChatContextMessage,
   ChatIntentAction,
   ChatIntentRequest,
   ChatIntentResponse,
@@ -24,6 +25,9 @@ import type {
   RoutineRequest,
   RoutineResponse,
 } from "@backend/types/routine";
+
+const MAX_CHAT_HISTORY_MESSAGES = 20;
+const MAX_CHAT_HISTORY_CONTENT_CHARS = 1200;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -684,6 +688,42 @@ export class RagService {
     };
   }
 
+  private normalizeChatHistory(
+    history: ChatContextMessage[] | undefined,
+  ): ChatContextMessage[] {
+    if (!Array.isArray(history)) {
+      return [];
+    }
+
+    const sanitizedHistory = history.flatMap((message) => {
+      if (
+        !message ||
+        (message.role !== "user" && message.role !== "assistant") ||
+        typeof message.content !== "string"
+      ) {
+        return [];
+      }
+
+      const content = message.content.trim();
+      if (!content) {
+        return [];
+      }
+
+      return [
+        {
+          role: message.role,
+          content: content.slice(0, MAX_CHAT_HISTORY_CONTENT_CHARS),
+        },
+      ];
+    });
+
+    if (sanitizedHistory.length <= MAX_CHAT_HISTORY_MESSAGES) {
+      return sanitizedHistory;
+    }
+
+    return sanitizedHistory.slice(-MAX_CHAT_HISTORY_MESSAGES);
+  }
+
   private resolveChatIntentAction(rawAction: unknown): ChatIntentAction {
     if (typeof rawAction !== "string") {
       return "question";
@@ -1041,6 +1081,7 @@ export class RagService {
     const normalizedProfile = request.profile
       ? this.normalizeProfile(request.profile)
       : undefined;
+    const normalizedHistory = this.normalizeChatHistory(request.history);
 
     const routineContext = request.routine
       ? JSON.stringify(request.routine)
@@ -1048,6 +1089,10 @@ export class RagService {
     const profileContext = normalizedProfile
       ? JSON.stringify(normalizedProfile)
       : "No hay perfil del usuario disponible.";
+    const historyContext =
+      normalizedHistory.length > 0
+        ? JSON.stringify(normalizedHistory)
+        : "No hay historial reciente de chat disponible.";
 
     const systemPrompt = `
     \nEres un asistente de fitness que clasifica la intención del usuario y responde SOLO en JSON válido.
@@ -1069,11 +1114,12 @@ export class RagService {
     \n7. Si action NO es question, responseText debe ser una confirmación breve de la acción detectada.
     \n8. dayToChange y exerciseToChange deben ir vacíos si no aplican.
     \n9. Si el usuario habla de "día 2" o "ejercicio 3", devuelve esos valores como texto ("2", "3").
+    \n10. Usa el historial reciente del chat (mensajes de usuario y asistente) para resolver referencias como "eso", "lo anterior" o "cámbialo", dando prioridad al último mensaje del usuario.
     \n`;
 
     const modelResponse = await this.generateJsonFromModel(
       systemPrompt,
-      `Mensaje del usuario: "${normalizedText}". Perfil del usuario para contexto: ${profileContext}. Rutina actual disponible para contexto: ${routineContext}`,
+      `Historial reciente de conversación (acotado): ${historyContext}. Último mensaje del usuario: "${normalizedText}". Perfil del usuario para contexto: ${profileContext}. Rutina actual disponible para contexto: ${routineContext}`,
     );
 
     const action = this.resolveChatIntentAction(modelResponse.action);

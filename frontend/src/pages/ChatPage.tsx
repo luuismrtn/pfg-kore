@@ -1,5 +1,6 @@
 import {
   useChatConversation,
+  MAX_CHAT_MEMORY_MESSAGES,
   MAX_USER_CHARS,
 } from "@/features/chat/hooks/useChatConversation";
 import HeaderBar from "@/components/layout/HeaderBar";
@@ -89,7 +90,7 @@ function ChatPage() {
                   aria-hidden="true"
                 />
                 Escribe tu mensaje. Pulsa Enter para enviar o Shift+Enter para
-                saltos de linea.
+                saltos de linea. Recuerdo los últimos {MAX_CHAT_MEMORY_MESSAGES} mensajes.
               </div>
 
               <div className="flex gap-3">

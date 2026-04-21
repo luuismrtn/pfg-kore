@@ -1,11 +1,12 @@
 import type { ChatIntentResponse } from "@/features/chat/types";
 import type { RoutineResponse } from "@/features/routine/types";
-import type { ChatIntentPayload } from "./types";
+import type { ChatContextMessage, ChatIntentPayload } from "./types";
 import { buildRoutineRequestPayload, getProfile, postJson } from "./shared";
 
 export async function interpretChatIntent(
   text: string,
   routine?: RoutineResponse,
+  history?: ChatContextMessage[],
 ): Promise<ChatIntentResponse> {
   const profile = getProfile();
   const profilePayload = buildRoutineRequestPayload(profile, "");
@@ -14,6 +15,7 @@ export async function interpretChatIntent(
     text,
     routine,
     profile: profilePayload ?? undefined,
+    history,
   };
 
   return postJson<ChatIntentResponse>(

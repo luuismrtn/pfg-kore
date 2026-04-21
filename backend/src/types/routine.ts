@@ -63,10 +63,16 @@ export type ChatIntentAction =
   | "add_day"
   | "question";
 
+export interface ChatContextMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
 export interface ChatIntentRequest {
   text: string;
   routine?: RoutineResponse;
   profile?: Partial<RoutineRequest>;
+  history?: ChatContextMessage[];
 }
 
 export interface ChatIntentResponse {

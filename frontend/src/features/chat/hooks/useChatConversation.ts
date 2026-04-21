@@ -7,6 +7,7 @@ import {
 } from "react";
 import type { ChatMessage } from "@/features/chat/types";
 import type { RoutineResponse } from "@/features/routine/types";
+import type { ChatContextMessage } from "@/services/api/routines/types";
 import {
   addRoutineDay,
   changeRoutineDay,
@@ -30,10 +31,39 @@ const seedMessage: ChatMessage = {
 };
 
 export const MAX_USER_CHARS = 1000;
+export const MAX_CHAT_MEMORY_MESSAGES = 20;
 const CHAT_STORAGE_KEY = "pfg-kore:chat:messages";
 const ROUTINE_STORAGE_KEY = "pfg-kore:chat:routine";
 const CHAT_PENDING_STORAGE_KEY = "pfg-kore:chat:pending";
 const CHAT_SYNC_EVENT = "pfg-kore:chat:sync";
+
+function trimMessagesToLimit(messages: ChatMessage[]): ChatMessage[] {
+  if (messages.length <= MAX_CHAT_MEMORY_MESSAGES) {
+    return messages;
+  }
+
+  const hasSeed = messages.some((message) => message.id === seedMessage.id);
+
+  if (!hasSeed) {
+    return messages.slice(-MAX_CHAT_MEMORY_MESSAGES);
+  }
+
+  const nonSeedMessages = messages.filter(
+    (message) => message.id !== seedMessage.id,
+  );
+
+  return [
+    seedMessage,
+    ...nonSeedMessages.slice(-(MAX_CHAT_MEMORY_MESSAGES - 1)),
+  ];
+}
+
+function buildChatHistory(messages: ChatMessage[]): ChatContextMessage[] {
+  return trimMessagesToLimit(messages).map(({ role, content }) => ({
+    role,
+    content,
+  }));
+}
 
 function isChatMessage(value: unknown): value is ChatMessage {
   if (typeof value !== "object" || value === null) {
@@ -82,12 +112,10 @@ function readStoredMessages(): ChatMessage[] {
     if (Array.isArray(parsed)) {
       const validMessages = parsed.filter(isChatMessage);
       if (validMessages.length > 0) {
-        return validMessages;
+        return trimMessagesToLimit(validMessages);
       }
     }
-  } catch {
-    // Fall back to seed data when local storage is corrupted.
-  }
+  } catch {}
 
   return [seedMessage];
 }
@@ -100,10 +128,8 @@ function appendStoredMessage(message: ChatMessage): void {
     return;
   }
 
-  localStorage.setItem(
-    CHAT_STORAGE_KEY,
-    JSON.stringify([...messages, message]),
-  );
+  const nextMessages = trimMessagesToLimit([...messages, message]);
+  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(nextMessages));
 }
 
 function readStoredPendingRequest(): boolean {
@@ -146,7 +172,12 @@ export function useChatConversation() {
   }, [messages]);
 
   useEffect(() => {
-    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+    const boundedMessages = trimMessagesToLimit(messages);
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(boundedMessages));
+
+    if (boundedMessages.length !== messages.length) {
+      setMessages(boundedMessages);
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -207,16 +238,18 @@ export function useChatConversation() {
     requestVersionRef.current = requestVersion;
 
     appendStoredMessage(userMessage);
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => trimMessagesToLimit([...prev, userMessage]));
     setDraft("");
     setStoredPendingRequest(true, instanceIdRef.current);
     setIsResponding(true);
 
     try {
       const currentRoutine = readStoredRoutine();
+      const chatHistory = buildChatHistory([...messages, userMessage]);
       const intent = await interpretChatIntent(
         text,
         currentRoutine ?? undefined,
+        chatHistory,
       );
 
       let routine: RoutineResponse | null = null;
@@ -304,7 +337,7 @@ export function useChatConversation() {
 
       if (requestVersionRef.current === requestVersion) {
         appendStoredMessage(assistantMessage);
-        setMessages((prev) => [...prev, assistantMessage]);
+        setMessages((prev) => trimMessagesToLimit([...prev, assistantMessage]));
       }
     } catch (error) {
       const assistantMessage: ChatMessage = {
@@ -318,7 +351,7 @@ export function useChatConversation() {
 
       if (requestVersionRef.current === requestVersion) {
         appendStoredMessage(assistantMessage);
-        setMessages((prev) => [...prev, assistantMessage]);
+        setMessages((prev) => trimMessagesToLimit([...prev, assistantMessage]));
         notifyOperationError(
           error,
           "No se pudo procesar tu solicitud con la IA.",

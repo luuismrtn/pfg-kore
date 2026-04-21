@@ -41,10 +41,16 @@ export type AddRoutineDayPayload = {
   changeRequest?: string;
 };
 
+export type ChatContextMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 export type ChatIntentPayload = {
   text: string;
   routine?: RoutineResponse;
   profile?: RoutineProfilePayload;
+  history?: ChatContextMessage[];
 };
 
 export type AiModelsResponse = {
