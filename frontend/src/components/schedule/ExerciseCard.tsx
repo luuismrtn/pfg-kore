@@ -25,18 +25,22 @@ const badgeClassByLabel: Record<string, string> = {
   Estabilidad: "bg-indigo-700/10 text-indigo-700 border border-indigo-700/20",
   Flexores: "bg-pink-700/10 text-pink-700 border border-pink-700/20",
   Pectoral: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-  "Empuje Horizontal": "bg-green-500/10 text-green-400 border border-green-500/20",
+  "Empuje Horizontal":
+    "bg-green-500/10 text-green-400 border border-green-500/20",
   "Pectoral Superior": "bg-blue-500/10 text-blue-400 border border-blue-500/20",
   Tríceps: "bg-orange-500/10 text-orange-400 border border-orange-500/20",
   "Extensión de Codo": "bg-red-500/10 text-red-400 border border-red-500/20",
-  "Hombro Posterior": "bg-purple-500/10 text-purple-400 border border-purple-500/20",
-  "Tracción Horizontal": "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
+  "Hombro Posterior":
+    "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+  "Tracción Horizontal":
+    "bg-cyan-500/10 text-cyan-400 border border-cyan-500/20",
   Calistenia: "bg-pink-500/10 text-pink-400 border border-pink-500/20",
-  "Dominante de Cadera": "bg-teal-500/10 text-teal-400 border border-teal-500/20",
-  "Empuje Vertical": "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
+  "Dominante de Cadera":
+    "bg-teal-500/10 text-teal-400 border border-teal-500/20",
+  "Empuje Vertical":
+    "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20",
   "Flexión de Tronco": "bg-gray-500/10 text-gray-400 border border-gray-500/20",
   "Zona Lumbar": "bg-yellow-700/10 text-yellow-700 border border-yellow-700/20",
-
 };
 
 const getBadgeClassName = (label: string) => {
@@ -52,7 +56,7 @@ export function ExerciseCardSkeleton() {
           <Skeleton className="h-4 w-2/3 rounded-full" />
         </div>
 
-        <Skeleton className="h-7 w-20 rounded-lg" />
+        <Skeleton className="h-6 w-20 rounded-lg" />
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -63,11 +67,11 @@ export function ExerciseCardSkeleton() {
 
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
-          <Skeleton key={index} className="h-16 rounded-lg" />
+          <Skeleton key={index} className="h-14 rounded-lg" />
         ))}
       </div>
 
-      <Skeleton className="h-16 rounded-lg" />
+      <Skeleton className="h-14 rounded-lg" />
     </article>
   );
 }
@@ -179,16 +183,14 @@ function ExerciseCard({
         />
       </div>
 
-      {exercise.note ? (
-        <div className="rounded-lg border border-border bg-surface-900/70 px-3 py-2">
-          <p className="text-[10px] uppercase tracking-wide text-muted mb-1">
-            Nota
-          </p>
-          <p className="text-sm text-white/90 leading-relaxed">
-            {exercise.note}
-          </p>
-        </div>
-      ) : null}
+      <div className="rounded-lg border border-border bg-surface-900/70 px-3 py-2">
+        <p className="text-[10px] uppercase tracking-wide text-muted mb-1">
+          Nota
+        </p>
+        <p className="text-sm text-white/90 leading-relaxed">
+          {exercise.note || "Sin nota adicional para este ejercicio."}
+        </p>
+      </div>
 
       {!exercise.badges?.length ? (
         <span className="w-fit px-2 py-0.5 rounded-full text-[10px] font-semibold bg-border text-muted">

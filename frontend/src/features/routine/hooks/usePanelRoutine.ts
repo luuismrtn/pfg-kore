@@ -103,18 +103,77 @@ function getPreferredSelectedDay(schedule: RoutineDay[]): string {
   return schedule.find(dayHasExercises)?.day ?? schedule[0]?.day ?? "";
 }
 
+type RoutineOperationState = {
+  isLoading: boolean;
+  isRegeneratingDay: boolean;
+  changingExerciseRef: string | null;
+  changingExerciseDay: string | null;
+};
+
+const routineOperationState: RoutineOperationState = {
+  isLoading: false,
+  isRegeneratingDay: false,
+  changingExerciseRef: null,
+  changingExerciseDay: null,
+};
+
+const routineOperationListeners = new Set<
+  (state: RoutineOperationState) => void
+>();
+
+function subscribeRoutineOperationState(
+  listener: (state: RoutineOperationState) => void,
+) {
+  routineOperationListeners.add(listener);
+
+  return () => {
+    routineOperationListeners.delete(listener);
+  };
+}
+
+function updateRoutineOperationState(patch: Partial<RoutineOperationState>) {
+  const nextState: RoutineOperationState = {
+    ...routineOperationState,
+    ...patch,
+  };
+
+  const hasChanged =
+    nextState.isLoading !== routineOperationState.isLoading ||
+    nextState.isRegeneratingDay !== routineOperationState.isRegeneratingDay ||
+    nextState.changingExerciseRef !==
+      routineOperationState.changingExerciseRef ||
+    nextState.changingExerciseDay !== routineOperationState.changingExerciseDay;
+
+  if (!hasChanged) {
+    return;
+  }
+
+  routineOperationState.isLoading = nextState.isLoading;
+  routineOperationState.isRegeneratingDay = nextState.isRegeneratingDay;
+  routineOperationState.changingExerciseRef = nextState.changingExerciseRef;
+  routineOperationState.changingExerciseDay = nextState.changingExerciseDay;
+
+  routineOperationListeners.forEach((listener) => {
+    listener(routineOperationState);
+  });
+}
+
 export function usePanelRoutine() {
   const [panelSchedule, setPanelSchedule] = useState<RoutineDay[]>(() =>
     readPanelSchedule(),
   );
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(
+    () => routineOperationState.isLoading,
+  );
   const [generationError, setGenerationError] = useState<string | null>(null);
-  const [isRegeneratingDay, setIsRegeneratingDay] = useState(false);
+  const [isRegeneratingDay, setIsRegeneratingDay] = useState(
+    () => routineOperationState.isRegeneratingDay,
+  );
   const [changingExerciseRef, setChangingExerciseRef] = useState<string | null>(
-    null,
+    () => routineOperationState.changingExerciseRef,
   );
   const [changingExerciseDay, setChangingExerciseDay] = useState<string | null>(
-    null,
+    () => routineOperationState.changingExerciseDay,
   );
   const [selectedDay, setSelectedDay] = useState("");
 
@@ -135,6 +194,17 @@ export function usePanelRoutine() {
     });
   }, [panelSchedule]);
 
+  useEffect(
+    () =>
+      subscribeRoutineOperationState((state) => {
+        setIsLoading(state.isLoading);
+        setIsRegeneratingDay(state.isRegeneratingDay);
+        setChangingExerciseRef(state.changingExerciseRef);
+        setChangingExerciseDay(state.changingExerciseDay);
+      }),
+    [],
+  );
+
   const handleGenerateRoutine = async () => {
     if (isGenerateRoutineDisabled) {
       return;
@@ -154,7 +224,7 @@ export function usePanelRoutine() {
     const previousSelectedDay = selectedDay;
 
     setGenerationError(null);
-    setIsLoading(true);
+    updateRoutineOperationState({ isLoading: true });
 
     try {
       ensureGoogleApiKeyConfigured();
@@ -182,7 +252,7 @@ export function usePanelRoutine() {
       );
       console.error("Error generando rutina:", error);
     } finally {
-      setIsLoading(false);
+      updateRoutineOperationState({ isLoading: false });
     }
   };
 
@@ -200,7 +270,7 @@ export function usePanelRoutine() {
       return;
     }
 
-    setIsRegeneratingDay(true);
+    updateRoutineOperationState({ isRegeneratingDay: true });
 
     try {
       ensureGoogleApiKeyConfigured();
@@ -228,7 +298,7 @@ export function usePanelRoutine() {
       );
       console.error("Error regenerando dia de rutina:", error);
     } finally {
-      setIsRegeneratingDay(false);
+      updateRoutineOperationState({ isRegeneratingDay: false });
     }
   };
 
@@ -249,8 +319,10 @@ export function usePanelRoutine() {
       return;
     }
 
-    setChangingExerciseDay(dayToChange);
-    setChangingExerciseRef(exerciseToChange);
+    updateRoutineOperationState({
+      changingExerciseDay: dayToChange,
+      changingExerciseRef: exerciseToChange,
+    });
 
     try {
       ensureGoogleApiKeyConfigured();
@@ -279,8 +351,10 @@ export function usePanelRoutine() {
       );
       console.error("Error cambiando ejercicio de rutina:", error);
     } finally {
-      setChangingExerciseRef(null);
-      setChangingExerciseDay(null);
+      updateRoutineOperationState({
+        changingExerciseRef: null,
+        changingExerciseDay: null,
+      });
     }
   };
 

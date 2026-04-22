@@ -18,7 +18,7 @@ function DayColumnCard({
   changingExerciseRef = null,
 }: DayColumnCardProps) {
   return (
-    <div className="flex h-full min-h-0 flex-col rounded-2xl backdrop-blur-sm overflow-hidden group/col transition-all duration-300 shadow-(--shadow-primary-20-soft)">
+    <div className="flex h-full min-h-0 flex-col rounded-2xl border border-border bg-surface-900/60 overflow-hidden group/col transition-all duration-300 shadow-(--shadow-primary-20-soft)">
       <div className="shrink-0 p-4 border-b border-border bg-surface-800/50 flex justify-between items-center text-left">
         <h3 className="text-white font-bold text-lg">{day}</h3>
         <div className="flex items-center gap-3">
