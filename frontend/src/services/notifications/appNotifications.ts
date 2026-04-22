@@ -3,6 +3,7 @@ import { sileo } from "sileo";
 const DEFAULT_ERROR_MESSAGE = "No se pudo completar la acción.";
 const DEFAULT_ERROR_TITLE = "Ha ocurrido un error";
 const AI_CONNECTION_ERROR_TITLE = "Error de conexión con la IA";
+const AI_CONFIGURATION_ERROR_TITLE = "Configuración de IA incompleta";
 const AI_CONNECTION_ERROR_MESSAGE =
   "No se pudo conectar con la IA. Revisa tu conexión e inténtalo de nuevo.";
 
@@ -18,6 +19,10 @@ function isAiConnectionError(message: string): boolean {
   return /(conexi[oó]n con la ia|failed to fetch|network\s?error|load failed|network request failed)/i.test(
     message,
   );
+}
+
+function isAiConfigurationError(message: string): boolean {
+  return /(google api key|api key|configura tu google api key)/i.test(message);
 }
 
 export function notifyRoutineGenerated(): void {
@@ -70,9 +75,14 @@ export function notifyOperationError(
 ): void {
   const message = getOperationErrorMessage(error, fallbackMessage);
   const isConnectionIssue = isAiConnectionError(message);
+  const isConfigurationIssue = isAiConfigurationError(message);
 
   sileo.error({
-    title: isConnectionIssue ? AI_CONNECTION_ERROR_TITLE : fallbackTitle,
+    title: isConnectionIssue
+      ? AI_CONNECTION_ERROR_TITLE
+      : isConfigurationIssue
+        ? AI_CONFIGURATION_ERROR_TITLE
+        : fallbackTitle,
     description: message,
   });
 }

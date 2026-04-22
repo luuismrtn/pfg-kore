@@ -3,8 +3,11 @@ import type { ApiErrorBody, RoutineProfilePayload } from "./types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.trim() ?? "";
 const PROFILE_STORAGE_KEY = "kore.user-profile.v1";
+const GOOGLE_API_KEY_STORAGE_KEY = "kore.google-ai-api-key.v1";
 const INCOMPLETE_PROFILE_ERROR_MESSAGE =
   "Completa los datos obligatorios del perfil para generar una rutina.";
+const MISSING_GOOGLE_API_KEY_ERROR_MESSAGE =
+  "Configura tu Google API Key en Ajustes para usar las funciones de IA.";
 const AI_CONNECTION_ERROR_MESSAGE =
   "No se pudo conectar con la IA. Revisa tu conexión e inténtalo de nuevo.";
 const VALID_GENDERS: UserGender[] = [
@@ -105,6 +108,44 @@ function isNumberInRange(value: unknown, min: number, max: number): boolean {
   );
 }
 
+function normalizeGoogleApiKey(value: string): string {
+  return value.trim();
+}
+
+export function getStoredGoogleApiKey(): string {
+  const storedValue = localStorage.getItem(GOOGLE_API_KEY_STORAGE_KEY);
+  if (!storedValue) {
+    return "";
+  }
+
+  return normalizeGoogleApiKey(storedValue);
+}
+
+export function setStoredGoogleApiKey(value: string): void {
+  const normalizedValue = normalizeGoogleApiKey(value);
+
+  if (!normalizedValue) {
+    localStorage.removeItem(GOOGLE_API_KEY_STORAGE_KEY);
+    return;
+  }
+
+  localStorage.setItem(GOOGLE_API_KEY_STORAGE_KEY, normalizedValue);
+}
+
+export function getGoogleApiKeyConfigurationError(): string | null {
+  return getStoredGoogleApiKey() ? null : MISSING_GOOGLE_API_KEY_ERROR_MESSAGE;
+}
+
+export function ensureGoogleApiKeyConfigured(): string {
+  const storedGoogleApiKey = getStoredGoogleApiKey();
+
+  if (!storedGoogleApiKey) {
+    throw new Error(MISSING_GOOGLE_API_KEY_ERROR_MESSAGE);
+  }
+
+  return storedGoogleApiKey;
+}
+
 export function getProfile(): UserProfileForm {
   const stored = localStorage.getItem(PROFILE_STORAGE_KEY);
   if (!stored) {
@@ -148,6 +189,8 @@ export async function postJson<TResponse>(
   payload: unknown,
   fallbackError: string,
 ): Promise<TResponse> {
+  const googleApiKey = ensureGoogleApiKeyConfigured();
+
   let response: Response;
 
   try {
@@ -155,6 +198,7 @@ export async function postJson<TResponse>(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "x-google-api-key": googleApiKey,
       },
       body: JSON.stringify(payload),
     });

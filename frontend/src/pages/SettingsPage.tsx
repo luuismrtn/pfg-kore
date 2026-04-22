@@ -1,7 +1,11 @@
-import { Moon, Sun, Trash2 } from "lucide-react";
+import { KeyRound, Moon, Save, Sun, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
-import { getAiModels } from "@/services/api/routines";
+import {
+  getAiModels,
+  getStoredGoogleApiKey,
+  setStoredGoogleApiKey,
+} from "@/services/api/routines";
 import type { AiModelsResponse } from "@/services/api/routines";
 
 const THEME_STORAGE_KEY = "kore.theme.v1";
@@ -22,6 +26,12 @@ function applyTheme(theme: ThemeMode): void {
 function SettingsPage() {
   const [theme, setTheme] = useState<ThemeMode>(readStoredTheme);
   const [clearMessage, setClearMessage] = useState<string | null>(null);
+  const [googleApiKeyDraft, setGoogleApiKeyDraft] = useState<string>(
+    getStoredGoogleApiKey,
+  );
+  const [googleApiKeyMessage, setGoogleApiKeyMessage] = useState<string | null>(
+    null,
+  );
   const [aiModels, setAiModels] = useState<AiModelsResponse | null>(null);
   const [isLoadingAiModels, setIsLoadingAiModels] = useState<boolean>(true);
   const [aiModelsError, setAiModelsError] = useState<string | null>(null);
@@ -85,7 +95,23 @@ function SettingsPage() {
     const currentTheme = theme;
     localStorage.clear();
     localStorage.setItem(THEME_STORAGE_KEY, currentTheme);
+    setGoogleApiKeyDraft("");
+    setGoogleApiKeyMessage(null);
     setClearMessage("Datos eliminados correctamente.");
+  };
+
+  const handleSaveGoogleApiKey = () => {
+    setStoredGoogleApiKey(googleApiKeyDraft);
+    setGoogleApiKeyDraft(getStoredGoogleApiKey());
+    setGoogleApiKeyMessage("Google API Key guardada correctamente.");
+    setClearMessage(null);
+  };
+
+  const handleClearGoogleApiKey = () => {
+    setStoredGoogleApiKey("");
+    setGoogleApiKeyDraft("");
+    setGoogleApiKeyMessage("Google API Key eliminada.");
+    setClearMessage(null);
   };
 
   return (
@@ -174,6 +200,57 @@ function SettingsPage() {
                 No hay información de modelos disponible.
               </p>
             )}
+          </section>
+
+          <section className="rounded-2xl border border-border bg-surface-900/70 p-6 backdrop-blur-xl shadow-(--shadow-primary-15-weak)">
+            <div className="mb-5">
+              <h3 className="text-white text-lg font-bold">Gemini API Key</h3>
+              <p className="text-muted text-sm mt-1">
+                Introduce tu clave para usar Google AI con tu propia cuenta.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <label className="flex flex-col gap-2 text-sm text-muted">
+                Clave de API
+                <input
+                  type="text"
+                  value={googleApiKeyDraft}
+                  onChange={(event) => {
+                    setGoogleApiKeyDraft(event.target.value);
+                    setGoogleApiKeyMessage(null);
+                  }}
+                  placeholder="AIzaSy..."
+                  autoComplete="off"
+                  spellCheck={false}
+                  className="rounded-xl border border-border bg-surface-800/80 px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/60"
+                />
+              </label>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleSaveGoogleApiKey}
+                  className="cursor-pointer inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-black transition-colors hover:opacity-90"
+                >
+                  <Save size={16} aria-hidden="true" />
+                  Guardar clave
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClearGoogleApiKey}
+                  className="cursor-pointer inline-flex items-center gap-2 rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-surface-700"
+                >
+                  <KeyRound size={16} aria-hidden="true" />
+                  Eliminar clave
+                </button>
+              </div>
+
+              {googleApiKeyMessage ? (
+                <p className="text-sm text-green-300">{googleApiKeyMessage}</p>
+              ) : null}
+            </div>
           </section>
 
           <section className="rounded-2xl border border-border bg-surface-900/70 p-6 backdrop-blur-xl shadow-(--shadow-primary-15-weak)">

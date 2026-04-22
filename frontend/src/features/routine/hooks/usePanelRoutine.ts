@@ -3,7 +3,9 @@ import type { RoutineDay, RoutineResponse } from "@/features/routine/types";
 import {
   changeRoutineDay,
   changeRoutineExercise,
+  ensureGoogleApiKeyConfigured,
   generateRoutine,
+  getGoogleApiKeyConfigurationError,
   getRoutineGenerationProfileError,
 } from "@/services/api/routines";
 import {
@@ -117,6 +119,7 @@ export function usePanelRoutine() {
   const [selectedDay, setSelectedDay] = useState("");
 
   const profileError = getRoutineGenerationProfileError();
+  const googleApiKeyError = getGoogleApiKeyConfigurationError();
   const generateRoutineErrorMessage = profileError ?? generationError;
   const isGenerateRoutineDisabled = isLoading || Boolean(profileError);
   const hasAnyDayWithExercises = panelSchedule.some(dayHasExercises);
@@ -137,6 +140,16 @@ export function usePanelRoutine() {
       return;
     }
 
+    if (googleApiKeyError) {
+      setGenerationError(googleApiKeyError);
+      notifyOperationError(
+        new Error(googleApiKeyError),
+        "Configura tu Google API Key en Ajustes para generar rutinas.",
+        "Google API Key no configurada",
+      );
+      return;
+    }
+
     const previousSchedule = panelSchedule;
     const previousSelectedDay = selectedDay;
 
@@ -144,6 +157,7 @@ export function usePanelRoutine() {
     setIsLoading(true);
 
     try {
+      ensureGoogleApiKeyConfigured();
       const routine = await generateRoutine("");
       const normalizedRoutine = normalizePanelScheduleDays(routine.routine);
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
@@ -177,9 +191,19 @@ export function usePanelRoutine() {
       return;
     }
 
+    if (googleApiKeyError) {
+      notifyOperationError(
+        new Error(googleApiKeyError),
+        "Configura tu Google API Key en Ajustes para regenerar días.",
+        "Google API Key no configurada",
+      );
+      return;
+    }
+
     setIsRegeneratingDay(true);
 
     try {
+      ensureGoogleApiKeyConfigured();
       const updatedRoutine = await changeRoutineDay(
         { routine: panelSchedule },
         dayToChange,
@@ -216,10 +240,20 @@ export function usePanelRoutine() {
       return;
     }
 
+    if (googleApiKeyError) {
+      notifyOperationError(
+        new Error(googleApiKeyError),
+        "Configura tu Google API Key en Ajustes para cambiar ejercicios.",
+        "Google API Key no configurada",
+      );
+      return;
+    }
+
     setChangingExerciseDay(dayToChange);
     setChangingExerciseRef(exerciseToChange);
 
     try {
+      ensureGoogleApiKeyConfigured();
       const updatedRoutine = await changeRoutineExercise(
         { routine: panelSchedule },
         dayToChange,

@@ -13,7 +13,7 @@ export function createGoogleAiClient(
 ): GoogleGenAI {
   if (!apiKey) {
     throw new Error(
-      "Missing GOOGLE_API_KEY. Add it to backend/.env to use Google AI.",
+      "Missing Google API key. Configure it in Settings or set GOOGLE_API_KEY in backend/.env.",
     );
   }
 

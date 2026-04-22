@@ -1,6 +1,10 @@
 import type { Request, Response } from "express";
 import { getRagService } from "@backend/services/ragServiceInstance";
 import type { RoutineRequest, UserGender } from "@backend/types/routine";
+import {
+  isMissingGoogleApiKeyError,
+  readGoogleApiKeyFromRequest,
+} from "./googleApiKey";
 
 const ALLOWED_GENDERS = new Set<UserGender>([
   "mujer",
@@ -36,11 +40,20 @@ export const generateRoutine = async (
       return;
     }
 
-    const routine = getRagService();
-    const generatedRoutine = await routine.generateRoutine(request);
+    const googleApiKey = readGoogleApiKeyFromRequest(req);
+    const ragService = getRagService(googleApiKey);
+    const generatedRoutine = await ragService.generateRoutine(request);
 
     res.status(200).json(generatedRoutine);
   } catch (error) {
+    if (isMissingGoogleApiKeyError(error)) {
+      res.status(400).json({
+        error:
+          error instanceof Error ? error.message : "Missing Google API key.",
+      });
+      return;
+    }
+
     console.error("Error in generateRoutine controller:", error);
     res.status(500).json({
       error: "Internal server error while processing the routine.",

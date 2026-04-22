@@ -44,8 +44,8 @@ export class RagService {
   private maxSemanticCandidatesLimit: number;
   private maxFinalExercisePoolLimit: number;
 
-  constructor() {
-    this.googleAi = createGoogleAiClient();
+  constructor(apiKey?: string) {
+    this.googleAi = createGoogleAiClient(apiKey);
     this.model = DEFAULT_GOOGLE_CHAT_MODEL;
     this.modelFallbacks = DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS;
     this.modelRequestTimeoutMs = DEFAULT_GOOGLE_MODEL_TIMEOUT_MS;

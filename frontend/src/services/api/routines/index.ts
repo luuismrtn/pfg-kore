@@ -7,10 +7,14 @@ export { getAvailableSportOptions } from "./getAvailableSportOptions";
 export { interpretChatIntent } from "./interpretChatIntent";
 export {
   buildRoutineRequestPayload,
+  ensureGoogleApiKeyConfigured,
+  getGoogleApiKeyConfigurationError,
   getProfile,
   getRoutineGenerationProfileError,
+  getStoredGoogleApiKey,
   INCOMPLETE_PROFILE_ERROR_MESSAGE,
   postJson,
+  setStoredGoogleApiKey,
 } from "./shared";
 export type {
   AddRoutineDayPayload,

@@ -1,8 +1,11 @@
 import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
+import ApiKeySetupCard from "@/components/ui/ApiKeySetupCard";
 import Skeleton from "@/components/ui/Skeleton";
 import { usePanelRoutine } from "@/features/routine/hooks/usePanelRoutine";
+import { getStoredGoogleApiKey } from "@/services/api/routines";
 import { CalendarDays, RefreshCw } from "lucide-react";
+import { useState } from "react";
 
 function RoutinePanelSkeleton() {
   return (
@@ -77,6 +80,7 @@ function RoutinePanelSkeleton() {
 }
 
 function PanelPage() {
+  const [googleApiKey, setGoogleApiKey] = useState(getStoredGoogleApiKey);
   const {
     panelSchedule,
     selectedDay,
@@ -93,32 +97,43 @@ function PanelPage() {
     handleRegenerateDay,
     handleChangeExercise,
   } = usePanelRoutine();
+  const shouldShowApiKeySetup = !googleApiKey && !hasAnyDayWithExercises;
 
   return (
     <div className="relative flex flex-col h-full">
       <HeaderBar
         title="Horario Semanal"
         action={
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed dark:text-black text-white"
-            onClick={handleGenerateRoutine}
-            disabled={isGenerateRoutineDisabled}
-            aria-busy={isLoading}
-          >
-            <RefreshCw
-              className={isLoading ? "animate-spin" : ""}
-              size={20}
-              strokeWidth={2.5}
-              aria-hidden="true"
-            />
-            {isLoading ? "Generando..." : "Generar Nueva Rutina"}
-          </button>
+          shouldShowApiKeySetup ? null : (
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed dark:text-black text-white"
+              onClick={handleGenerateRoutine}
+              disabled={isGenerateRoutineDisabled}
+              aria-busy={isLoading}
+            >
+              <RefreshCw
+                className={isLoading ? "animate-spin" : ""}
+                size={20}
+                strokeWidth={2.5}
+                aria-hidden="true"
+              />
+              {isLoading ? "Generando..." : "Generar Nueva Rutina"}
+            </button>
+          )
         }
       />
 
       <div className="flex-1 overflow-hidden p-8">
-        {isLoading ? (
+        {shouldShowApiKeySetup ? (
+          <div className="flex h-full items-center justify-center pb-8">
+            <ApiKeySetupCard
+              title="Configura tu Google API Key"
+              description="Aún no hay una rutina en tu panel. Introduce tu clave para poder generar tu primer plan de entrenamiento."
+              onSaved={(savedApiKey) => setGoogleApiKey(savedApiKey)}
+            />
+          </div>
+        ) : isLoading ? (
           <RoutinePanelSkeleton />
         ) : !hasAnyDayWithExercises ? (
           <div className="flex flex-col items-center justify-center gap-4 h-full text-center">

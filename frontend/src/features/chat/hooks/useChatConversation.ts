@@ -12,7 +12,9 @@ import {
   addRoutineDay,
   changeRoutineDay,
   changeRoutineExercise,
+  ensureGoogleApiKeyConfigured,
   generateRoutine,
+  getGoogleApiKeyConfigurationError,
   interpretChatIntent,
 } from "@/services/api/routines";
 import {
@@ -222,6 +224,16 @@ export function useChatConversation() {
       return;
     }
 
+    const googleApiKeyError = getGoogleApiKeyConfigurationError();
+    if (googleApiKeyError) {
+      notifyOperationError(
+        new Error(googleApiKeyError),
+        "Configura tu Google API Key en Ajustes para usar el chat IA.",
+        "Google API Key no configurada",
+      );
+      return;
+    }
+
     let text = draft.trim();
 
     if (text.length > MAX_USER_CHARS) {
@@ -244,6 +256,7 @@ export function useChatConversation() {
     setIsResponding(true);
 
     try {
+      ensureGoogleApiKeyConfigured();
       const currentRoutine = readStoredRoutine();
       const chatHistory = buildChatHistory([...messages, userMessage]);
       const intent = await interpretChatIntent(
