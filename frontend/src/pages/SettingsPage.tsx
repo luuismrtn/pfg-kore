@@ -1,6 +1,7 @@
 import { KeyRound, Moon, Save, Sun, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
+import Skeleton from "@/components/ui/Skeleton";
 import {
   getAiModels,
   getStoredGoogleApiKey,
@@ -21,6 +22,23 @@ function applyTheme(theme: ThemeMode): void {
   const root = document.documentElement;
   root.classList.toggle("dark", theme === "dark");
   root.style.colorScheme = theme;
+}
+
+function AiModelsSkeleton() {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl border border-border bg-surface-800/60 p-4">
+        <Skeleton className="h-4 w-40 rounded-full" />
+        <Skeleton className="mt-3 h-5 w-full max-w-80 rounded-full" />
+        <Skeleton className="mt-3 h-4 w-56 rounded-full" />
+      </div>
+
+      <div className="rounded-xl border border-border bg-surface-800/60 p-4">
+        <Skeleton className="h-4 w-36 rounded-full" />
+        <Skeleton className="mt-3 h-5 w-full max-w-72 rounded-full" />
+      </div>
+    </div>
+  );
 }
 
 function SettingsPage() {
@@ -170,7 +188,7 @@ function SettingsPage() {
             </div>
 
             {isLoadingAiModels ? (
-              <p className="text-sm text-muted">Cargando modelos de IA...</p>
+              <AiModelsSkeleton />
             ) : aiModelsError ? (
               <p className="text-sm text-red-300">{aiModelsError}</p>
             ) : aiModels ? (
