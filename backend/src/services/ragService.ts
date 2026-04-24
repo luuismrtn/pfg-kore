@@ -468,7 +468,15 @@ export class RagService {
       `Error during AI generation after fallback attempts: ${finalDetails.code ?? "unknown"} - ${finalDetails.message ?? "unknown"}`,
     );
 
-    throw new Error("Failed to generate routine with AI.");
+    const error = new Error(
+      finalDetails.message?.trim() || "Failed to generate routine with AI.",
+    ) as Error & { statusCode?: number };
+
+    if (typeof finalDetails.code === "number") {
+      error.statusCode = finalDetails.code;
+    }
+
+    throw error;
   }
 
   private async generateJsonWithModel(
