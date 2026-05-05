@@ -17,8 +17,10 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "Backend server is running correctly" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server listening on http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Backend server listening on http://localhost:${PORT}`);
+  });
+}
 
 export default app;
