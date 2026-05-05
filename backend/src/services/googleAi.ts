@@ -1,9 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-export const DEFAULT_GOOGLE_CHAT_MODEL = "gemini-3.1-flash-lite-preview";
+export const DEFAULT_GOOGLE_CHAT_MODEL = "gemini-3-flash-preview";
 export const DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS = [
-  "gemini-3-flash-preview",
+  "gemma-4-31b-it",
   "gemini-2.5-pro",
+  "gemini-2.5-flash"
 ];
 export const DEFAULT_GOOGLE_EMBEDDING_MODEL = "gemini-embedding-2-preview";
 export const DEFAULT_GOOGLE_MODEL_TIMEOUT_MS = 45000;

@@ -40,7 +40,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
             Kore
           </h1>
           <p className="text-muted text-xs font-medium tracking-wide uppercase">
-            Kore IA V0.0
+            Kore IA V1.0
           </p>
         </div>
       </div>

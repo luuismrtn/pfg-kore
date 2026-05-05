@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc -p . && tsc-alias -p tsconfig.json --resolve-full-paths --resolve-full-extension .js",
+    "build": "tsc -p . && tsc-alias -p tsconfig.json --resolve-full-paths --resolve-full-extension .js && node -e \"const fs=require('fs'); fs.cpSync('src/data','dist/data',{recursive:true});\"",
     "start": "tsx src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
