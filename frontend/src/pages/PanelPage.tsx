@@ -116,7 +116,10 @@ function PanelPage() {
       const profile = getProfile();
       const blob = await exportRoutinePdf({
         routine: { routine: panelSchedule },
-        profile,
+        profile: {
+          ...profile,
+          text: JSON.stringify(profile),
+        },
       });
 
       const url = window.URL.createObjectURL(blob);
