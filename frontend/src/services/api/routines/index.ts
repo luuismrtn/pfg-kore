@@ -1,6 +1,7 @@
 export { addRoutineDay } from "./addRoutineDay";
 export { changeRoutineDay } from "./changeRoutineDay";
 export { changeRoutineExercise } from "./changeRoutineExercise";
+export { exportRoutinePdf } from "./exportRoutinePdf";
 export { generateRoutine } from "./generateRoutine";
 export { getAiModels } from "./getAiModels";
 export { getAvailableSportOptions } from "./getAvailableSportOptions";

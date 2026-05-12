@@ -35,6 +35,11 @@ export interface RoutineResponse {
   routine: RoutineDay[];
 }
 
+export interface RoutinePdfRequest {
+  routine: RoutineResponse;
+  profile?: Partial<RoutineRequest>;
+}
+
 export interface ChangeRoutineDayRequest {
   routine: RoutineResponse;
   dayToChange: string;

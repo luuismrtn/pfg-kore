@@ -5,3 +5,4 @@ export { changeRoutineExercise } from "./changeRoutineExercise";
 export { generateRoutine } from "./generateRoutine";
 export { getAvailableModalities } from "./getAvailableModalities";
 export { interpretChatIntent } from "./interpretChatIntent";
+export { exportRoutinePdf } from "./exportRoutinePdf";

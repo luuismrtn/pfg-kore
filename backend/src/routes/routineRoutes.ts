@@ -3,6 +3,7 @@ import {
   addRoutineDay,
   changeRoutineExercise,
   changeRoutineDay,
+  exportRoutinePdf,
   generateRoutine,
   getAiModels,
   getAvailableModalities,
@@ -18,5 +19,6 @@ router.post("/change-day", changeRoutineDay);
 router.post("/cambiar-ejercicio-rutina", changeRoutineExercise);
 router.post("/add-day", addRoutineDay);
 router.post("/chat-intent", interpretChatIntent);
+router.post("/export-pdf", exportRoutinePdf);
 
 export default router;

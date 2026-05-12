@@ -3,8 +3,13 @@ import DayColumnCard from "@/components/schedule/DayColumnCard";
 import ApiKeySetupCard from "@/components/ui/ApiKeySetupCard";
 import Skeleton from "@/components/ui/Skeleton";
 import { usePanelRoutine } from "@/features/routine/hooks/usePanelRoutine";
-import { getStoredGoogleApiKey } from "@/services/api/routines";
-import { CalendarDays, RefreshCw } from "lucide-react";
+import {
+  exportRoutinePdf,
+  getProfile,
+  getStoredGoogleApiKey,
+} from "@/services/api/routines";
+import { notifyOperationError } from "@/services/notifications/appNotifications";
+import { CalendarDays, Download, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 function RoutinePanelSkeleton() {
@@ -81,6 +86,7 @@ function RoutinePanelSkeleton() {
 
 function PanelPage() {
   const [googleApiKey, setGoogleApiKey] = useState(getStoredGoogleApiKey);
+  const [isDownloading, setIsDownloading] = useState(false);
   const {
     panelSchedule,
     selectedDay,
@@ -99,27 +105,74 @@ function PanelPage() {
   } = usePanelRoutine();
   const shouldShowApiKeySetup = !googleApiKey && !hasAnyDayWithExercises;
 
+  const handleDownloadRoutine = async () => {
+    if (isDownloading || !hasAnyDayWithExercises) {
+      return;
+    }
+
+    setIsDownloading(true);
+
+    try {
+      const profile = getProfile();
+      const blob = await exportRoutinePdf({
+        routine: { routine: panelSchedule },
+        profile,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `rutina-${new Date().toISOString().slice(0, 10)}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      notifyOperationError(
+        error,
+        "No se pudo descargar el PDF.",
+        "Descarga fallida",
+      );
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <div className="relative flex flex-col h-full">
       <HeaderBar
         title="Horario Semanal"
         action={
           shouldShowApiKeySetup ? null : (
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed dark:text-black text-white"
-              onClick={handleGenerateRoutine}
-              disabled={isGenerateRoutineDisabled}
-              aria-busy={isLoading}
-            >
-              <RefreshCw
-                className={isLoading ? "animate-spin" : ""}
-                size={20}
-                strokeWidth={2.5}
-                aria-hidden="true"
-              />
-              {isLoading ? "Generando..." : "Generar Nueva Rutina"}
-            </button>
+            <div className="flex items-center gap-2">
+              {hasAnyDayWithExercises ? (
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface-800/60 px-4 py-2 text-sm font-semibold text-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={handleDownloadRoutine}
+                  disabled={isDownloading}
+                  aria-busy={isDownloading}
+                >
+                  <Download size={18} strokeWidth={2.4} aria-hidden="true" />
+                  {isDownloading ? "Descargando..." : "Descargar PDF"}
+                </button>
+              ) : null}
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed dark:text-black text-white"
+                onClick={handleGenerateRoutine}
+                disabled={isGenerateRoutineDisabled}
+                aria-busy={isLoading}
+              >
+                <RefreshCw
+                  className={isLoading ? "animate-spin" : ""}
+                  size={20}
+                  strokeWidth={2.5}
+                  aria-hidden="true"
+                />
+                {isLoading ? "Generando..." : "Generar Nueva Rutina"}
+              </button>
+            </div>
           )
         }
       />
