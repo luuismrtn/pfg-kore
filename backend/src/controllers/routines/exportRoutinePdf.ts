@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import PDFDocument from "pdfkit";
+type PDFDoc = InstanceType<typeof PDFDocument>;
 import SVGtoPDF from "svg-to-pdfkit";
 import type {
   RoutineDay,
@@ -63,18 +64,14 @@ function formatList(values: string[] | undefined): string {
   return values.join(", ");
 }
 
-function ensureSpace(doc: PDFDocument, neededHeight = 60): void {
+function ensureSpace(doc: PDFDoc, neededHeight = 60): void {
   const bottom = doc.page.height - doc.page.margins.bottom;
   if (doc.y + neededHeight > bottom) {
     doc.addPage();
   }
 }
 
-function appendProfileLine(
-  doc: PDFDocument,
-  label: string,
-  value: string,
-): void {
+function appendProfileLine(doc: PDFDoc, label: string, value: string): void {
   if (!value) {
     return;
   }
@@ -89,7 +86,7 @@ function appendProfileLine(
 }
 
 function renderProfileSummary(
-  doc: PDFDocument,
+  doc: PDFDoc,
   profile?: Partial<RoutineRequest>,
 ): void {
   if (!profile) {
@@ -152,7 +149,7 @@ type TableColumn = {
   align?: "left" | "center" | "right";
 };
 
-function getTableColumns(doc: PDFDocument): TableColumn[] {
+function getTableColumns(doc: PDFDoc): TableColumn[] {
   const availableWidth =
     doc.page.width - doc.page.margins.left - doc.page.margins.right;
   const nameWidth = Math.round(availableWidth * 0.42);
@@ -171,7 +168,7 @@ function getTableColumns(doc: PDFDocument): TableColumn[] {
   ];
 }
 
-function drawTableHeader(doc: PDFDocument, columns: TableColumn[]): void {
+function drawTableHeader(doc: PDFDoc, columns: TableColumn[]): void {
   ensureSpace(doc, TABLE_HEADER_HEIGHT + 4);
 
   const startX = doc.page.margins.left;
@@ -203,11 +200,14 @@ function drawTableHeader(doc: PDFDocument, columns: TableColumn[]): void {
 }
 
 function getRowHeight(
-  doc: PDFDocument,
+  doc: PDFDoc,
   columns: TableColumn[],
   exerciseName: string,
 ): number {
   const nameColumn = columns[0];
+  if (!nameColumn) {
+    return TABLE_ROW_MIN_HEIGHT;
+  }
   const textHeight = doc.heightOfString(exerciseName, {
     width: nameColumn.width - TABLE_CELL_PADDING * 2,
   });
@@ -216,7 +216,7 @@ function getRowHeight(
 }
 
 function drawTableRow(
-  doc: PDFDocument,
+  doc: PDFDoc,
   columns: TableColumn[],
   exercise: RoutineExercise,
 ): void {
@@ -266,10 +266,7 @@ function drawTableRow(
   doc.y = rowY + rowHeight;
 }
 
-function renderExerciseNotes(
-  doc: PDFDocument,
-  exercises: RoutineExercise[],
-): void {
+function renderExerciseNotes(doc: PDFDoc, exercises: RoutineExercise[]): void {
   const notes = exercises
     .map((exercise) => ({
       name: exercise.name,
@@ -303,7 +300,7 @@ function renderExerciseNotes(
   });
 }
 
-function renderRoutineDay(doc: PDFDocument, day: RoutineDay): void {
+function renderRoutineDay(doc: PDFDoc, day: RoutineDay): void {
   ensureSpace(doc, 70);
 
   doc
@@ -333,7 +330,7 @@ function renderRoutineDay(doc: PDFDocument, day: RoutineDay): void {
   renderExerciseNotes(doc, day.exercises);
 }
 
-function renderWatermark(doc: PDFDocument): void {
+function renderWatermark(doc: PDFDoc): void {
   if (!fs.existsSync(LOGO_PATH)) {
     return;
   }
