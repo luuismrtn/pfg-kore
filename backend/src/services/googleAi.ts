@@ -1,7 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 
-export const DEFAULT_GOOGLE_CHAT_MODEL = "gemini-3-flash-preview";
+export const DEFAULT_GOOGLE_CHAT_MODEL = "gemini-3.5-flash";
 export const DEFAULT_GOOGLE_CHAT_MODEL_FALLBACKS = [
+  "gemini-3-flash-preview",
   "gemma-4-31b-it",
   "gemini-2.5-pro",
   "gemini-2.5-flash"

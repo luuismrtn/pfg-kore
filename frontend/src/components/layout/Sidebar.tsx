@@ -28,13 +28,13 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
   return (
     <aside className="hidden md:flex flex-col w-72 bg-surface-900 border-r border-border h-full shrink-0 z-20">
       <div className="p-6 flex items-center gap-3 mb-6">
-        <div
-          className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-border"
-          aria-label="Logo de Kore IA"
-          style={{
-            backgroundImage: "url('/kore-v2.svg')",
-          }}
-        />
+        <div className="flex items-center justify-center size-10 rounded-full overflow-hidden">
+          <img
+            src="/kore-v2.svg"
+            alt="Logo de Kore"
+            className="size-10 object-contain"
+          />
+        </div>
         <div className="flex flex-col">
           <h1 className="text-white text-xl font-bold leading-tight tracking-tight">
             Kore
