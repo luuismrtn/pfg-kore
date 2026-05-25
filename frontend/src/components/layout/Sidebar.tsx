@@ -32,7 +32,7 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-border"
           aria-label="Logo de Kore IA"
           style={{
-            backgroundImage: "url('/kore.svg')",
+            backgroundImage: "url('/kore-v2.svg')",
           }}
         />
         <div className="flex flex-col">

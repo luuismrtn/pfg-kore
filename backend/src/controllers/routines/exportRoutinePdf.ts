@@ -14,7 +14,7 @@ import type {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const LOGO_PATH = path.resolve(__dirname, "../../assets/kore.svg");
+const LOGO_PATH = path.resolve(__dirname, "../../assets/kore-v2.svg");
 const MAX_LINE_WIDTH = 500;
 const TABLE_CELL_PADDING = 6;
 const TABLE_HEADER_HEIGHT = 24;
