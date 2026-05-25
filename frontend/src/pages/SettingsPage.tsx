@@ -15,7 +15,7 @@ type ThemeMode = "dark" | "light";
 
 function readStoredTheme(): ThemeMode {
   const storedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-  return storedTheme === "light" ? "light" : "dark";
+  return storedTheme === "dark" ? "dark" : "light";
 }
 
 function applyTheme(theme: ThemeMode): void {
