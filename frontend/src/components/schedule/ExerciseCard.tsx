@@ -131,7 +131,7 @@ function ExerciseCard({
               href={`https://www.google.com/search?q=${encodeURIComponent(exercise.name)}&tbm=isch`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-primary transition-colors inline-flex items-center gap-1.5 group/title focus:outline-hidden focus:ring-1 focus:ring-primary/45 rounded-sm"
+              className="hover:text-primary transition-colors inline-flex items-center gap-1.5 group/title focus:outline-hidden rounded-sm"
               title={`Buscar imágenes de "${exercise.name}" en Google`}
             >
               <span>{exercise.name}</span>
