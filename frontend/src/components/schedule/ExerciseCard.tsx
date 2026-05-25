@@ -1,6 +1,6 @@
 import type { RoutineExercise } from "@/features/routine/types";
 import Skeleton from "@/components/ui/Skeleton";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Search } from "lucide-react";
 
 const badgeClassByLabel: Record<string, string> = {
   Pecho: "bg-primary/10 text-primary border border-primary/20",
@@ -127,7 +127,19 @@ function ExerciseCard({
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h4 className="text-white font-bold leading-tight text-[15px]">
-            {exercise.name}
+            <a
+              href={`https://www.google.com/search?q=${encodeURIComponent(exercise.name)}&tbm=isch`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors inline-flex items-center gap-1.5 group/title focus:outline-hidden focus:ring-1 focus:ring-primary/45 rounded-sm"
+              title={`Buscar imágenes de "${exercise.name}" en Google`}
+            >
+              <span>{exercise.name}</span>
+              <Search
+                className="w-3.5 h-3.5 text-primary shrink-0 transition-all duration-300 transform -translate-x-1 opacity-0 group-hover/title:translate-x-0 group-hover/title:opacity-100"
+                aria-hidden="true"
+              />
+            </a>
           </h4>
         </div>
         <button
