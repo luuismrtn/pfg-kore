@@ -2,7 +2,7 @@ import HeaderBar from "@/components/layout/HeaderBar";
 import DayColumnCard from "@/components/schedule/DayColumnCard";
 import ApiKeySetupCard from "@/components/ui/ApiKeySetupCard";
 import Skeleton from "@/components/ui/Skeleton";
-import { usePanelRoutine } from "@/features/routine/hooks/usePanelRoutine";
+import { useRoutine } from "@/features/routine/hooks/useRoutine";
 import {
   exportRoutinePdf,
   getProfile,
@@ -12,7 +12,7 @@ import { notifyOperationError } from "@/services/notifications/appNotifications"
 import { CalendarDays, Download, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
-function RoutinePanelSkeleton() {
+function RoutineSkeleton() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 h-full">
       <aside className="flex flex-col gap-4 bg-surface-900/60 border border-border rounded-2xl p-5 h-full backdrop-blur-md shadow-(--shadow-primary-20-soft)">
@@ -84,11 +84,11 @@ function RoutinePanelSkeleton() {
   );
 }
 
-function PanelPage() {
+function RoutinePage() {
   const [googleApiKey, setGoogleApiKey] = useState(getStoredGoogleApiKey);
   const [isDownloading, setIsDownloading] = useState(false);
   const {
-    panelSchedule,
+    routineSchedule,
     selectedDay,
     setSelectedDay,
     activeDay,
@@ -102,7 +102,7 @@ function PanelPage() {
     handleGenerateRoutine,
     handleRegenerateDay,
     handleChangeExercise,
-  } = usePanelRoutine();
+  } = useRoutine();
   const shouldShowApiKeySetup = !googleApiKey && !hasAnyDayWithExercises;
 
   const handleDownloadRoutine = async () => {
@@ -115,7 +115,7 @@ function PanelPage() {
     try {
       const profile = getProfile();
       const blob = await exportRoutinePdf({
-        routine: { routine: panelSchedule },
+        routine: { routine: routineSchedule },
         profile: {
           ...profile,
           text: JSON.stringify(profile),
@@ -185,12 +185,12 @@ function PanelPage() {
           <div className="flex h-full items-center justify-center pb-8">
             <ApiKeySetupCard
               title="Configura tu Google API Key"
-              description="Aún no hay una rutina en tu panel. Introduce tu clave para poder generar tu primer plan de entrenamiento."
+              description="Aún no hay una rutina en tu sección de Rutina. Introduce tu clave para poder generar tu primer plan de entrenamiento."
               onSaved={(savedApiKey) => setGoogleApiKey(savedApiKey)}
             />
           </div>
         ) : isLoading ? (
-          <RoutinePanelSkeleton />
+          <RoutineSkeleton />
         ) : !hasAnyDayWithExercises ? (
           <div className="flex flex-col items-center justify-center gap-4 h-full text-center">
             <div className="size-16 rounded-full bg-surface-800 flex items-center justify-center text-muted">
@@ -237,7 +237,7 @@ function PanelPage() {
                   </h3>
                 </div>
                 <div className="flex flex-col gap-3">
-                  {panelSchedule.map((day) => {
+                  {routineSchedule.map((day) => {
                     const exerciseCount = day.exercises?.length ?? 0;
                     const isActive = day.day === selectedDay;
 
@@ -336,4 +336,4 @@ function PanelPage() {
   );
 }
 
-export default PanelPage;
+export default RoutinePage;

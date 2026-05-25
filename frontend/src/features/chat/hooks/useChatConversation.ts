@@ -273,7 +273,7 @@ export function useChatConversation() {
         routine = await generateRoutine(text);
         notifySuccess = () => notifyRoutineGenerated();
         assistantReply =
-          "¡Ya tienes tu rutina personalizada en tu panel! \nSi necesitas que te la ajuste o tienes alguna duda, no dudes en escribirme.";
+          "¡Ya tienes tu rutina personalizada en la sección de Rutina! \nSi necesitas que te la ajuste o tienes alguna duda, no dudes en escribirme.";
       } else if (intent.action === "change_day") {
         if (!currentRoutine) {
           throw new Error(
@@ -294,7 +294,7 @@ export function useChatConversation() {
         );
         notifySuccess = () => notifyRoutineDayGenerated(intent.dayToChange!);
         assistantReply =
-          "He cambiado el día que me pediste. Puedes ver la rutina actualizada en el panel.";
+          "He cambiado el día que me pediste. Puedes ver la rutina actualizada en la sección de Rutina.";
       } else if (intent.action === "change_exercise") {
         if (!currentRoutine) {
           throw new Error(
@@ -316,7 +316,7 @@ export function useChatConversation() {
         );
         notifySuccess = () => notifyRoutineExerciseChanged(intent.dayToChange!);
         assistantReply =
-          "He cambiado el ejercicio que me pediste. Revisa el panel para ver la actualización.";
+          "He cambiado el ejercicio que me pediste. Revisa la sección de Rutina para ver la actualización.";
       } else if (intent.action === "add_day") {
         if (!currentRoutine) {
           throw new Error(
@@ -327,7 +327,7 @@ export function useChatConversation() {
         routine = await addRoutineDay(currentRoutine, text);
         notifySuccess = () => notifyRoutineDayAdded();
         assistantReply =
-          "He añadido un día más a tu rutina. Ya puedes verlo en tu panel.";
+          "He añadido un día más a tu rutina. Ya puedes verlo en la sección de Rutina.";
       } else {
         assistantReply =
           intent.responseText ||

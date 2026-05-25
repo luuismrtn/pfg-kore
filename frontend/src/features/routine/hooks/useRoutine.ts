@@ -44,7 +44,7 @@ function readProfileAvailableDays(): number {
   }
 }
 
-function normalizePanelScheduleDays(routineDays: RoutineDay[]): RoutineDay[] {
+function normalizeRoutineScheduleDays(routineDays: RoutineDay[]): RoutineDay[] {
   const targetDays = Math.max(readProfileAvailableDays(), routineDays.length);
   const normalized = routineDays.slice(0, targetDays).map((day, index) => ({
     day:
@@ -77,21 +77,21 @@ function isRoutineResponse(value: unknown): value is RoutineResponse {
   return Array.isArray(maybeRoutine.routine);
 }
 
-function readPanelSchedule(): RoutineDay[] {
+function readRoutineSchedule(): RoutineDay[] {
   const raw = localStorage.getItem(ROUTINE_STORAGE_KEY);
   if (!raw) {
-    return normalizePanelScheduleDays([]);
+    return normalizeRoutineScheduleDays([]);
   }
 
   try {
     const parsed = JSON.parse(raw) as unknown;
     if (!isRoutineResponse(parsed)) {
-      return normalizePanelScheduleDays([]);
+      return normalizeRoutineScheduleDays([]);
     }
 
-    return normalizePanelScheduleDays(parsed.routine);
+    return normalizeRoutineScheduleDays(parsed.routine);
   } catch {
-    return normalizePanelScheduleDays([]);
+    return normalizeRoutineScheduleDays([]);
   }
 }
 
@@ -158,9 +158,9 @@ function updateRoutineOperationState(patch: Partial<RoutineOperationState>) {
   });
 }
 
-export function usePanelRoutine() {
-  const [panelSchedule, setPanelSchedule] = useState<RoutineDay[]>(() =>
-    readPanelSchedule(),
+export function useRoutine() {
+  const [routineSchedule, setRoutineSchedule] = useState<RoutineDay[]>(() =>
+    readRoutineSchedule(),
   );
   const [isLoading, setIsLoading] = useState(
     () => routineOperationState.isLoading,
@@ -181,18 +181,18 @@ export function usePanelRoutine() {
   const googleApiKeyError = getGoogleApiKeyConfigurationError();
   const generateRoutineErrorMessage = profileError ?? generationError;
   const isGenerateRoutineDisabled = isLoading || Boolean(profileError);
-  const hasAnyDayWithExercises = panelSchedule.some(dayHasExercises);
+  const hasAnyDayWithExercises = routineSchedule.some(dayHasExercises);
   const activeDay =
-    panelSchedule.find((day) => day.day === selectedDay) ??
-    panelSchedule.find(dayHasExercises) ??
-    panelSchedule[0];
+    routineSchedule.find((day) => day.day === selectedDay) ??
+    routineSchedule.find(dayHasExercises) ??
+    routineSchedule[0];
 
   useEffect(() => {
     setSelectedDay((currentDay) => {
-      const exists = panelSchedule.some((day) => day.day === currentDay);
-      return exists ? currentDay : getPreferredSelectedDay(panelSchedule);
+      const exists = routineSchedule.some((day) => day.day === currentDay);
+      return exists ? currentDay : getPreferredSelectedDay(routineSchedule);
     });
-  }, [panelSchedule]);
+  }, [routineSchedule]);
 
   useEffect(
     () =>
@@ -220,7 +220,7 @@ export function usePanelRoutine() {
       return;
     }
 
-    const previousSchedule = panelSchedule;
+    const previousSchedule = routineSchedule;
     const previousSelectedDay = selectedDay;
 
     setGenerationError(null);
@@ -229,9 +229,9 @@ export function usePanelRoutine() {
     try {
       ensureGoogleApiKeyConfigured();
       const routine = await generateRoutine("");
-      const normalizedRoutine = normalizePanelScheduleDays(routine.routine);
+      const normalizedRoutine = normalizeRoutineScheduleDays(routine.routine);
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(routine));
-      setPanelSchedule(normalizedRoutine);
+      setRoutineSchedule(normalizedRoutine);
       setSelectedDay(getPreferredSelectedDay(normalizedRoutine));
       notifyRoutineGenerated();
     } catch (error) {
@@ -240,7 +240,7 @@ export function usePanelRoutine() {
         "No se pudo generar la rutina.",
       );
 
-      setPanelSchedule(previousSchedule);
+      setRoutineSchedule(previousSchedule);
       setSelectedDay(
         previousSelectedDay || getPreferredSelectedDay(previousSchedule),
       );
@@ -257,7 +257,7 @@ export function usePanelRoutine() {
   };
 
   const handleRegenerateDay = async (dayToChange: string) => {
-    if (panelSchedule.length <= 0 || isRegeneratingDay) {
+    if (routineSchedule.length <= 0 || isRegeneratingDay) {
       return;
     }
 
@@ -275,16 +275,16 @@ export function usePanelRoutine() {
     try {
       ensureGoogleApiKeyConfigured();
       const updatedRoutine = await changeRoutineDay(
-        { routine: panelSchedule },
+        { routine: routineSchedule },
         dayToChange,
       );
 
-      const normalizedRoutine = normalizePanelScheduleDays(
+      const normalizedRoutine = normalizeRoutineScheduleDays(
         updatedRoutine.routine,
       );
 
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
-      setPanelSchedule(normalizedRoutine);
+      setRoutineSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
         return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
@@ -306,7 +306,7 @@ export function usePanelRoutine() {
     dayToChange: string,
     exerciseToChange: string,
   ) => {
-    if (panelSchedule.length <= 0 || changingExerciseRef) {
+    if (routineSchedule.length <= 0 || changingExerciseRef) {
       return;
     }
 
@@ -327,17 +327,17 @@ export function usePanelRoutine() {
     try {
       ensureGoogleApiKeyConfigured();
       const updatedRoutine = await changeRoutineExercise(
-        { routine: panelSchedule },
+        { routine: routineSchedule },
         dayToChange,
         exerciseToChange,
       );
 
-      const normalizedRoutine = normalizePanelScheduleDays(
+      const normalizedRoutine = normalizeRoutineScheduleDays(
         updatedRoutine.routine,
       );
 
       localStorage.setItem(ROUTINE_STORAGE_KEY, JSON.stringify(updatedRoutine));
-      setPanelSchedule(normalizedRoutine);
+      setRoutineSchedule(normalizedRoutine);
       setSelectedDay((currentDay) => {
         const exists = normalizedRoutine.some((day) => day.day === currentDay);
         return exists ? currentDay : getPreferredSelectedDay(normalizedRoutine);
@@ -359,7 +359,7 @@ export function usePanelRoutine() {
   };
 
   return {
-    panelSchedule,
+    routineSchedule,
     selectedDay,
     setSelectedDay,
     activeDay,

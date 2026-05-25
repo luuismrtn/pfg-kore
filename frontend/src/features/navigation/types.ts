@@ -1,1 +1,1 @@
-export type PageKey = "profile" | "panel" | "chat" | "settings";
+export type PageKey = "profile" | "routine" | "chat" | "settings";

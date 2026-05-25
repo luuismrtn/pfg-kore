@@ -2,7 +2,7 @@ import { useEffect, useState, type JSX } from "react";
 import { Toaster } from "sileo";
 import "./App.css";
 import Sidebar from "@/components/layout/Sidebar";
-import PanelPage from "@/pages/PanelPage";
+import RoutinePage from "@/pages/RoutinePage";
 import ChatPage from "@/pages/ChatPage";
 import SettingsPage from "@/pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -15,7 +15,7 @@ type ThemeMode = "dark" | "light";
 
 const pageRoutes: Record<PageKey, string> = {
   profile: "/profile",
-  panel: "/panel",
+  routine: "/rutina",
   chat: "/chat",
   settings: "/settings",
 };
@@ -77,7 +77,7 @@ function App() {
   const renderContent = () => {
     const pages: Record<PageKey, JSX.Element> = {
       profile: <ProfilePage />,
-      panel: <PanelPage />,
+      routine: <RoutinePage />,
       chat: <ChatPage />,
       settings: <SettingsPage />,
     };
@@ -101,7 +101,7 @@ function App() {
               <div className="absolute top-0 right-0 w-125 h-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
               <div className="absolute bottom-0 left-0 w-125 h-125 bg-border/6 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
-              <NotFoundPage onGoHome={() => handleSelectPage("panel")} />
+              <NotFoundPage onGoHome={() => handleSelectPage("routine")} />
             </main>
           </div>
         </div>

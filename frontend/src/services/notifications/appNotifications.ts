@@ -28,7 +28,7 @@ function isAiConfigurationError(message: string): boolean {
 export function notifyRoutineGenerated(): void {
   sileo.success({
     title: "Nueva rutina generada",
-    description: "Tu panel se actualizó con una nueva rutina.",
+    description: "Se ha actualizado tu Rutina con un nuevo plan.",
   });
 }
 

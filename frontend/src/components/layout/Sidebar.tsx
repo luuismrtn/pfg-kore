@@ -21,7 +21,7 @@ type SidebarProps = {
 const navItems: NavItem[] = [
   { key: "profile", label: "Perfil", icon: UserPen },
   { key: "chat", label: "Chat IA", icon: Bot },
-  { key: "panel", label: "Panel", icon: LayoutDashboard },
+  { key: "routine", label: "Rutina", icon: LayoutDashboard },
 ];
 
 function Sidebar({ activeKey, onSelect }: SidebarProps) {
