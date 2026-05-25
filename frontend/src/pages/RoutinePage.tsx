@@ -180,9 +180,9 @@ function RoutinePage() {
         }
       />
 
-      <div className="flex-1 overflow-hidden p-8">
+      <div className={`flex-1 p-8 ${shouldShowApiKeySetup ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
         {shouldShowApiKeySetup ? (
-          <div className="flex h-full items-center justify-center pb-8">
+          <div className="flex min-h-full items-center justify-center py-6">
             <ApiKeySetupCard
               title="Configura tu Google API Key"
               description="Aún no hay una rutina en tu sección de Rutina. Introduce tu clave para poder generar tu primer plan de entrenamiento."

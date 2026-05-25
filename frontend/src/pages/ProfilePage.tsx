@@ -372,6 +372,8 @@ function ProfilePage() {
 
     if (showWizard) {
       setShowWizard(false);
+      window.history.pushState({}, "", "/rutina");
+      window.dispatchEvent(new PopStateEvent("popstate"));
     }
   };
 

@@ -8,6 +8,7 @@ import {
   setStoredGoogleApiKey,
 } from "@/services/api/routines";
 import type { AiModelsResponse } from "@/services/api/routines";
+import ApiKeyTutorial from "@/components/ui/ApiKeyTutorial";
 
 const THEME_STORAGE_KEY = "kore.theme.v1";
 
@@ -268,6 +269,12 @@ function SettingsPage() {
               {googleApiKeyMessage ? (
                 <p className="text-sm text-green-300">{googleApiKeyMessage}</p>
               ) : null}
+
+              {!googleApiKeyDraft && (
+                <div className="mt-4 pt-4 border-t border-border/40 animate-fadeIn">
+                  <ApiKeyTutorial />
+                </div>
+              )}
             </div>
           </section>
 

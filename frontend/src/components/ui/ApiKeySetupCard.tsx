@@ -4,6 +4,7 @@ import {
   getStoredGoogleApiKey,
   setStoredGoogleApiKey,
 } from "@/services/api/routines";
+import ApiKeyTutorial from "./ApiKeyTutorial";
 
 type ApiKeySetupCardProps = {
   title: string;
@@ -75,6 +76,10 @@ function ApiKeySetupCard({
           </p>
         ) : null}
       </form>
+
+      <div className="mt-6 border-t border-border/60 pt-5">
+        <ApiKeyTutorial />
+      </div>
     </div>
   );
 }

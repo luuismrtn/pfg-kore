@@ -100,21 +100,6 @@ function Sidebar({ activeKey, onSelect }: SidebarProps) {
           />
           <p className="text-sm font-medium">Ajustes</p>
         </button>
-
-        <div className="mt-4 pt-4 border-t border-border flex items-center gap-3 px-2">
-          <div
-            className="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-primary/30"
-            aria-label="Foto de perfil de usuario"
-            style={{
-              backgroundImage:
-                "url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4I-Xucv9nuvU4hwL6SIZa2zLHGDRFMEaf1hZzU271pz65Bjgy7a-VPAgI8OHMsF5k0bpWTTyt2nlfEiQsPSFDksdrOfPBoCl-Uhhs2hS_AbSM_ZS_F6ZJIxnwzoeEtrn1YhrRPQ597wqu8iQvKxpyr84cM6hCsnO_ZiV1yySJebTu4CpF2LrF4m_nZPr9zazcy3Trvcy8HqITto5WJlU7YR-7VSSVtsLMZfPj9P0LQGDueuFYUciekHBUSru9Ra9wCiBF0CzZkNo')",
-            }}
-          />
-          <div className="flex flex-col">
-            <p className="text-white text-sm font-bold">Invitado</p>
-            <p className="text-muted text-xs">Acceso limitado</p>
-          </div>
-        </div>
       </div>
     </aside>
   );

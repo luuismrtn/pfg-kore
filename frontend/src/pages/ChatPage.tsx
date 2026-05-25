@@ -31,14 +31,14 @@ function ChatPage() {
     <div className="flex flex-col h-full">
       <HeaderBar title="Chat IA" />
 
-      <div className="relative flex-1 px-8 pb-8 overflow-hidden">
+      <div className={`relative flex-1 px-8 pb-8 ${shouldShowApiKeySetup ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute right-0 top-6 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
           <div className="absolute left-10 bottom-6 h-64 w-64 rounded-full bg-border/10 blur-3xl" />
         </div>
 
         {shouldShowApiKeySetup ? (
-          <div className="relative flex h-full items-center justify-center ">
+          <div className="relative flex min-h-full items-center justify-center py-6">
             <ApiKeySetupCard
               title="Configura tu Google API Key"
               description="Aún no tienes una rutina guardada. Introduce tu clave para empezar a usar el chat IA y generar tu primer plan."
