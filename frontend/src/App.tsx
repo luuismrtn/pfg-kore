@@ -1,4 +1,4 @@
-import { useEffect, useState, type JSX } from "react";
+import { useEffect, useState, useSyncExternalStore, type JSX } from "react";
 import { Toaster } from "sileo";
 import "./App.css";
 import Sidebar from "@/components/layout/Sidebar";
@@ -45,44 +45,51 @@ function resolvePageFromPath(pathname: string): PageKey | null {
   return matched?.[0] ?? null;
 }
 
+function subscribe(callback: () => void) {
+  window.addEventListener("popstate", callback);
+  return () => {
+    window.removeEventListener("popstate", callback);
+  };
+}
+
+function getSnapshot(): PageKey | null {
+  return resolvePageFromPath(window.location.pathname);
+}
+
+interface ActivePageContentProps {
+  activePage: PageKey;
+}
+
+function ActivePageContent({ activePage }: ActivePageContentProps) {
+  switch (activePage) {
+    case "profile":
+      return <ProfilePage />;
+    case "routine":
+      return <RoutinePage />;
+    case "chat":
+      return <ChatPage />;
+    case "settings":
+      return <SettingsPage />;
+    default:
+      return null;
+  }
+}
+
 function App() {
-  const [activePage, setActivePage] = useState<PageKey | null>(null);
+  const activePage = useSyncExternalStore(subscribe, getSnapshot);
 
   useEffect(() => {
     const initialTheme = readStoredTheme();
     localStorage.setItem(THEME_STORAGE_KEY, initialTheme);
     applyTheme(initialTheme);
-
-    const syncFromLocation = () => {
-      setActivePage(resolvePageFromPath(window.location.pathname));
-    };
-
-    syncFromLocation();
-    window.addEventListener("popstate", syncFromLocation);
-
-    return () => {
-      window.removeEventListener("popstate", syncFromLocation);
-    };
   }, []);
 
   const handleSelectPage = (key: PageKey) => {
-    setActivePage(key);
-
     const targetRoute = pageRoutes[key];
     if (window.location.pathname !== targetRoute) {
       window.history.pushState({}, "", targetRoute);
+      window.dispatchEvent(new PopStateEvent("popstate"));
     }
-  };
-
-  const renderContent = () => {
-    const pages: Record<PageKey, JSX.Element> = {
-      profile: <ProfilePage />,
-      routine: <RoutinePage />,
-      chat: <ChatPage />,
-      settings: <SettingsPage />,
-    };
-
-    return activePage ? pages[activePage] : null;
   };
 
   if (!activePage) {
@@ -98,8 +105,8 @@ function App() {
         <div className="bg-canvas dark:bg-deep font-display text-contrast overflow-hidden selection:bg-primary selection:text-contrast">
           <div className="flex h-screen w-full">
             <main className="flex-1 flex flex-col h-full bg-canvas dark:bg-deep relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-125 h-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-125 h-125 bg-border/6 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+              <div className="absolute top-0 right-0 size-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+              <div className="absolute bottom-0 left-0 size-125 bg-border/6 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
               <NotFoundPage onGoHome={() => handleSelectPage("routine")} />
             </main>
@@ -126,10 +133,10 @@ function App() {
           <Sidebar activeKey={activePage} onSelect={handleSelectPage} />
 
           <main className="flex-1 flex flex-col h-full bg-canvas dark:bg-deep relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-125 h-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-125 h-125 bg-border/6 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
+            <div className="absolute top-0 right-0 size-125 bg-primary/4 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 size-125 bg-border/6 rounded-full blur-[120px] pointer-events-none translate-y-1/2 -translate-x-1/2" />
 
-            {renderContent()}
+            <ActivePageContent activePage={activePage} />
           </main>
         </div>
       </div>

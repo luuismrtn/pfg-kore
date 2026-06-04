@@ -136,7 +136,7 @@ function ExerciseCard({
             >
               <span>{exercise.name}</span>
               <Search
-                className="w-3.5 h-3.5 text-primary shrink-0 transition-all duration-300 transform -translate-x-1 opacity-0 group-hover/title:translate-x-0 group-hover/title:opacity-100"
+                className="size-3.5 text-primary shrink-0 transition-all duration-300 transform -translate-x-1 opacity-0 group-hover/title:translate-x-0 group-hover/title:opacity-100"
                 aria-hidden="true"
               />
             </a>

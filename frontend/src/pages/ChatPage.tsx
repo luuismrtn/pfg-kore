@@ -33,8 +33,8 @@ function ChatPage() {
 
       <div className={`relative flex-1 px-8 pb-8 ${shouldShowApiKeySetup ? "overflow-y-auto custom-scrollbar" : "overflow-hidden"}`}>
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute right-0 top-6 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
-          <div className="absolute left-10 bottom-6 h-64 w-64 rounded-full bg-border/10 blur-3xl" />
+          <div className="absolute right-0 top-6 size-80 rounded-full bg-primary/5 blur-3xl" />
+          <div className="absolute left-10 bottom-6 size-64 rounded-full bg-border/10 blur-3xl" />
         </div>
 
         {shouldShowApiKeySetup ? (
@@ -126,7 +126,7 @@ function ChatPage() {
                     <button
                       type="submit"
                       disabled={!draft.trim() || isResponding}
-                      className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-black font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
+                      className="flex size-12 items-center justify-center rounded-xl bg-primary text-black font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
                       aria-label="Enviar mensaje"
                     >
                       <SendHorizontal
@@ -140,7 +140,7 @@ function ChatPage() {
                       type="button"
                       onClick={clearConversation}
                       disabled={isResponding}
-                      className="flex h-12 w-12 items-center justify-center rounded-xl border border-border bg-surface-800/90 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
+                      className="flex size-12 items-center justify-center rounded-xl border border-border bg-surface-800/90 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-px transition-transform cursor-pointer"
                       aria-label="Nueva conversacion"
                       title="Nueva conversacion"
                     >

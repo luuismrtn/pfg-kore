@@ -198,18 +198,316 @@ function hasCompleteProfileData(profile: UserProfileForm): boolean {
   );
 }
 
+function getRangeProgressStyle(
+  value: number,
+  min: number,
+  max: number,
+): CSSProperties {
+  const range = max - min;
+  if (range <= 0) {
+    return { "--range-progress": "0%" } as CSSProperties;
+  }
+
+  const rawProgress = ((value - min) / range) * 100;
+  const progress = Math.min(100, Math.max(0, rawProgress));
+  return { "--range-progress": `${progress}%` } as CSSProperties;
+}
+
+interface WizardStepContentProps {
+  stepId: WizardStepId;
+  form: UserProfileForm;
+  setForm: React.Dispatch<React.SetStateAction<UserProfileForm>>;
+  sportOptions: string[];
+  handleNumberInput: (
+    field: "weightKg" | "heightCm" | "age",
+    event: ChangeEvent<HTMLInputElement>,
+  ) => void;
+  toggleSelection: (field: "equipment" | "injuries", value: string) => void;
+  bmi: string | null;
+}
+
+function WizardStepContent({
+  stepId,
+  form,
+  setForm,
+  sportOptions,
+  handleNumberInput,
+  toggleSelection,
+  bmi,
+}: WizardStepContentProps) {
+  switch (stepId) {
+    case "name":
+      return (
+        <div className="space-y-4">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              ¿Como te llamas?
+            </span>
+            <input
+              type="text"
+              value={form.name}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, name: event.target.value }));
+              }}
+              placeholder="Ejemplo: Luis"
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+            />
+          </label>
+          <p className="text-sm text-muted">
+            Si lo dejas vacío, usaremos un saludo genérico en los
+            entrenamientos. Siempre puedes cambiarlo luego.
+          </p>
+        </div>
+      );
+
+    case "body":
+      return (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              Edad (años)
+            </span>
+            <input
+              type="number"
+              min={MIN_AGE}
+              max={MAX_AGE}
+              step="1"
+              value={form.age}
+              onChange={(event) => handleNumberInput("age", event)}
+              placeholder="24"
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+            />
+            <span className="text-xs text-muted">
+              Por seguridad y cumplimiento legal, solo permitimos edad mayor o
+              igual a {MIN_AGE}.
+            </span>
+          </label>
+
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">Género</span>
+            <select
+              value={form.gender}
+              onChange={(event) => {
+                setForm((prev) => ({
+                  ...prev,
+                  gender: event.target.value as UserGender,
+                }));
+              }}
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+            >
+              {genderOptions.map((gender) => (
+                <option key={gender.value} value={gender.value}>
+                  {gender.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">Peso (kg)</span>
+            <input
+              type="number"
+              min={30}
+              max={250}
+              step="0.1"
+              value={form.weightKg}
+              onChange={(event) => handleNumberInput("weightKg", event)}
+              placeholder="72.5"
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+            />
+          </label>
+
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              Altura (cm)
+            </span>
+            <input
+              type="number"
+              min={120}
+              max={230}
+              step="1"
+              value={form.heightCm}
+              onChange={(event) => handleNumberInput("heightCm", event)}
+              placeholder="178"
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
+            />
+          </label>
+
+          <div className="md:col-span-2 rounded-xl border border-border bg-surface-800/80 px-4 py-3">
+            <p className="text-xs uppercase tracking-wide text-muted">
+              IMC estimado
+            </p>
+            <p className="mt-1 text-lg font-semibold text-white">
+              {bmi ?? "Completa peso y altura"}
+            </p>
+          </div>
+        </div>
+      );
+
+    case "training":
+      return (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              Deporte principal
+            </span>
+            <select
+              value={form.sport}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, sport: event.target.value }));
+              }}
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+            >
+              {sportOptions.map((sport) => (
+                <option key={sport} value={sport}>
+                  {sport}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">Nivel</span>
+            <select
+              value={form.level}
+              onChange={(event) => {
+                setForm((prev) => ({ ...prev, level: event.target.value }));
+              }}
+              className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
+            >
+              {levelOptions.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      );
+
+    case "schedule":
+      return (
+        <div className="space-y-6">
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              Dias disponibles por semana
+            </span>
+            <input
+              type="range"
+              min={1}
+              max={7}
+              step={1}
+              value={form.availableDays}
+              style={getRangeProgressStyle(form.availableDays, 1, 7)}
+              onChange={(event) => {
+                setForm((prev) => ({
+                  ...prev,
+                  availableDays: Number(event.target.value),
+                }));
+              }}
+              className="kore-range accent-primary cursor-pointer"
+            />
+            <span className="text-sm text-white">
+              {form.availableDays} dias disponibles
+            </span>
+          </label>
+
+          <label className="flex flex-col gap-2">
+            <span className="text-sm font-medium text-white">
+              Duracion media por entreno
+            </span>
+            <input
+              type="range"
+              min={20}
+              max={240}
+              step={5}
+              value={form.averageDurationMinutes}
+              style={getRangeProgressStyle(
+                form.averageDurationMinutes,
+                20,
+                240,
+              )}
+              onChange={(event) => {
+                setForm((prev) => ({
+                  ...prev,
+                  averageDurationMinutes: Number(event.target.value),
+                }));
+              }}
+              className="kore-range accent-primary cursor-pointer"
+            />
+            <span className="text-sm text-white">
+              {form.averageDurationMinutes} minutos
+            </span>
+          </label>
+        </div>
+      );
+
+    case "limits":
+      return (
+        <div className="space-y-6">
+          <div>
+            <p className="text-sm font-medium text-white">
+              Equipamiento disponible
+            </p>
+            <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
+              {equipmentOptions.map((item) => {
+                const selected = form.equipment.includes(item);
+                return (
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => toggleSelection("equipment", item)}
+                    className={`rounded-xl border px-3 py-2 text-left text-sm transition cursor-pointer ${
+                      selected
+                        ? "border-primary/70 bg-primary/20 text-white"
+                        : "border-border bg-surface-800 text-muted hover:border-primary/40 hover:text-white"
+                    }`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm font-medium text-white">Lesiones</p>
+            <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
+              {injuryOptions.map((part) => {
+                const selected = form.injuries.includes(part);
+                return (
+                  <button
+                    key={part}
+                    type="button"
+                    onClick={() => toggleSelection("injuries", part)}
+                    className={`rounded-xl border px-3 py-2 text-sm transition cursor-pointer ${
+                      selected
+                        ? "border-primary/70 bg-primary/20 text-white"
+                        : "border-border bg-surface-800 text-muted hover:border-primary/40 hover:text-white"
+                    }`}
+                  >
+                    {part}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
 function ProfilePage() {
-  const [form, setForm] = useState<UserProfileForm>(defaultProfile);
+  const [form, setForm] = useState<UserProfileForm>(() => getProfile());
   const [stepIndex, setStepIndex] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
-  const [showWizard, setShowWizard] = useState(false);
+  const [showWizard, setShowWizard] = useState(
+    () => !hasCompleteProfileData(getProfile()),
+  );
   const [sportOptions, setSportOptions] = useState(DEFAULT_SPORT_OPTIONS);
-
-  useEffect(() => {
-    const profile = getProfile();
-    setForm(profile);
-    setShowWizard(!hasCompleteProfileData(profile));
-  }, []);
 
   useEffect(() => {
     let isActive = true;
@@ -255,21 +553,6 @@ function ProfilePage() {
 
     return (form.weightKg / (heightMeters * heightMeters)).toFixed(1);
   }, [form.heightCm, form.weightKg]);
-
-  const getRangeProgressStyle = (
-    value: number,
-    min: number,
-    max: number,
-  ): CSSProperties => {
-    const range = max - min;
-    if (range <= 0) {
-      return { "--range-progress": "0%" } as CSSProperties;
-    }
-
-    const rawProgress = ((value - min) / range) * 100;
-    const progress = Math.min(100, Math.max(0, rawProgress));
-    return { "--range-progress": `${progress}%` } as CSSProperties;
-  };
 
   const currentStep = wizardSteps[stepIndex];
   const progressPercentage =
@@ -382,272 +665,6 @@ function ProfilePage() {
     handleSaveProfile();
   };
 
-  const renderStep = () => {
-    switch (currentStep.id) {
-      case "name":
-        return (
-          <div className="space-y-4">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                ¿Como te llamas?
-              </span>
-              <input
-                type="text"
-                value={form.name}
-                onChange={(event) => {
-                  setForm((prev) => ({ ...prev, name: event.target.value }));
-                }}
-                placeholder="Ejemplo: Luis"
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
-              />
-            </label>
-            <p className="text-sm text-muted">
-              Si lo dejas vacío, usaremos un saludo genérico en los
-              entrenamientos. Siempre puedes cambiarlo luego.
-            </p>
-          </div>
-        );
-
-      case "body":
-        return (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                Edad (años)
-              </span>
-              <input
-                type="number"
-                min={MIN_AGE}
-                max={MAX_AGE}
-                step="1"
-                value={form.age}
-                onChange={(event) => handleNumberInput("age", event)}
-                placeholder="24"
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
-              />
-              <span className="text-xs text-muted">
-                Por seguridad y cumplimiento legal, solo permitimos edad mayor o
-                igual a {MIN_AGE}.
-              </span>
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">Género</span>
-              <select
-                value={form.gender}
-                onChange={(event) => {
-                  setForm((prev) => ({
-                    ...prev,
-                    gender: event.target.value as UserGender,
-                  }));
-                }}
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
-              >
-                {genderOptions.map((gender) => (
-                  <option key={gender.value} value={gender.value}>
-                    {gender.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">Peso (kg)</span>
-              <input
-                type="number"
-                min={30}
-                max={250}
-                step="0.1"
-                value={form.weightKg}
-                onChange={(event) => handleNumberInput("weightKg", event)}
-                placeholder="72.5"
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
-              />
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                Altura (cm)
-              </span>
-              <input
-                type="number"
-                min={120}
-                max={230}
-                step="1"
-                value={form.heightCm}
-                onChange={(event) => handleNumberInput("heightCm", event)}
-                placeholder="178"
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40"
-              />
-            </label>
-
-            <div className="md:col-span-2 rounded-xl border border-border bg-surface-800/80 px-4 py-3">
-              <p className="text-xs uppercase tracking-wide text-muted">
-                IMC estimado
-              </p>
-              <p className="mt-1 text-lg font-semibold text-white">
-                {bmi ?? "Completa peso y altura"}
-              </p>
-            </div>
-          </div>
-        );
-
-      case "training":
-        return (
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                Deporte principal
-              </span>
-              <select
-                value={form.sport}
-                onChange={(event) => {
-                  setForm((prev) => ({ ...prev, sport: event.target.value }));
-                }}
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
-              >
-                {sportOptions.map((sport) => (
-                  <option key={sport} value={sport}>
-                    {sport}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">Nivel</span>
-              <select
-                value={form.level}
-                onChange={(event) => {
-                  setForm((prev) => ({ ...prev, level: event.target.value }));
-                }}
-                className="rounded-xl border border-border bg-surface-800 px-4 py-3 text-sm text-white outline-none transition focus:border-primary/60 focus:ring-2 focus:ring-primary/40 cursor-pointer"
-              >
-                {levelOptions.map((level) => (
-                  <option key={level} value={level}>
-                    {level}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-        );
-
-      case "schedule":
-        return (
-          <div className="space-y-6">
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                Dias disponibles por semana
-              </span>
-              <input
-                type="range"
-                min={1}
-                max={7}
-                step={1}
-                value={form.availableDays}
-                style={getRangeProgressStyle(form.availableDays, 1, 7)}
-                onChange={(event) => {
-                  setForm((prev) => ({
-                    ...prev,
-                    availableDays: Number(event.target.value),
-                  }));
-                }}
-                className="kore-range accent-primary cursor-pointer"
-              />
-              <span className="text-sm text-white">
-                {form.availableDays} dias disponibles
-              </span>
-            </label>
-
-            <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-white">
-                Duracion media por entreno
-              </span>
-              <input
-                type="range"
-                min={20}
-                max={240}
-                step={5}
-                value={form.averageDurationMinutes}
-                style={getRangeProgressStyle(
-                  form.averageDurationMinutes,
-                  20,
-                  240,
-                )}
-                onChange={(event) => {
-                  setForm((prev) => ({
-                    ...prev,
-                    averageDurationMinutes: Number(event.target.value),
-                  }));
-                }}
-                className="kore-range accent-primary cursor-pointer"
-              />
-              <span className="text-sm text-white">
-                {form.averageDurationMinutes} minutos
-              </span>
-            </label>
-          </div>
-        );
-
-      case "limits":
-        return (
-          <div className="space-y-6">
-            <div>
-              <p className="text-sm font-medium text-white">
-                Equipamiento disponible
-              </p>
-              <div className="mt-3 grid grid-cols-1 gap-2 md:grid-cols-2">
-                {equipmentOptions.map((item) => {
-                  const selected = form.equipment.includes(item);
-                  return (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => toggleSelection("equipment", item)}
-                      className={`rounded-xl border px-3 py-2 text-left text-sm transition cursor-pointer ${
-                        selected
-                          ? "border-primary/70 bg-primary/20 text-white"
-                          : "border-border bg-surface-800 text-muted hover:border-primary/40 hover:text-white"
-                      }`}
-                    >
-                      {item}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div>
-              <p className="text-sm font-medium text-white">Lesiones</p>
-              <div className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-4">
-                {injuryOptions.map((part) => {
-                  const selected = form.injuries.includes(part);
-                  return (
-                    <button
-                      key={part}
-                      type="button"
-                      onClick={() => toggleSelection("injuries", part)}
-                      className={`rounded-xl border px-3 py-2 text-sm transition cursor-pointer ${
-                        selected
-                          ? "border-primary/70 bg-primary/20 text-white"
-                          : "border-border bg-surface-800 text-muted hover:border-primary/40 hover:text-white"
-                      }`}
-                    >
-                      {part}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
   if (showWizard) {
     return (
       <div className="flex h-full flex-col">
@@ -655,8 +672,8 @@ function ProfilePage() {
 
         <div className="relative flex-1 overflow-y-auto px-8 py-6 custom-scrollbar">
           <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-1/4 top-4 h-72 w-72 rounded-full bg-primary/8 blur-3xl" />
-            <div className="absolute right-0 bottom-0 h-64 w-64 rounded-full bg-border/30 blur-3xl" />
+            <div className="absolute left-1/4 top-4 size-72 rounded-full bg-primary/8 blur-3xl" />
+            <div className="absolute right-0 bottom-0 size-64 rounded-full bg-border/30 blur-3xl" />
           </div>
 
           <div className="relative mx-auto w-full max-w-4xl">
@@ -691,7 +708,15 @@ function ProfilePage() {
                       : "profile-step-enter-left"
                   }`}
                 >
-                  {renderStep()}
+                  <WizardStepContent
+                    stepId={currentStep.id}
+                    form={form}
+                    setForm={setForm}
+                    sportOptions={sportOptions}
+                    handleNumberInput={handleNumberInput}
+                    toggleSelection={toggleSelection}
+                    bmi={bmi}
+                  />
                 </div>
               </div>
 
@@ -738,8 +763,8 @@ function ProfilePage() {
 
       <div className="relative flex-1 overflow-y-auto px-8 py-6 custom-scrollbar">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/4 top-4 h-72 w-72 rounded-full bg-primary/8 blur-3xl" />
-          <div className="absolute right-0 bottom-0 h-64 w-64 rounded-full bg-border/30 blur-3xl" />
+          <div className="absolute left-1/4 top-4 size-72 rounded-full bg-primary/8 blur-3xl" />
+          <div className="absolute right-0 bottom-0 size-64 rounded-full bg-border/30 blur-3xl" />
         </div>
 
         <div className="relative mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[1.7fr_1fr]">

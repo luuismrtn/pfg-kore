@@ -1,5 +1,5 @@
 import { KeyRound, Moon, Save, Sun, Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import HeaderBar from "@/components/layout/HeaderBar";
 import Skeleton from "@/components/ui/Skeleton";
 import {
@@ -42,6 +42,37 @@ function AiModelsSkeleton() {
   );
 }
 
+type AiModelsState = {
+  data: AiModelsResponse | null;
+  isLoading: boolean;
+  error: string | null;
+};
+
+type AiModelsAction =
+  | { type: "fetchStarted" }
+  | { type: "fetchSucceeded"; data: AiModelsResponse }
+  | { type: "fetchFailed"; error: string };
+
+function aiModelsReducer(
+  _state: AiModelsState,
+  action: AiModelsAction,
+): AiModelsState {
+  switch (action.type) {
+    case "fetchStarted":
+      return { data: null, isLoading: true, error: null };
+    case "fetchSucceeded":
+      return { data: action.data, isLoading: false, error: null };
+    case "fetchFailed":
+      return { data: null, isLoading: false, error: action.error };
+  }
+}
+
+const aiModelsInitialState: AiModelsState = {
+  data: null,
+  isLoading: true,
+  error: null,
+};
+
 function SettingsPage() {
   const [theme, setTheme] = useState<ThemeMode>(readStoredTheme);
   const [clearMessage, setClearMessage] = useState<string | null>(null);
@@ -51,15 +82,16 @@ function SettingsPage() {
   const [googleApiKeyMessage, setGoogleApiKeyMessage] = useState<string | null>(
     null,
   );
-  const [aiModels, setAiModels] = useState<AiModelsResponse | null>(null);
-  const [isLoadingAiModels, setIsLoadingAiModels] = useState<boolean>(true);
-  const [aiModelsError, setAiModelsError] = useState<string | null>(null);
+  const [aiModelsState, dispatchAiModels] = useReducer(
+    aiModelsReducer,
+    aiModelsInitialState,
+  );
 
   useEffect(() => {
     let isMounted = true;
 
     const loadAiModels = async () => {
-      setIsLoadingAiModels(true);
+      dispatchAiModels({ type: "fetchStarted" });
 
       try {
         const models = await getAiModels();
@@ -68,23 +100,19 @@ function SettingsPage() {
           return;
         }
 
-        setAiModels(models);
-        setAiModelsError(null);
+        dispatchAiModels({ type: "fetchSucceeded", data: models });
       } catch (error) {
         if (!isMounted) {
           return;
         }
 
-        setAiModels(null);
-        setAiModelsError(
-          error instanceof Error
-            ? error.message
-            : "No se pudo cargar la configuración de modelos de IA.",
-        );
-      } finally {
-        if (isMounted) {
-          setIsLoadingAiModels(false);
-        }
+        dispatchAiModels({
+          type: "fetchFailed",
+          error:
+            error instanceof Error
+              ? error.message
+              : "No se pudo cargar la configuración de modelos de IA.",
+        });
       }
     };
 
@@ -188,21 +216,21 @@ function SettingsPage() {
               </p>
             </div>
 
-            {isLoadingAiModels ? (
+            {aiModelsState.isLoading ? (
               <AiModelsSkeleton />
-            ) : aiModelsError ? (
-              <p className="text-sm text-red-300">{aiModelsError}</p>
-            ) : aiModels ? (
+            ) : aiModelsState.error ? (
+              <p className="text-sm text-red-300">{aiModelsState.error}</p>
+            ) : aiModelsState.data ? (
               <div className="space-y-4 text-sm">
                 <div className="rounded-xl border border-border bg-surface-800/60 p-4">
                   <p className="text-muted">Modelo para respuestas</p>
                   <p className="mt-1 font-mono text-white break-all">
-                    {aiModels.responseModel}
+                    {aiModelsState.data.responseModel}
                   </p>
                   <p className="mt-2 text-muted">
                     Fallbacks:{" "}
-                    {aiModels.responseModelFallbacks.length > 0
-                      ? aiModels.responseModelFallbacks.join(", ")
+                    {aiModelsState.data.responseModelFallbacks.length > 0
+                      ? aiModelsState.data.responseModelFallbacks.join(", ")
                       : "Ninguno"}
                   </p>
                 </div>
@@ -210,7 +238,7 @@ function SettingsPage() {
                 <div className="rounded-xl border border-border bg-surface-800/60 p-4">
                   <p className="text-muted">Modelo para embeddings</p>
                   <p className="mt-1 font-mono text-white break-all">
-                    {aiModels.embeddingModel}
+                    {aiModelsState.data.embeddingModel}
                   </p>
                 </div>
               </div>

@@ -9,10 +9,15 @@ function normalizeStringArray(value: unknown): string[] {
     return [];
   }
 
-  return value
-    .filter((item): item is string => typeof item === "string")
-    .map((item) => item.trim())
-    .filter((item) => item.length > 0);
+  return value.reduce<string[]>((acc, item) => {
+    if (typeof item === "string") {
+      const trimmed = item.trim();
+      if (trimmed.length > 0) {
+        acc.push(trimmed);
+      }
+    }
+    return acc;
+  }, []);
 }
 
 function normalizeAiModelsResponse(value: unknown): AiModelsResponse {

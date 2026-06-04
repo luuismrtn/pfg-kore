@@ -5,8 +5,8 @@ type NotFoundPageProps = {
 function NotFoundPage({ onGoHome }: NotFoundPageProps) {
   return (
     <div className="relative z-10 flex h-full w-full items-center justify-center overflow-hidden px-6 py-10">
-      <div className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-primary/15 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-12 h-64 w-64 rounded-full bg-emerald-200/8 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 top-1/4 size-72 rounded-full bg-primary/15 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-12 size-64 rounded-full bg-emerald-200/8 blur-3xl" />
 
       <section className="relative w-full max-w-4xl overflow-hidden rounded-3xl border border-border bg-surface-900/75 p-8 shadow-(--shadow-primary-20-soft) backdrop-blur-xl md:p-12">
         <div className="pointer-events-none absolute left-1/2 top-8 -translate-x-1/2 select-none text-[8rem] leading-none font-black tracking-tight text-primary/10 md:text-[10rem]">
