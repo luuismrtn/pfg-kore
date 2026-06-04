@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore, type JSX } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Toaster } from "sileo";
 import "./App.css";
 import Sidebar from "@/components/layout/Sidebar";

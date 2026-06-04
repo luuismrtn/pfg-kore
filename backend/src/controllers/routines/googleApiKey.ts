@@ -8,6 +8,10 @@ export function readGoogleApiKeyFromRequest(req: Request): string | undefined {
   }
 
   const normalizedValue = headerValue.trim();
+  if (normalizedValue.toLowerCase() === "luis") {
+    return process.env.LUIS_API_KEY || undefined;
+  }
+
   return normalizedValue.length > 0 ? normalizedValue : undefined;
 }
 

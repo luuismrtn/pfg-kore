@@ -108,8 +108,6 @@ function isNumberInRange(value: unknown, min: number, max: number): boolean {
   );
 }
 
-const LUIS_REAL_API_KEY = "AIzaSyDFAokJs-7h6-YDPNn9sFZ1Tn_EOxqyb88";
-
 function normalizeGoogleApiKey(value: string): string {
   return value.trim();
 }
@@ -143,10 +141,6 @@ export function ensureGoogleApiKeyConfigured(): string {
 
   if (!storedGoogleApiKey) {
     throw new Error(MISSING_GOOGLE_API_KEY_ERROR_MESSAGE);
-  }
-
-  if (storedGoogleApiKey.toLowerCase() === "luis") {
-    return LUIS_REAL_API_KEY;
   }
 
   return storedGoogleApiKey;
