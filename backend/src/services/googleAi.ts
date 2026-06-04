@@ -11,11 +11,11 @@ export const DEFAULT_GOOGLE_EMBEDDING_MODEL = "gemini-embedding-2-preview";
 export const DEFAULT_GOOGLE_MODEL_TIMEOUT_MS = 45000;
 
 export function createGoogleAiClient(
-  apiKey = process.env.GOOGLE_API_KEY,
+  apiKey?: string,
 ): GoogleGenAI {
   if (!apiKey) {
     throw new Error(
-      "Missing Google API key. Configure it in Settings or set GOOGLE_API_KEY in backend/.env.",
+      "Missing Google API key. Configure it in Settings.",
     );
   }
 

@@ -68,7 +68,7 @@ Si encuentras un error, abre una incidencia (Issue) en GitHub utilizando nuestra
    cd pfg-kore
    ```
 
-2. Configura las variables de entorno. Copia el archivo `.env.example` como `.env` en la raíz del proyecto y completa las claves necesarias (ej. `GOOGLE_API_KEY`, `LUIS_API_KEY`):
+2. Configura las variables de entorno. Copia el archivo `.env.example` como `.env` en la raíz del proyecto.
    ```bash
    cp .env.example .env
    ```
